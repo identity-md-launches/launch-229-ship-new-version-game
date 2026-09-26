@@ -68,11 +68,11 @@
       "sha256": "102c5b5d05d135df6022ae8318c796a480d2a5e08452a05ca8a7e2bc10b4bbf2"
     },
     {
-      "path": "assets/index-CSYibUaq.css",
-      "sha256": "fcf5e31621bc43012dbde2d45ee27973b17ada7f1a3c3f8f7709d99d0c0851f8"
+      "path": "assets/index-BIBIyAWW.css",
+      "sha256": "33d91bec8b5020b53f027fa4000430e4acc1b14ba9f01513148ce0fdb5a1d854"
     },
     {
-      "path": "assets/index-Dykv_Gru.js",
+      "path": "assets/index-C6s2LNDx.js",
       "sha256": "db6b831c6b38d7c0bdd9fe840d1c2878aa5bb0d2600b5cb10b8858d827f7d7c1"
     },
     {
@@ -93,7 +93,7 @@
     },
     {
       "path": "index.html",
-      "sha256": "d6facd351012bbf60705de00e793169e8412eb7504e8a5b9722ac0cd0e577d91"
+      "sha256": "d359346f41ccf7f69abed218a303a974161882e244a71eef67b61a93104fc78f"
     }
   ],
   "network": {

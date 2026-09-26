@@ -1,7 +1,7 @@
 {
   "config": {
-    "configFile": "/root/.identitymd/work/c736a20c-6ccd-47f3-8131-39e469d4dea4/bc77f343-795f-454d-9d81-ae635bb48b28/web/playwright.config.ts",
-    "rootDir": "/root/.identitymd/work/c736a20c-6ccd-47f3-8131-39e469d4dea4/bc77f343-795f-454d-9d81-ae635bb48b28/web/tests",
+    "configFile": "/home/imd-worker/.identitymd/work/959d3b80-8044-4938-8240-c534650d0afa/13322b05-1545-4f46-aa55-789a4cd58973/web/playwright.config.ts",
+    "rootDir": "/home/imd-worker/.identitymd/work/959d3b80-8044-4938-8240-c534650d0afa/13322b05-1545-4f46-aa55-789a4cd58973/web/tests",
     "forbidOnly": false,
     "fullyParallel": false,
     "globalSetup": null,
@@ -41,7 +41,7 @@
         },
         "id": "",
         "name": "",
-        "testDir": "/root/.identitymd/work/c736a20c-6ccd-47f3-8131-39e469d4dea4/bc77f343-795f-454d-9d81-ae635bb48b28/web/tests",
+        "testDir": "/home/imd-worker/.identitymd/work/959d3b80-8044-4938-8240-c534650d0afa/13322b05-1545-4f46-aa55-789a4cd58973/web/tests",
         "testIgnore": [],
         "testMatch": [
           "*.spec.ts"
@@ -69,7 +69,7 @@
       "specs": [
         {
           "title": "static subpath, no wallet, no overflow, local assets, keyboard and mobile screenshots",
-          "ok": true,
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -82,28 +82,36 @@
                 {
                   "workerIndex": 0,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 2213,
-                  "errors": [],
+                  "status": "failed",
+                  "duration": 12,
+                  "error": {
+                    "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-25T22:51:28.210Z",
+                  "startTime": "2026-09-26T02:06:07.706Z",
                   "annotations": [],
                   "attachments": []
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
           "id": "41922fa1b760a3f76b44-9c344d66fb32d63a1cb2",
           "file": "arcade.spec.ts",
-          "line": 7,
+          "line": 23,
           "column": 1
         },
         {
           "title": "unknown network offers switch, adds exact vetted chain, reconnects live reads",
-          "ok": true,
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -114,30 +122,38 @@
               "projectName": "",
               "results": [
                 {
-                  "workerIndex": 0,
+                  "workerIndex": 1,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 880,
-                  "errors": [],
+                  "status": "failed",
+                  "duration": 16,
+                  "error": {
+                    "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-25T22:51:30.833Z",
+                  "startTime": "2026-09-26T02:06:12.011Z",
                   "annotations": [],
                   "attachments": []
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
           "id": "41922fa1b760a3f76b44-d34174054e599ae25513",
           "file": "arcade.spec.ts",
-          "line": 17,
+          "line": 70,
           "column": 1
         },
         {
           "title": "ICE sale uses separate exact approvals then router payload with hookData",
-          "ok": true,
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -148,30 +164,38 @@
               "projectName": "",
               "results": [
                 {
-                  "workerIndex": 0,
+                  "workerIndex": 2,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 1554,
-                  "errors": [],
+                  "status": "failed",
+                  "duration": 11,
+                  "error": {
+                    "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-25T22:51:31.734Z",
+                  "startTime": "2026-09-26T02:06:16.910Z",
                   "annotations": [],
                   "attachments": []
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
           "id": "41922fa1b760a3f76b44-d5f681d319633666471e",
           "file": "arcade.spec.ts",
-          "line": 22,
+          "line": 99,
           "column": 1
         },
         {
           "title": "golden throne native swap has no approvals; winning draw only at B+2; free bursts after receipt",
-          "ok": true,
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -182,36 +206,38 @@
               "projectName": "",
               "results": [
                 {
-                  "workerIndex": 0,
+                  "workerIndex": 3,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 1321,
-                  "errors": [],
+                  "status": "failed",
+                  "duration": 8,
+                  "error": {
+                    "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "steps": [
-                    {
-                      "title": "Expect \"poll toEqual\"",
-                      "duration": 104
-                    }
-                  ],
-                  "startTime": "2026-09-25T22:51:33.299Z",
+                  "startTime": "2026-09-26T02:06:21.428Z",
                   "annotations": [],
                   "attachments": []
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
           "id": "41922fa1b760a3f76b44-11bcf987efdd5bc9b826",
           "file": "arcade.spec.ts",
-          "line": 30,
+          "line": 138,
           "column": 1
         },
         {
           "title": "losing roll shows outcome without broadcasting draw",
-          "ok": true,
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -222,30 +248,38 @@
               "projectName": "",
               "results": [
                 {
-                  "workerIndex": 0,
+                  "workerIndex": 4,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 997,
-                  "errors": [],
+                  "status": "failed",
+                  "duration": 59,
+                  "error": {
+                    "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-25T22:51:34.630Z",
+                  "startTime": "2026-09-26T02:06:25.837Z",
                   "annotations": [],
                   "attachments": []
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
           "id": "41922fa1b760a3f76b44-40b59c1cae17fd01296c",
           "file": "arcade.spec.ts",
-          "line": 35,
+          "line": 178,
           "column": 1
         },
         {
           "title": "tank approval and fill confirmed; scene pees decrement local charges and reload preserves them",
-          "ok": true,
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -256,30 +290,38 @@
               "projectName": "",
               "results": [
                 {
-                  "workerIndex": 0,
+                  "workerIndex": 5,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 1581,
-                  "errors": [],
+                  "status": "failed",
+                  "duration": 13,
+                  "error": {
+                    "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-25T22:51:35.636Z",
+                  "startTime": "2026-09-26T02:06:31.292Z",
                   "annotations": [],
                   "attachments": []
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
           "id": "41922fa1b760a3f76b44-afeb1780a2a59a6ff11b",
           "file": "arcade.spec.ts",
-          "line": 38,
+          "line": 204,
           "column": 1
         },
         {
           "title": "insufficient balances and invalid tank range give actionable messages",
-          "ok": true,
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -290,30 +332,38 @@
               "projectName": "",
               "results": [
                 {
-                  "workerIndex": 0,
+                  "workerIndex": 6,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 900,
-                  "errors": [],
+                  "status": "failed",
+                  "duration": 11,
+                  "error": {
+                    "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-25T22:51:37.229Z",
+                  "startTime": "2026-09-26T02:06:36.677Z",
                   "annotations": [],
                   "attachments": []
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
           "id": "41922fa1b760a3f76b44-895b68d958e05957adb6",
           "file": "arcade.spec.ts",
-          "line": 42,
+          "line": 241,
           "column": 1
         },
         {
           "title": "wallet rejection leaves balances and free bursts uncredited",
-          "ok": true,
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -324,30 +374,38 @@
               "projectName": "",
               "results": [
                 {
-                  "workerIndex": 0,
+                  "workerIndex": 7,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 1071,
-                  "errors": [],
+                  "status": "failed",
+                  "duration": 17,
+                  "error": {
+                    "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-25T22:51:38.145Z",
+                  "startTime": "2026-09-26T02:06:40.672Z",
                   "annotations": [],
                   "attachments": []
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
           "id": "41922fa1b760a3f76b44-45854ae6acd2f7f78bce",
           "file": "arcade.spec.ts",
-          "line": 45,
+          "line": 262,
           "column": 1
         },
         {
           "title": "router simulation revert prevents wallet signing",
-          "ok": true,
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -358,30 +416,38 @@
               "projectName": "",
               "results": [
                 {
-                  "workerIndex": 0,
+                  "workerIndex": 8,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 896,
-                  "errors": [],
+                  "status": "failed",
+                  "duration": 11,
+                  "error": {
+                    "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-25T22:51:39.229Z",
+                  "startTime": "2026-09-26T02:06:46.956Z",
                   "annotations": [],
                   "attachments": []
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
           "id": "41922fa1b760a3f76b44-963e34f1ab73a4bf29cf",
           "file": "arcade.spec.ts",
-          "line": 48,
+          "line": 282,
           "column": 1
         },
         {
           "title": "missing deployed code keeps value controls locked",
-          "ok": true,
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -392,30 +458,38 @@
               "projectName": "",
               "results": [
                 {
-                  "workerIndex": 0,
+                  "workerIndex": 9,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 773,
-                  "errors": [],
+                  "status": "failed",
+                  "duration": 19,
+                  "error": {
+                    "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-25T22:51:40.134Z",
+                  "startTime": "2026-09-26T02:06:52.028Z",
                   "annotations": [],
                   "attachments": []
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
           "id": "41922fa1b760a3f76b44-f62ee29775e0fdcf8e8b",
           "file": "arcade.spec.ts",
-          "line": 51,
+          "line": 299,
           "column": 1
         },
         {
-          "title": "reduced motion pauses scene; rules and music are keyboard accessible",
-          "ok": true,
+          "title": "scene runs like the prototype; pause, rules and music are keyboard accessible",
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -426,30 +500,38 @@
               "projectName": "",
               "results": [
                 {
-                  "workerIndex": 0,
+                  "workerIndex": 10,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 645,
-                  "errors": [],
+                  "status": "failed",
+                  "duration": 16,
+                  "error": {
+                    "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-25T22:51:40.920Z",
+                  "startTime": "2026-09-26T02:06:55.588Z",
                   "annotations": [],
                   "attachments": []
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
-          "id": "41922fa1b760a3f76b44-2be27b2b5a6ee3f41802",
+          "id": "41922fa1b760a3f76b44-d772d86b7564b66ae883",
           "file": "arcade.spec.ts",
-          "line": 54,
+          "line": 315,
           "column": 1
         },
         {
           "title": "prototype gameplay keeps points local and fridge collision prepares a real swap",
-          "ok": true,
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -460,30 +542,38 @@
               "projectName": "",
               "results": [
                 {
-                  "workerIndex": 0,
+                  "workerIndex": 11,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 2860,
-                  "errors": [],
+                  "status": "failed",
+                  "duration": 12,
+                  "error": {
+                    "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-25T22:51:41.576Z",
+                  "startTime": "2026-09-26T02:06:59.772Z",
                   "annotations": [],
                   "attachments": []
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
           "id": "41922fa1b760a3f76b44-db8667e3f6dfb36d963a",
           "file": "arcade.spec.ts",
-          "line": 57,
+          "line": 349,
           "column": 1
         },
         {
           "title": "expired quote prevents signing and requires a fresh review",
-          "ok": true,
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -494,30 +584,38 @@
               "projectName": "",
               "results": [
                 {
-                  "workerIndex": 0,
+                  "workerIndex": 12,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 857,
-                  "errors": [],
+                  "status": "failed",
+                  "duration": 11,
+                  "error": {
+                    "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-25T22:51:44.446Z",
+                  "startTime": "2026-09-26T02:07:04.700Z",
                   "annotations": [],
                   "attachments": []
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
           "id": "41922fa1b760a3f76b44-f36eb14687d06f6e9538",
           "file": "arcade.spec.ts",
-          "line": 69,
+          "line": 389,
           "column": 1
         },
         {
           "title": "a successful replacement receipt without TankFilled cannot create local pees",
-          "ok": true,
+          "ok": false,
           "tags": [],
           "tests": [
             {
@@ -528,25 +626,33 @@
               "projectName": "",
               "results": [
                 {
-                  "workerIndex": 0,
+                  "workerIndex": 13,
                   "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 1162,
-                  "errors": [],
+                  "status": "failed",
+                  "duration": 14,
+                  "error": {
+                    "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝",
+                    "stack": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: browserType.launch: \n╔══════════════════════════════════════════════════════╗\n║ Host system is missing dependencies to run browsers. ║\n║ Please install them with the following command:      ║\n║                                                      ║\n║     sudo npx playwright install-deps                 ║\n║                                                      ║\n║ Alternatively, use apt:                              ║\n║     sudo apt-get install libatk1.0-0t64\\             ║\n║         libatk-bridge2.0-0t64\\                       ║\n║         libatspi2.0-0t64\\                            ║\n║         libxcomposite1\\                              ║\n║         libxdamage1\\                                 ║\n║         libxfixes3\\                                  ║\n║         libxrandr2\\                                  ║\n║         libgbm1\\                                     ║\n║         libasound2t64                                ║\n║                                                      ║\n║ <3 Playwright Team                                   ║\n╚══════════════════════════════════════════════════════╝"
+                    }
+                  ],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-25T22:51:45.313Z",
+                  "startTime": "2026-09-26T02:07:09.007Z",
                   "annotations": [],
                   "attachments": []
                 }
               ],
-              "status": "expected"
+              "status": "unexpected"
             }
           ],
           "id": "41922fa1b760a3f76b44-a5848c931b7a7dff70e3",
           "file": "arcade.spec.ts",
-          "line": 74,
+          "line": 409,
           "column": 1
         }
       ]
@@ -554,11 +660,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-09-25T22:51:26.582Z",
-    "duration": 19970.332,
-    "expected": 14,
+    "startTime": "2026-09-26T02:06:00.701Z",
+    "duration": 68938.187,
+    "expected": 0,
     "skipped": 0,
-    "unexpected": 0,
+    "unexpected": 14,
     "flaky": 0
   }
 }

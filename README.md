@@ -8,6 +8,33 @@ prices and dice rolls are simulated. `SPEC.md` describes the on-chain version: a
 hook that feeds a jackpot from every swap, a token, and the site that plays against them
 on Sepolia.
 
+## Sepolia site — `pepes-armed`
+
+The shippable IPFS/static-hosting release is the repository-root `dist/` directory. It is a
+relative-base Vite export of `web/`, bound to the Sepolia `PepeIce` contract at
+`0xf3dab52ca75b7abeb31ecd0136b01a45a5c48f37` and `JackpotHook` at
+`0xd08e759d3d89eed2de3f03006a6e21ae341d4088`. It keeps the original arcade scene, including
+the Greek-key ground and unoutlined Pepe sprite; it does not change contracts or chain setup.
+
+Install, validate, rebuild, and preview from `web/` (Node 22+):
+
+```sh
+cd web
+npm ci
+npm run typecheck
+npm test
+npm run build
+npm run check:export
+npm run preview
+```
+
+Publish the already-built directory under the site name `pepes-armed` with the selected IPFS
+pinning provider, for example `ipfs add -r ../dist`. Pin the resulting CID, then configure the
+provider's `pepes-armed` site/name record to that CID. Do not rewrite paths or rebuild during
+publication: `dist/index.html` refers only to `./` relative assets and works at a gateway
+subpath. The exact release checks, interaction-test limitation, and UI-guideline review are in
+[`docs/FRONTEND_VALIDATION.md`](docs/FRONTEND_VALIDATION.md).
+
 ## Run the prototype
 
 Serve the folder over HTTP (the music is loaded from `assets/`):

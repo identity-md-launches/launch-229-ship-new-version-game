@@ -1,7 +1,7 @@
 {
-  "completeHistoryBundleBytes": 5485139,
+  "completeHistoryBundleBytes": 5531480,
   "limitBytes": 8388608,
-  "changedPathCount": 86,
+  "changedPathCount": 9,
   "scopeOnly": true,
   "trackedDependencyCaches": false,
   "gitSubmodules": false,

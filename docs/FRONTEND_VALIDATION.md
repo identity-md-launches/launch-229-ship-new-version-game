@@ -1,6 +1,6 @@
-# Frontend validation — 2026-09-25
+# Frontend validation — 2026-09-26
 
-This is worker-produced evidence, not an independent security review or publication attestation. Changes are confined to `web/**`, `dist/**` and `docs/**`, with the assignment’s explicit `web/.gitignore` budget. Deployed Solidity, root configuration, libraries and protected checks are unchanged.
+This is worker-produced evidence, not an independent security review, IPFS publication, or publication attestation. The current rebuild leaves contracts, chain configuration, `prototype/`, `web/public/game.html`, and `web/scripts/adapt-game.py` unchanged.
 
 ## Delivered behavior
 
@@ -10,20 +10,18 @@ The runtime deployment file is `dist/imd-deployment.json`. It carries all handof
 
 ## Executed checks
 
-Run from `web/`; details and exact test names are preserved in `docs/frontend/`.
+Run from `web/` on 2026-09-26. The clean install used `/tmp/pepes-armed-npm-cache` because the managed default npm cache is read-only; no cache is part of this release. Details and exact test names are preserved in `docs/frontend/`.
 
 | Check | Result |
 | --- | --- |
-| `npm run typecheck` | Passed; strict TypeScript includes source, config, scripts and test fixtures |
-| `npm test` | 11 passed; ABI binding, PoolId, both swap directions, player hookData, settlement encoding, slippage, draw boundaries, exact roll, winner set, chain add fallback, path validation |
-| `npm run build` | Passed; Vite relative-base static export with final manifest generated afterward |
-| `npm run check:export` | Passed; exact handoff/network/pool/ABI binding, exhaustive inventory, SHA-256 and export size bounds |
-| `PLAYWRIGHT_BROWSERS_PATH=/tmp/pepe-browsers npm run test:browser` | 14 Chromium tests passed against production files |
-| Desktop and mobile inspection | 1440×1100 and 390×844; screenshots inspected, no horizontal document overflow, no page exceptions or failed local resources in tested subpath session |
-| `npm run check:chain` | All three supplied public RPCs returned Sepolia, nonempty code at both game contracts, initialized pool state and pots |
-| `npx tsx scripts/check-quotes.ts` | Read-only ETH→ICE quotes succeeded for all three throne amounts; 100 ICE→ETH quote reverted at the observed one-sided initial state |
-| Read-only live browser | Production app reached verified ready state with real public RPCs; no page exceptions, failed requests or horizontal overflow |
-| Dependency review | Updated direct packages within the chosen major versions; patched nested ws 8 via override. Final npm audit reports no high/critical entries; moderate transitive advisories remain (see below) |
+| `npm ci --cache /tmp/pepes-armed-npm-cache` | Passed; npm emitted existing peer/deprecation warnings. The unqualified first attempt failed only because the host default cache is read-only. |
+| `npm run typecheck` | Passed; strict TypeScript includes source, config, scripts and test fixtures. |
+| `npm test` | 11 passed; ABI binding, PoolId, both swap directions, player hookData, settlement encoding, slippage, draw boundaries, exact roll, winner set, chain add fallback, and path validation. |
+| `npm run build` | Passed; pinned implementation ABI hashes verified, Vite emitted the relative-base static export, and the final manifest was generated afterward. Vite retained local `./fonts.css` for runtime resolution and reported third-party directive/comment warnings. |
+| `npm run check:export` | Passed; exact handoff/network/pool/ABI binding, exhaustive inventory, SHA-256, and size bounds. It found 19 assets totaling 5,349,476 bytes before the manifest. |
+| `PLAYWRIGHT_BROWSERS_PATH=/tmp/pepe-browsers npm run test:browser` | Did not execute page tests: Chromium installed to `/tmp`, but the managed host lacks required shared libraries (`libatk`, `libatspi`, `libxcomposite`, `libxdamage`, `libxfixes`, `libxrandr`, `libgbm`, and `libasound`). All 14 entries in `frontend/browser-results.json` are launch failures, not site failures. |
+
+The browser-report JSON reflects the current failed-to-launch attempt. The screenshots, live-chain observations, and formerly passing browser report described below are historical worker evidence from 2026-09-25, not a claim that a browser session ran on 2026-09-26.
 
 Browser coverage includes: missing wallet, connected live read presentation, wrong network and 4902 add-chain fallback, exact ERC-20 and Permit2 approval recipients/amounts, router payload decoding and player identity, native value without approvals, B+2 winning draw, losing roll with no draw, tank fill and local decrement/restoration, insufficient funds, invalid tank size, user rejection, router simulation revert before signing, missing code, reduced motion, music keyboard control, rules, quote expiry and replacement receipts without expected events. A test-only response instrumentation exposes original scene closure functions to exercise fridge collision and local-point credit. No test hook is shipped in the export.
 
@@ -43,7 +41,7 @@ The production JS bundle includes wallet-library code and is roughly 2.5 MB unco
 
 ## Vercel Web Interface Guidelines review
 
-Rules fetched on 2026-09-25 from <https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md>. Retrieval metadata and the source SHA-256 are in `frontend/guidelines-source.json`. Review covered `web/src/main.tsx`, `web/src/style.css`, `web/src/engine.ts`, `web/src/config.ts`, `web/src/protocol.ts`, `web/public/game.html`, shared fonts and the generated export. The review used the current fetched rules, source inspection, browser interactions and desktop/mobile screenshots.
+Rules fetched again on 2026-09-26 from <https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md>. Retrieval metadata and the source SHA-256 are in `frontend/guidelines-source.json`; the 7,760-byte source remains SHA-256 `5a775e6411f790f518dbc9c1fa7c50a89e6873502d9a3530a6eb223a590bcfe8`. Review covered `web/src/main.tsx`, `web/src/style.css`, `web/src/engine.ts`, `web/src/config.ts`, `web/src/protocol.ts`, shared fonts, and the generated export. Source inspection found no new applicable issue; the current environment could not perform the browser portion because Chromium cannot launch with the host libraries available.
 
 Applicable findings and fixes:
 
@@ -52,7 +50,8 @@ Applicable findings and fixes:
 - `web/src/main.tsx:51` — asynchronous messages use a polite status region; transaction links, retry guidance and wrong-network switching stay visible.
 - `web/src/main.tsx:61` — slippage and amount controls have labels and names. Tank input has numeric input mode, bounds, inline invalid-state text and focus on invalid submission. Paste remains available.
 - `web/src/main.tsx:70` — transaction review identifies exact approvals, minimum output, gas requirements, quote lifetime and deadline; signing is disabled for missing wallet, wrong chain, unverified/stale state or an in-flight action. In-game quotes move focus to the review region.
-- `web/src/style.css:17` — visible focus rings, hover feedback and native dark input colors; no browser zoom restriction. Values use tabular numerals, containers wrap addresses, controls have 44 px minimum height and safe-area padding is included.
+- `web/src/style.css:18` — visible focus rings, hover feedback and native dark input colors; no browser zoom restriction. Values use tabular numerals, containers wrap addresses, controls have 44 px minimum height and safe-area padding is included.
+- `web/src/style.css:1` — moved `color-scheme: dark` onto `html`, so the document, browser chrome, and native controls consistently use the dark scheme.
 - `web/public/game.html:713` — the original small artwork remains, including the greek key ground, and keeps the prototype's own focus styles (no added outline around the pepe); the in-game status message sits at the top center; initial ETH HUD positioning was corrected to avoid the medallion. Decorative SVG elements are hidden from assistive technology (SVGs inside CSS data URIs are left untouched), heading levels normalized and the throne is a nonmodal region.
 - `web/public/game.html:1627` — game shortcuts no longer intercept modifier shortcuts or editable controls; buttons release focus after a click, as in the prototype, so the keyboard keeps steering the pepe.
 - `web/public/game.html:2539` — the scene runs as in the prototype, which already stills meteors and star twinkle under reduced motion; the persistent pause control stops the simulation and decorative CSS loops. The animation loop skips hidden documents.
@@ -65,6 +64,6 @@ Swap encoding was cross-checked with Uniswap’s official guide: <https://docs.u
 
 ## Submission packaging
 
-The final static export contains 19 assets totaling 5,349,177 bytes before its small manifest. Every asset is below 8 MiB, and the export leaves ample room within the immutable/named HTTP verification budget. Source/public copies retain the required music, fonts and raw ABIs; no runtime deliverable was dropped for size.
+The final static export contains 19 assets totaling 5,349,476 bytes before its small manifest. Every asset is below 8 MiB, and the export leaves ample room within the immutable/named HTTP verification budget. Source/public copies retain the required music, fonts and raw ABIs; no runtime deliverable was dropped for size.
 
-The managed checkout mounts `.git` read-only. `git add -- web dist docs` failed with `Unable to create .git/index.lock: Read-only file system`, so this worker could not stage or commit the checkout. All requested files remain on disk for the contributor control plane to collect. No publication was attempted. `scripts/check-bundle.py` creates a disposable bare clone under the explicitly permitted `test/scratch/`, stages only allowed paths into a validation snapshot and measures a complete-history Git bundle there; it does not change the managed checkout or submit that disposable commit. `frontend/bundle-check.json` records the measured bundle budget, scope, absence of submodules and dependency-cache exclusions. The scratch clone/bundle are excluded from delivery. The complete-history validation bundle measured about 5.49 MB, below the 8,388,608-byte limit. Missing historical blobs in the partial checkout are fetched read-only into the disposable clone, never into the managed `.git`.
+The managed checkout mounts `.git` read-only. `git add -- web dist docs` failed with `Unable to create .git/index.lock: Read-only file system`, so this worker could not stage or commit the checkout. All requested files remain on disk for the contributor control plane to collect. No publication was attempted. `scripts/check-bundle.py` creates a disposable bare clone under the explicitly permitted `test/scratch/`, stages only allowed paths into a validation snapshot and measures a complete-history Git bundle there; it does not change the managed checkout or submit that disposable commit. `frontend/bundle-check.json` records the measured bundle budget, scope, absence of submodules and dependency-cache exclusions. The scratch clone/bundle are excluded from delivery. The current complete-history validation bundle measured 5,531,480 bytes, below the 8,388,608-byte limit. Missing historical blobs in the partial checkout are fetched read-only into the disposable clone, never into the managed `.git`.
