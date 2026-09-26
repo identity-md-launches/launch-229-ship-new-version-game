@@ -15,7 +15,7 @@ function Arcade({runtime,engine}:{runtime:Runtime;engine:GameEngine}) {
  const state=useSyncExternalStore(engine.subscribe,engine.snapshot);
  const {address,chainId,connector}=useAccount();const {connectAsync,connectors}=useConnect();const {disconnect}=useDisconnect();
  const scene=useRef<HTMLIFrameElement>(null);const [pees,setPees]=useState('10');const [ethIn,setEthIn]=useState(false);const [ethAmount,setEthAmount]=useState('0.001');
- const [paused,setPaused]=useState(()=>matchMedia('(prefers-reduced-motion: reduce)').matches);
+ const [paused,setPaused]=useState(false);
  const [tankError,setTankError]=useState('');
  const [walletBusy,setWalletBusy]=useState(false);const [rules,setRules]=useState(location.hash==='#rules');
  const d=runtime.d;

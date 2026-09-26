@@ -97,7 +97,7 @@ h1.hook-title em{font-style:italic;color:var(--gold);
 
 /* greek key ground the pepes march on */
 .ground{position:absolute;left:27px;right:27px;bottom:28px;height:16px;z-index:1;pointer-events:none;
-  background-image:url("data:image/svg+xml;utf8,<svg aria-hidden="true" xmlns='http://www.w3.org/2000/svg' width='28' height='16' viewBox='0 0 28 16'><g fill='none' stroke='%23E3BE60' stroke-width='1.6'><path d='M0 1 H28 M0 15 H28 M3 15 V4 H21 V11 H10 V7 H15'/></g></svg>");
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='16' viewBox='0 0 28 16'><g fill='none' stroke='%23E3BE60' stroke-width='1.6'><path d='M0 1 H28 M0 15 H28 M3 15 V4 H21 V11 H10 V7 H15'/></g></svg>");
   background-repeat:round no-repeat;background-size:28px 16px;opacity:.55;
   filter:drop-shadow(0 -6px 14px rgba(227,190,96,.18))}
 
@@ -706,10 +706,8 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
   .walker:nth-child(n+4){display:none}}
 
 .slide:not(.docked):not(.inclimb) #imdBal{left:220px;right:auto;top:140px}
-:focus-visible{outline:3px solid #8df1c0!important;outline-offset:4px}
-#chainMessage{position:absolute;bottom:8px;left:28px;max-width:850px;background:#03061ae8;color:#f7e1a0;font:13px 'IBM Plex Sans',sans-serif;padding:8px 12px;border-radius:8px;z-index:20;pointer-events:none}
+#chainMessage{position:absolute;top:26px;left:50%;transform:translateX(-50%);max-width:560px;text-align:center;margin:0;background:#03061ae8;color:#f7e1a0;font:13px 'IBM Plex Sans',sans-serif;padding:8px 12px;border-radius:8px;z-index:20;pointer-events:none}
 .paused *, .paused *::before,.paused *::after{animation-play-state:paused!important;transition:none!important}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -2033,7 +2031,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
     });
     CTIERS.forEach(function(t){var tr=document.getElementById('tray'+t.id);tr.style.left=t.tray+'px';tr.style.top=(t.y+2)+'px';});
   })();
-  cashBtn.addEventListener('click',function(e){cashOut();});
+  cashBtn.addEventListener('click',function(e){e.currentTarget.blur();cashOut();});
 
   function fade(mid){
     CL.busy=true;var was=hero.active;hero.active=false;keys.left=keys.right=keys.up=false;
@@ -2373,7 +2371,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
     document.getElementById('ssDir').textContent=JS.dir==='ice'?'swap 100 ICE → ETH':'swap 0.001 ETH → ICE';
   }
   function flipSwap(){if(JS.busy)return;JS.dir=JS.dir==='ice'?'imd':'ice';if(bridge())bridge().flip(JS.dir==='imd');renderSign();}
-  document.getElementById('ssFlip').addEventListener('click',function(){flipSwap();});
+  document.getElementById('ssFlip').addEventListener('click',function(e){e.currentTarget.blur();flipSwap();});
 
   function enableSwap(){
     if(JS.on)return;JS.on=true;
@@ -2528,7 +2526,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
   }
 
   [].forEach.call(thPanel.querySelectorAll('.gt-opts button'),function(b){
-    b.addEventListener('click',function(e){thBuy(+b.dataset.i);});
+    b.addEventListener('click',function(e){e.currentTarget.blur();thBuy(+b.dataset.i);});
   });
   function updateThrone(){
     var near=thNear();
@@ -2538,7 +2536,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
     if(showCue)cueAt(cueThrone,Math.max(TH.x,70),GROUND-172);
   }
 
-  var paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var paused=false;
   window.pepeScene={
     update:function(state){
       function fmt(v,dec){return v==null?'—':(Number(v)/Math.pow(10,dec||18)).toLocaleString(undefined,{maximumFractionDigits:6});}
@@ -2643,8 +2641,8 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
 <script>
 (function(){
   var btn=document.getElementById('soundBtn');
-  var audio=new Audio(); audio.loop=true; audio.preload='none'; audio.volume=0;
-  var TARGET=.45, muted=true, started=false, fadeRaf=0;
+  var audio=new Audio(); audio.loop=true; audio.preload='auto'; audio.volume=0;
+  var TARGET=.45, muted=false, started=false, fadeRaf=0;
   audio.src='assets/bgm.mp3';
 
   function fadeTo(v,ms){
@@ -2669,7 +2667,8 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
     if(m){btn.classList.remove('waiting');fadeTo(0,350);}
     else play();
   }
-  setMuted(true);
+  // try right away; most browsers wait for the first click or key press
+  play();
   function firstGesture(e){
     if(e.target===btn)return;
     if(!started&&!muted)play();
@@ -2680,7 +2679,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
   }
   window.addEventListener('pointerdown',firstGesture,true);
   window.addEventListener('keydown',firstGesture,true);
-  btn.addEventListener('click',function(e){setMuted(!muted);});
+  btn.addEventListener('click',function(e){setMuted(!muted);btn.blur();});
   window.addEventListener('keydown',function(e){
     if(e.ctrlKey||e.metaKey||e.altKey||/INPUT|SELECT|TEXTAREA|BUTTON/.test(e.target.tagName))return;
     if((e.key==='m'||e.key==='M')&&!e.repeat&&!e.ctrlKey&&!e.metaKey&&!e.altKey)setMuted(!muted);

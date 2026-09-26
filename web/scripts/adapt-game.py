@@ -48,7 +48,7 @@ between('  var JS={','  function enableSwap(){', '''  var JS={on:false,busy:fals
     document.getElementById('ssDir').textContent=JS.dir==='ice'?'swap 100 ICE → ETH':'swap 0.001 ETH → ICE';
   }
   function flipSwap(){if(JS.busy)return;JS.dir=JS.dir==='ice'?'imd':'ice';if(bridge())bridge().flip(JS.dir==='imd');renderSign();}
-  document.getElementById('ssFlip').addEventListener('click',function(){flipSwap();});
+  document.getElementById('ssFlip').addEventListener('click',function(e){e.currentTarget.blur();flipSwap();});
 ''')
 between('  function jackpotSwap(){','  function updateSwap(){', '''  function jackpotSwap(){
     if(JS.busy || !bridge())return;
@@ -84,12 +84,9 @@ s=s.replace('2,500 $ICE','live pots').replace('1 Sepolia ETH = 89,706 $ICE','liv
 # Game keyboard handlers must not trap browser shortcuts or editable controls.
 s=s.replace("window.addEventListener('keydown',function(e){", "window.addEventListener('keydown',function(e){\n    if(e.ctrlKey||e.metaKey||e.altKey||/INPUT|SELECT|TEXTAREA|BUTTON/.test(e.target.tagName))return;")
 s=s.replace("window.addEventListener('keyup',function(e){", "window.addEventListener('keyup',function(e){\n    if(/INPUT|SELECT|TEXTAREA|BUTTON/.test(e.target.tagName))return;")
-s=s.replace("e.currentTarget.blur();",'').replace('btn.blur();','')
-s=s.replace('audio.preload=\'auto\'','audio.preload=\'none\'').replace('muted=false, started=false','muted=true, started=false')
-s=s.replace("  // try right away; most browsers wait for the first click or key press\n  play();", "  setMuted(true);")
 # Small parent bridge, preserving the existing game world and all controls.
 pos=s.index('  // ---- loop ----')
-s=s[:pos]+'''  var paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
+s=s[:pos]+'''  var paused=false;
   window.pepeScene={
     update:function(state){
       function fmt(v,dec){return v==null?'—':(Number(v)/Math.pow(10,dec||18)).toLocaleString(undefined,{maximumFractionDigits:6});}
@@ -121,14 +118,13 @@ s=s[:pos]+'''  var paused=matchMedia('(prefers-reduced-motion: reduce)').matches
 s=s.replace("var dt=Math.min((now-last)/1000,1/30);last=now;", "var dt=Math.min((now-last)/1000,1/30);last=now;\n    if(paused || document.hidden){requestAnimationFrame(frame);return;}")
 s=s.replace('transition:all ', 'transition:opacity ')
 s=s.replace('h5','h2').replace('h4','h2')
-s=re.sub(r'<svg(?![^>]*aria-hidden)', '<svg aria-hidden="true"',s)
+# Skip SVGs inside CSS data URIs (the greek key ground): a double quote there ends the url() and drops the rule.
+s=re.sub(r'(?<!utf8,)<svg(?![^>]*aria-hidden)', '<svg aria-hidden="true"',s)
 s=s.replace('role="dialog" aria-label="Golden throne: swap ETH for ICE"','role="region" aria-label="Golden throne: swap ETH for ICE"')
 s=s.replace('</style>', '''
 .slide:not(.docked):not(.inclimb) #imdBal{left:220px;right:auto;top:140px}
-:focus-visible{outline:3px solid #8df1c0!important;outline-offset:4px}
-#chainMessage{position:absolute;bottom:8px;left:28px;max-width:850px;background:#03061ae8;color:#f7e1a0;font:13px 'IBM Plex Sans',sans-serif;padding:8px 12px;border-radius:8px;z-index:20;pointer-events:none}
+#chainMessage{position:absolute;top:26px;left:50%;transform:translateX(-50%);max-width:560px;text-align:center;margin:0;background:#03061ae8;color:#f7e1a0;font:13px 'IBM Plex Sans',sans-serif;padding:8px 12px;border-radius:8px;z-index:20;pointer-events:none}
 .paused *, .paused *::before,.paused *::after{animation-play-state:paused!important;transition:none!important}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>''',1)
 s=s.replace('<div class="hero dormant"', '<p id="chainMessage" role="status" aria-live="polite">Connect your wallet below to play for test value.</p><div class="hero dormant"')
 (root/'web/public/game.html').write_text(s)

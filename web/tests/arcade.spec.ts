@@ -52,8 +52,8 @@ test('router simulation revert prevents wallet signing',async({page})=>{
 test('missing deployed code keeps value controls locked',async({page})=>{
  await fixture(page,{missingCode:true});await page.goto('/');await expect(page.getByRole('status').first()).toContainText('code is missing');await page.getByRole('button',{name:'Connect Wallet',exact:true}).click();await expect(page.getByRole('button',{name:'Quote Fridge Swap'})).toBeDisabled();
 });
-test('reduced motion pauses scene; rules and music are keyboard accessible',async({page})=>{
- await page.emulateMedia({reducedMotion:'reduce'});await fixture(page);await page.goto('/');await expect(page.getByRole('button',{name:'Resume Animation'})).toBeVisible();const frame=page.frameLocator('iframe');await expect(frame.locator('html')).toHaveClass('paused');await frame.getByRole('button',{name:'Play music',exact:true}).focus();await page.keyboard.press('Enter');await expect(frame.getByRole('button',{name:'Mute music',exact:true})).toBeVisible();await page.getByRole('link',{name:'Rules',exact:true}).click();await expect(page.getByText('Block proposers can influence',{exact:false})).toBeVisible();
+test('scene runs like the prototype; pause, rules and music are keyboard accessible',async({page})=>{
+ await page.emulateMedia({reducedMotion:'reduce'});await fixture(page);await page.goto('/');const frame=page.frameLocator('iframe');await expect(frame.locator('html')).not.toHaveClass('paused');await page.getByRole('button',{name:'Pause Animation'}).click();await expect(frame.locator('html')).toHaveClass('paused');await expect(page.getByRole('button',{name:'Resume Animation'})).toBeVisible();await frame.getByRole('button',{name:'Mute music',exact:true}).focus();await page.keyboard.press('Enter');await expect(frame.getByRole('button',{name:'Play music',exact:true})).toBeVisible();await page.getByRole('link',{name:'Rules',exact:true}).click();await expect(page.getByText('Block proposers can influence',{exact:false})).toBeVisible();
 });
 test('prototype gameplay keeps points local and fridge collision prepares a real swap',async({page})=>{
  await fixture(page);

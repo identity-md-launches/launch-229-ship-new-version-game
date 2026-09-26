@@ -72,8 +72,8 @@
       "sha256": "fcf5e31621bc43012dbde2d45ee27973b17ada7f1a3c3f8f7709d99d0c0851f8"
     },
     {
-      "path": "assets/index-DPsPbUWa.js",
-      "sha256": "e2f7f6d946df448f32572bfa357c39b023c627cfb325b350fb9c251a96556a00"
+      "path": "assets/index-Dykv_Gru.js",
+      "sha256": "db6b831c6b38d7c0bdd9fe840d1c2878aa5bb0d2600b5cb10b8858d827f7d7c1"
     },
     {
       "path": "assets/medallion.webp",
@@ -89,11 +89,11 @@
     },
     {
       "path": "game.html",
-      "sha256": "d875f02d87438cf7944d62243a76affa77ffac3c87106c968978eba57a06f4fc"
+      "sha256": "71e51528430b57e4686bfd4b79362104bd7e6b9d3cde17f27355662f900bd677"
     },
     {
       "path": "index.html",
-      "sha256": "300585370752fb50358a4bc3324aea456deae2b487203ae4cb491a42c20cd17a"
+      "sha256": "d6facd351012bbf60705de00e793169e8412eb7504e8a5b9722ac0cd0e577d91"
     }
   ],
   "network": {
