@@ -79,7 +79,7 @@ Every fridge hit opens a chain of wallet prompts: an ICE sale needs `ICE.approve
 - Export pipeline: `npm run build` = `scripts/prepare.mjs` (pins ABIs from `handoff.sourceCommit` e145493b, present in our clone) → `vite build` → `scripts/manifest.mjs` → `dist/` (tracked). `npm run check:export` verifies `dist/` against the manifest.
 - Tests: `web/tests/core.test.ts` (node), `web/tests/arcade.spec.ts` (Playwright, 15 tests after the clean-top change, mock wallet fixture, server `tests/server.mjs` on 4173), `web/scripts/check-browser-live.mjs` (read-only live check writing `docs/frontend/live-browser.json`).
 - Tech stack: inherited (React 19.3, Vite 7, wagmi/viem/RainbowKit, TanStack Query via wagmi). House default deviation (no TanStack Router) is inherited from upstream; no change in this feature.
-- Hosting: our build is published as-is from the tracked `dist/` to Cloudflare Pages (direct upload, no build step on Cloudflare): `wrangler pages deploy dist --project-name pepes-armed-with-ai --branch main` → `https://pepes-armed-with-ai.pages.dev`. The export is relative-path static files with injected-wallet connectors and public Sepolia RPCs only, so it needs no server config or allowed-origin setup. IMD's own site (pepes-armed.site.identitymd.eth.limo) is separate and unchanged.
+- Hosting: the live site https://pepes-armed.site.identitymd.eth.limo is published from the tracked `dist/` by an IMD site job (IMD's IPFS pinning provider and the `pepes-armed` name record under identitymd.eth; README "Sepolia site"). This project has no access to that pipeline, so a release is handed to IMD as our fork URL plus the commit to publish; `dist/` is published as-is, without a rebuild. No other hosting.
 
 ### Clean top: page layout (top to bottom)
 ```

@@ -1,13 +1,13 @@
-## Phase: VERIFY
+## Phase: DEPLOY
 ## Checkpoint C: approved (Lobby, 2026-09-27 02:35)
 ## Checkpoint B: approved (Lobby, 2026-09-27 02:34)
 ## Checkpoint A: approved (Lobby, 2026-09-27 02:34)
 # STATUS.md
 
 ## State
-- Last Action: 2026-09-27 13:08 - Pushed main (1a5b2c5) to the gitlawb fork. VERIFY.md written: R1-R17 pass (24 unit, 21 browser, export PASS). Deploy gate requested for Cloudflare Pages (pepes-armed-with-ai).
-- Blocker: none
-- Updated: 2026-09-27 13:08
+- Last Action: 2026-09-27 13:10 - Background play shipped to the gitlawb fork (main). Cloudflare hosting dropped at Lobby's call; the live site is republished only by an IMD site job.
+- Blocker: live site https://pepes-armed.site.identitymd.eth.limo still serves the old build until IMD runs a site job for our fork's main (no publishing access from this project).
+- Updated: 2026-09-27 13:10
 
 ## Repository
 - Fork (ours): https://gitlawb.com/z6MkiyAV9MAfGzqLQpFtAxD2KzY7TyBTSD2bQUWioZSeXaqa/pepes-armed-with-ai
