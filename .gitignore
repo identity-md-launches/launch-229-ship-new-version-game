@@ -12,3 +12,9 @@ node_modules/
 # Secrets never live in the repository
 .env
 .env.*
+# Sensitive project-local data
+KEYS.md
+
+# gitlawb identity (private signing key) and local CLI tooling; never commit
+.gitlawb/
+.tools/
