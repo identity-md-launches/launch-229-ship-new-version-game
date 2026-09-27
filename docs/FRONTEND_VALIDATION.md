@@ -1,4 +1,90 @@
-# Frontend validation — 2026-09-26
+# Frontend validation — frozen `pepes-armed` release, 2026-09-27
+
+This release changes only this documentation. The requested payload is the existing committed `dist/`, preserved byte-for-byte. No build, scene adaptation, manifest generation, contract change, or chain change was performed. The release-specific prohibition on rebuilding takes precedence over the general build acceptance criterion.
+
+## Release identity and publication status
+
+| Item | Verified value |
+| --- | --- |
+| Requested site name | `pepes-armed` |
+| Base commit (`git rev-parse HEAD`) | `69a783ada11610ce366dc8d0fc4a35de9991ad0f` |
+| Export tree (`git rev-parse HEAD:dist`) | `552c0b57d0d11983a605a6d054e05e7a5a12be8e` |
+| Payload | Repository-root `dist/`: 20 files, 3,418,335 bytes including `imd-deployment.json` |
+| Gameplay network | Sepolia, chain ID `11155111` |
+| PepeIce | `0xf3dab52ca75b7abeb31ecd0136b01a45a5c48f37` |
+| JackpotHook | `0xd08e759d3d89eed2de3f03006a6e21ae341d4088` |
+| Deployment input | `web/deployment/handoff.json`, unchanged |
+
+**Publication remains pending.** This session exposes shell and browser tools, but no IdentityMD site-job or IPFS pinning/name-update tool; no `ipfs` executable is installed. An accessible publishing job/provider was requested. No upload, pin, CID, site-record update, gateway verification, or publication attestation is claimed. The documented target is `https://pepes-armed.site.identitymd.eth.limo`; its currently served content was not verified.
+
+The publishing service must use the directory contents identified by the export tree above, retain their paths, pin the resulting directory CID and update the `pepes-armed` name record. It must not rebuild or regenerate `dist/`. After publication, record the provider/job receipt, CID and resolved named entrypoint, and compare every served file with this committed export. The Git tree hash above is an integrity identifier, **not an IPFS CID**.
+
+## Checks performed for this release
+
+Environment: Node `v24.9.0`, npm `11.6.0`. The two npm commands below ran from `web/`.
+
+| Check | Actual result |
+| --- | --- |
+| `npm ci --ignore-scripts --cache /tmp/pepes-armed-release-npm-cache --no-audit --no-fund` | Exit 0; 561 packages installed. Existing React peer and transitive deprecation warnings. Lifecycle scripts were disabled; no manifest or lockfile changed. Dependencies remain ignored and the cache is outside the repository. |
+| `npm run check:export` | Exit 0; exact output reproduced below. Checks handoff identity, network, contract addresses, canonical ABI hashes, complete asset inventory, SHA-256 hashes and export size bounds. |
+| Committed export integrity | Independently recomputed Git blob hashes for every file against `git ls-tree -r HEAD dist`; all 20 matched, with no extra files or symlinks. `git diff --exit-code HEAD -- dist web prototype` passed. |
+| Static hosting source check | `dist/index.html` references `./fonts.css`, `./assets/index-CgZZiCFQ.js` and `./assets/index-eKXOXgw0.css`; Vite declares `base: './'`. Source, package manifest, lockfile and complete export are already tracked. This is source/integrity evidence, not a gateway test. |
+| Assigned browser tool | Could not launch: `Browser "chrome-for-testing" is not installed; expected executable at /home/seat/.cache/ms-playwright/chromium-1246/chrome-linux64/chrome`. No tool-managed preview descriptor was present at `test/scratch/browser/preview.json`. |
+| Production build, typecheck, unit and interaction suites | Not rerun in this frozen-export release. The assignment and inherited `AUDIT.md:122` report the maintainer run: typecheck, 27 unit tests, production build, export check and 22 browser tests passed. Those are inherited results, not executions by this worker. |
+
+```text
+> pepes-armed-release@1.0.0 check:export
+> node scripts/check-export.mjs
+
+PASS: exact handoff, network, pinned ABI hashes, 19 assets, 3414059 export bytes.
+```
+
+The checker counts 19 assets excluding the 4,276-byte deployment manifest. No new rendered screenshots, keyboard interaction, console/resource observations, live RPC checks, wallet signing or transactions were performed. Historical evidence below and existing `docs/frontend/` artifacts are not fresh verification of this release.
+
+## Better Interface review of the frozen source
+
+Read the pinned workflow, the core principles of all six domains and the design-documentation section in `.imd/reads/skills/better-interface/REFERENCE.md`. Review covered the React shell, wallet/holdings bridge, scene markup and styles, local fonts, relative export entrypoint and existing design documentation. The scope permits findings and documentation, not source corrections.
+
+| Domain | Coverage and evidence | Unperformed checks |
+| --- | --- | --- |
+| Accessibility | Checked in source: native buttons, skip link, iframe name, touch/keyboard equivalents, labelled inputs and live status (`web/src/main.tsx:56`, `:59`, `:61`, `:78`, `:82`); focus rings and reduced-motion CSS (`web/src/style.css:18`, `:97`); named wallet dialog, expanded state and Escape handler (`web/public/game.html:850`, `:856`, `:2635`). See findings below. | Actual tab order, focus visibility/return, screen-reader traversal, target geometry, forced colors, automated accessibility scan and native 200% zoom. |
+| Layout | Checked in source: 1280:720 scene, 1440px content maximum, wrapping controls, three/two/one-column panels and two-column mobile balances (`web/src/style.css:23`, `:27`, `:35`, `:75`, `:81`); scene wallet scale targets a minimum 28px height (`web/public/game.html:1536`). | Desktop, intermediate, 390px and 320px rendered reflow/overflow; physical devices. RTL/localization variants are not implemented. |
+| Writing | Checked labels, network distinctions, help, ticket empty state and recoverable errors (`web/src/main.tsx:63`, `:74`, `:79`, `:95`, `:116`). Wallet dropdown labels holdings as Ethereum mainnet and gameplay as Sepolia (`web/public/game.html:858`, `:862`). Rules copy conflicts with that distinction; see finding W1. | No rendered copy observations; source evidence establishes W1. |
+| Typography | Checked local WOFF2 declarations with `font-display: swap` (`web/public/fonts.css:1`), shell font roles, heading sizes, unitless paragraph leading, tabular balances and address wrapping (`web/src/style.css:2`, `:33`, `:37`, `:39`, `:55`). | Font loading, actual weights, wrapping, clipping and small scene-text legibility at mobile widths. |
+| Colors | Checked existing hex tokens and calculated three declared opaque foreground/background pairs: `#f3f1e8` / `#03061a` = 17.76:1; `#b2bee5` / `#0a1231` = 9.96:1; `#111833` / `#f7e1a0` = 13.50:1. Calculations use sRGB relative luminance and WCAG contrast. | These are source calculations, not measured rendered contrast. Translucent wallet surfaces, gradients, art and focus adjacency remain unverified. Alternate themes are not implemented. |
+| UI | Checked hover, press, disabled, wallet busy/wrong-network states, holding placeholders (`—`, `…`, `?`), explicit transition properties and pause/reduced-motion support (`web/src/style.css:11`, `:14`, `:97`; `web/public/game.html:449`; `web/src/holdings.ts:21`; `web/src/main.tsx:60`). | Rendered loading/error/empty states, dropdown interactions, animation timing, slow-motion inspection, touch and music behavior. |
+
+Findings remain open because the user explicitly freezes `dist/`, `web/` and `prototype/`:
+
+- **W1 — Medium, writing:** `web/src/main.tsx:97` says “There is no mainnet token connection and no $IMD in this release.” This contradicts `web/src/holdings.ts:13` and the wallet dropdown. Users opening Rules receive inconsistent information about the displayed balances. A later source release should say that mainnet ETH/$ICE/$IMD holdings are read-only and gameplay remains on Sepolia. No correction was made to the frozen export.
+- **A1 — Medium, accessibility:** `web/src/main.tsx:52` clears wallet connection/network errors after six seconds without dismissal. This gives readers limited time to read recovery information (the scene displays it through `web/public/game.html:2657`). A later release should retain errors until dismissed or superseded. Source-confirmed timer; rendered timing was not observed.
+- **A2 — Medium, accessibility:** `web/public/game.html:2626` explicitly blurs the wallet trigger, while `walletOpen` at `:2621` and Escape at `:2635` do not move/restore focus. A later release should preserve keyboard focus and return it when closing the dropdown. The missing focus management is source-confirmed; its exact browser/assistive-technology impact is unverified.
+
+No visual compliance verdict is claimed. The fixed-ratio scene's mobile text, zoom behavior and primary interaction usability still depend on the maintainers' earlier browser validation and require fresh rendered review when tooling is available.
+
+## Implemented design record and documentation limits
+
+Root `DESIGN.md` already records the redesign and wallet behavior, and root `README.md` already describes install, preview, rebuild and IPFS publication. Both are outside this release's docs-only change scope. Their historical implementation notes are not instructions to rebuild. The following source-derived supplement records current design facts without editing those files:
+
+- **Tokens and type:** shell `web/src/style.css:2` uses `#03061a` background, `#f3f1e8` text, `--gold: #f7e1a0`, `--muted: #b2bee5`, IBM Plex Sans/system sans and Sniglet headings. Scene `web/public/game.html:11` defines lapis `#03061A` / `#0B1550` / `#152268`, line `#2B3C8C` / `#1C2A66`, gold `#E3BE60` / `#F7E1A0`, brass `#A87C33`, jade `#8FC2A4`, pink `#E38AA8`, azure `#4A79DC`, cloud `#F3F1E8`, muted `#93A0D4` and club `#62C79C`. Its display/body/mono/heavy families are Sniglet, IBM Plex Sans, IBM Plex Mono and Archivo, with CSS fallbacks. Local font faces also include Big Shoulders Display and Patrick Hand; actual font loading was not observed.
+- **Hierarchy and layout:** shell headings are 26px, subheads 17px, panel copy 14px/1.6 and balances 28px (24px below 1000px), with tabular digits. Panels have 24px padding and 16px gaps; below 600px padding is 20px and page margins are 14px. Above 1000px panels have three columns, through 1000px two columns with Session spanning the row, and through 600px one column. The iframe retains its 1280:720 ratio.
+- **Components and surfaces:** `Arcade` in `web/src/main.tsx` composes the scene, pause/touch controls, balances, fridge/throne/session panels, ticket list, Rules disclosure and footer. Shell buttons have 9px radii and 44px minimum height; panels have 14px radii and dark gradients; the scene frame has an 18px radius (10px on mobile). The scene wallet pill uses a 17px radius, gold border and translucent lapis fill; its 12px-radius dropdown adds a shadow and textual network state. These are existing component patterns, not a new shared library.
+
+Future design documentation should reconcile the root document's historical plans with these final source values. This release does not claim that the root document has been rewritten to the pinned guide's full format. Guidance attribution: Jakub Krehel, Better Interface, MIT, commit `267330e1adfc66a718fb65fa6918c1f06d0a689e`; documentation method: Paul Bakaus, Impeccable, Apache-2.0, commit `9d715cc4f5564a990ca8345abfdd5df6dc9b41c8`.
+
+## Packaging result and remaining blocker
+
+The export itself is 3,418,335 bytes. Tracked-path checks found no nested `node_modules`, npm/Vite caches, dependency archives or Git submodules. No ignore file changed; no required music, fonts, ABIs, source or runtime assets were removed.
+
+However, `git bundle create test/scratch/release/base.bundle HEAD` followed by `git bundle verify` produced a valid **complete-history base bundle of 12,334,352 bytes**, exceeding the **8,388,608-byte** submission limit before this documentation change. Repacking a disposable bare clone with compression 9, window 250 and depth 50 still produced a complete-history base bundle of **12,296,700 bytes**. The managed `.git` was not modified. This is an inherited history-size blocker, not an asset-size pass; the historical 5,531,480-byte figure below does not describe this base commit. A smaller incremental bundle or history-stripped snapshot is not claimed as a complete-history submission.
+
+The publishing/submission service must resolve the history packaging constraint before an under-budget complete-history release can be claimed. Scratch bundles/clones live only in `test/scratch/` and are not deliverables. Publication and the complete Git bundle budget remain unmet; this documentation preserves the verified payload and records the limitations without dropping files or rewriting history.
+
+---
+
+## Historical validation — 2026-09-26 (retained unchanged)
+
+The remainder is inherited evidence from an earlier build. Its counts, UI descriptions, browser results, packaging measurements and publication status are historical; the release record above supersedes them for this frozen export.
 
 This is worker-produced evidence, not an independent security review, IPFS publication, or publication attestation. The current rebuild leaves contracts, chain configuration, `prototype/`, `web/public/game.html`, and `web/scripts/adapt-game.py` unchanged.
 
