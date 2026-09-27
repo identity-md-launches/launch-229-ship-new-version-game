@@ -54,7 +54,7 @@ html,body{margin:0;padding:0;background:var(--lapis-deep);color:var(--cloud);ove
   display:flex;flex-direction:column;align-items:center;justify-content:center}
 
 /* brandmark, upper left */
-.brandmark{position:absolute;top:46px;left:60px;display:flex;align-items:center;gap:20px;z-index:3}
+.brandmark{position:absolute;top:20px;left:20px;display:flex;align-items:center;gap:20px;z-index:3}
 .sigil{width:124px;height:124px;flex:none;background-image:var(--logo);
   background-size:contain;background-repeat:no-repeat;background-position:center;
   filter:drop-shadow(0 12px 30px rgba(3,6,26,.8))}
@@ -444,7 +444,43 @@ h1.hook-title em{font-style:italic;color:var(--gold);
 @keyframes speechPop{0%{transform:scale(.2);opacity:0}100%{transform:scale(1);opacity:1}}
 @keyframes speechOut{to{transform:scale(.6);opacity:0}}
 @media (prefers-reduced-motion:reduce){.speech .bub,.speech.out .bub{animation:none}}
-/* music toggle */
+/* MetaMask connect (upper right) */
+.wallet{position:absolute;top:22.5px;right:14px;z-index:25;display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-family:var(--ff-body)}
+.wbtn{display:flex;align-items:center;gap:7px;height:34px;padding:0 14px 0 11px;border-radius:17px;cursor:pointer;
+  background:rgba(8,15,58,.82);border:1.5px solid rgba(227,190,96,.7);color:var(--gold-bright);
+  font:600 13px/1 var(--ff-body);letter-spacing:.04em;box-shadow:0 4px 12px rgba(3,6,26,.5);
+  transition:transform .15s ease,background .15s ease;animation:soundNudge 1.6s ease-in-out infinite}
+.wbtn:hover{transform:scale(1.05);background:rgba(21,34,104,.95)}
+.wbtn:focus-visible{outline:2px solid var(--gold-bright);outline-offset:2px}
+.wbtn svg{width:16px;height:16px;flex:none}
+.wbtn .wdot{display:none;width:8px;height:8px;border-radius:50%;background:#62C79C;box-shadow:0 0 6px #62C79C}
+.wallet.on .wbtn{animation:none;color:var(--cloud);font-variant-numeric:tabular-nums}
+.wallet.on .wbtn svg{display:none}
+.wallet.on .wbtn .wdot{display:block}
+.wallet.wrong .wbtn{border-color:#E8477A;color:#FF8CB3}
+.wallet.wrong .wbtn .wdot{background:#E8477A;box-shadow:0 0 6px #E8477A}
+.wallet.busy .wbtn{opacity:.7;cursor:progress}
+.wpop{min-width:210px;padding:10px 12px 11px;border-radius:12px;color:var(--cloud);
+  background:linear-gradient(180deg,rgba(21,34,104,.95),rgba(8,15,58,.95));border:1px solid rgba(190,225,255,.4);
+  box-shadow:0 8px 20px rgba(3,6,26,.6)}
+.wpop[hidden]{display:none}
+.wpop p{margin:0}
+.wp-addr{display:flex;justify-content:space-between;gap:10px;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.wp-net{font-weight:400;font-size:11px;color:#62C79C}
+.wallet.wrong .wp-net{color:#FF8CB3}
+.wp-sub{margin:8px 0 2px!important;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.wp-row{display:flex;justify-content:space-between;gap:14px;font-size:13px;color:var(--muted)}
+.wp-row b{font-weight:600;color:var(--cloud);font-variant-numeric:tabular-nums}
+.wp-note{margin-top:7px!important;font-size:11px;color:var(--muted)}
+.wp-out{margin-top:9px;width:100%;padding:6px 0;border-radius:8px;cursor:pointer;font:600 12px/1 var(--ff-body);
+  background:rgba(255,255,255,.08);color:var(--cloud);border:1px solid rgba(190,225,255,.25)}
+.wp-out:hover{background:rgba(255,255,255,.15)}
+.wmsg{margin:0;max-width:240px;padding:6px 10px;border-radius:8px;font-size:12px;line-height:1.35;text-align:right;
+  background:rgba(8,15,58,.9);color:var(--cloud);border:1px solid rgba(190,225,255,.25);display:none}
+.wmsg.show{display:block}
+.wmsg a{color:var(--gold-bright)}
+@media (prefers-reduced-motion:reduce){.wbtn{animation:none}}
+/* music toggle (button removed; M still mutes) */
 .sound{position:absolute;top:26px;right:26px;z-index:25;width:34px;height:34px;padding:0;border-radius:50%;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   background:rgba(8,15,58,.82);border:1.5px solid rgba(227,190,96,.7);color:var(--gold-bright);
@@ -486,10 +522,15 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
 @keyframes towerRise{0%{clip-path:inset(100% -40% 0 -40%);transform:translateY(10px)}100%{clip-path:inset(-40% -40% 0 -40%);transform:none}}
 .tower-door .ptsign{animation:ptFlicker 3s steps(1,end) infinite}
 @keyframes ptFlicker{0%,100%{opacity:1}46%{opacity:.55}48%{opacity:1}72%{opacity:.8}74%{opacity:1}}
-.slide.inclimb .sky,.slide.inclimb .meteor,.slide.inclimb .brandmark,.slide.inclimb .hook-title,
+.slide.inclimb .sky,.slide.inclimb .meteor,
 .slide.inclimb .ground,.slide.inclimb .lane,.slide.inclimb .plat.out,.slide.inclimb .ice,.slide.inclimb .rope,
 .slide.inclimb .pumpkin,.slide.inclimb .mush,.slide.inclimb .pickup,.slide.inclimb .reward,
 .slide.inclimb .tower-door,.slide.inclimb .streamline,.slide.inclimb .puddle{display:none!important}
+.dstats text{font-family:var(--ff-body);font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums}
+.dstats .dl{fill:#CFE8D9;font-weight:400}
+.dstats .dv{fill:#FFFFFF;text-anchor:end}
+.dstats .dbank{fill:var(--gold-bright)}
+.dstats .dfree{fill:#F7D46A}
 .climb{position:absolute;left:0;top:0;width:1280px;height:4600px;z-index:1;display:none;will-change:transform}
 .slide.inclimb .climb{display:block}
 .climb-art{position:absolute;left:0;top:0;width:1280px;height:4600px}
@@ -505,10 +546,10 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
 .jet{position:absolute;left:0;top:0;width:9px;height:3.4px;border-radius:50%;pointer-events:none;
   background:radial-gradient(circle at 40% 40%,#E4FFC9,#7BD85A 60%,#3F9A2E);transform-origin:4.5px 1.7px;
   filter:drop-shadow(0 0 3px rgba(123,216,90,.6))}
-.climbhud{position:absolute;left:30px;top:22px;z-index:12;display:none;min-width:236px;padding:10px 14px 12px;
+.climbhud{position:absolute;right:58px;bottom:22px;z-index:12;display:none;min-width:236px;padding:10px 14px 12px;
   border-radius:12px;background:linear-gradient(180deg,rgba(21,34,104,.9),rgba(8,15,58,.9));
   border:1px solid rgba(190,225,255,.4);box-shadow:0 8px 20px rgba(3,6,26,.6);font-family:var(--ff-body);color:var(--cloud)}
-.slide.inclimb .climbhud{display:block}
+.slide.inclimb .climbhud{display:none}   /* stats live on the dumpster; balances stay in the upper-left block */
 .climbhud h2{margin:0 0 6px;font-family:var(--ff-display);font-weight:400;font-size:22px;letter-spacing:.06em;
   color:transparent;-webkit-text-stroke:.07em var(--club)}
 .climbhud p{margin:2px 0;display:flex;justify-content:space-between;gap:14px;font-size:13px;color:var(--muted)}
@@ -519,6 +560,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
   border:0;box-shadow:0 0 14px rgba(247,225,160,.5)}
 .climbhud button:disabled{cursor:default;background:rgba(255,255,255,.12);color:var(--muted);box-shadow:none}
 .climbhud button:not(:disabled){animation:cashPulse 1.2s ease-in-out infinite}
+.climbhud #cashBtn{display:none}   /* cash out is the C key now; the hint and banked pop say so */
 @keyframes cashPulse{50%{box-shadow:0 0 22px rgba(247,225,160,.95)}}
 .alt{position:absolute;right:20px;top:190px;width:10px;height:420px;z-index:12;display:none;
   border-radius:5px;background:rgba(255,255,255,.08);border:1px solid rgba(190,225,255,.25)}
@@ -550,10 +592,10 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
 /* docked brand block: logo + headline + balance, upper left */
 .sigil{transition:width .8s cubic-bezier(.3,.8,.3,1),height .8s cubic-bezier(.3,.8,.3,1)}
 .slide.docked .sigil{width:39px;height:39px}
-.slide.docked:not(.inclimb) #balance,.slide.docked:not(.inclimb) #imdBal{gap:4px;padding:3px 6px 3px 4px;border-radius:6px;
+.slide.docked #balance,.slide.docked #imdBal{gap:4px;padding:3px 6px 3px 4px;border-radius:6px;
   box-shadow:0 3px 9px rgba(3,6,26,.6),0 0 10px rgba(159,203,242,.2)}
-.slide.docked:not(.inclimb) #balance svg,.slide.docked:not(.inclimb) #imdBal svg{width:10px;height:10px}
-.slide.docked:not(.inclimb) #balance .amt,.slide.docked:not(.inclimb) #balance .tk,.slide.docked:not(.inclimb) #imdBal .amt,.slide.docked:not(.inclimb) #imdBal .tk{font-size:12px}
+.slide.docked #balance svg,.slide.docked #imdBal svg{width:10px;height:10px}
+.slide.docked #balance .amt,.slide.docked #balance .tk,.slide.docked #imdBal .amt,.slide.docked #imdBal .tk{font-size:12px}
 .balance.imdbal{right:auto;transform-origin:left center}
 .balance.imdbal .tk{-webkit-text-stroke-color:#FF8CB3}
 .balance.imdbal svg{filter:drop-shadow(0 0 5px rgba(255,140,179,.6))}
@@ -562,7 +604,11 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
   border:1px solid rgba(190,225,255,.16);box-shadow:0 5px 13px rgba(3,6,26,.45);
   transform:scale(.96);transition:opacity .6s ease .35s,transform .6s ease .35s}
 .slide.docked .dockplate{opacity:1;transform:none}
-.slide.inclimb .dockplate{display:none}
+.slide.inclimb .dockplate{z-index:5;background:linear-gradient(180deg,rgba(14,22,76,.94),rgba(6,10,40,.94))}   /* solid over the busy tower wall */
+/* the docked block is the default look: no big-headline flash before it lands, no animation on load */
+.slide:not(.docked) h1.hook-title,.slide:not(.docked) .brandmark{visibility:hidden}
+.slide.noanim .sigil,.slide.noanim .dockplate,.slide.noanim h1.hook-title{transition:none!important}
+.slide.noanim .balance.show{animation:none!important;opacity:1;transform:none}
 #chBalSlot{display:flex;align-items:center}
 .climbhud #balance,.climbhud #imdBal{position:static;opacity:1;transform-origin:right center;gap:4px;padding:3px 7px 3px 5px;border-radius:7px;
   box-shadow:0 3px 9px rgba(3,6,26,.5),0 0 10px rgba(159,203,242,.2)}
@@ -582,6 +628,14 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
 .jpmarquee .jp-title{font-family:var(--ff-display);font-size:21px;letter-spacing:.06em;fill:none;
   stroke:#FFE9A8;stroke-width:1.35px;paint-order:normal;filter:drop-shadow(0 0 2px rgba(90,20,16,.9))}
 .jpmarquee .jb.b1{fill:#E3A93A}
+.jpmini{overflow:visible;filter:drop-shadow(0 0 8px rgba(247,212,106,.4))}
+.jpmini .jb{fill:#FFF3A6;stroke:#7A4E14;stroke-width:.6;animation:jpChase .8s steps(1,end) infinite}
+.jpmini .jb.b1{animation-delay:.4s}
+.jpmini .jp-title{font-family:var(--ff-display);font-size:15px;letter-spacing:.03em;fill:none;
+  stroke:#FFE9A8;stroke-width:1.35px;filter:drop-shadow(0 0 2px rgba(90,20,16,.9))}
+.jpmini .jp-amt{font-family:var(--ff-display);font-size:19px;letter-spacing:.03em;fill:#FFF3C4;
+  stroke:#5A1410;stroke-width:3px;paint-order:stroke;stroke-linejoin:round}
+@media (prefers-reduced-motion:reduce){.jpmini .jb{animation:none}}
 .jpmarquee.on .jb{animation:jpChase .8s steps(1,end) infinite}
 .jpmarquee.on .jb.b1{animation-delay:.4s}
 @keyframes jpChase{0%{fill:#FFF3A6}50%{fill:#E3A93A}}
@@ -705,8 +759,6 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
   .meteor{display:none}
   .walker:nth-child(n+4){display:none}}
 
-.slide:not(.docked):not(.inclimb) #imdBal{left:220px;right:auto;top:140px}
-.sound{top:auto;bottom:26px}
 .paused *, .paused *::before,.paused *::after{animation-play-state:paused!important;transition:none!important}
 </style>
 </head>
@@ -794,13 +846,24 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
   <circle cx="196" cy="88" r="1.9" fill="url(#starglow)"/><circle cx="196" cy="88" r="0.7979999999999999" fill="#FFFDF4"/><circle cx="1042" cy="132" r="2.1" fill="url(#starglow)"/><circle cx="1042" cy="132" r="0.882" fill="#FFFDF4"/><circle cx="640" cy="58" r="1.7" fill="url(#starglow)"/><circle cx="640" cy="58" r="0.714" fill="#FFFDF4"/><circle cx="884" cy="262" r="1.6" fill="url(#starglow)"/><circle cx="884" cy="262" r="0.672" fill="#FFFDF4"/><circle cx="342" cy="196" r="1.5" fill="url(#starglow)"/><circle cx="342" cy="196" r="0.63" fill="#FFFDF4"/><circle cx="1188" cy="68" r="1.8" fill="url(#starglow)"/><circle cx="1188" cy="68" r="0.756" fill="#FFFDF4"/>
 </svg>
 <div class="fader" id="fader" aria-hidden="true"></div>
-<button type="button" class="sound waiting" id="soundBtn" aria-pressed="false" aria-label="Mute music" title="Music (M)">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/>
-    <path class="waves" d="M15.5 9a4 4 0 0 1 0 6M18.2 6.5a7.5 7.5 0 0 1 0 11"/>
-    <path class="slash" d="M16 9.5l5 5M21 9.5l-5 5"/>
-  </svg>
-</button>
+<div class="wallet" id="wallet">
+  <button type="button" class="wbtn" id="walletBtn" aria-haspopup="dialog" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18v3"/><path d="M4 7.5v10A2.5 2.5 0 0 0 6.5 20H20v-12H6.5A2.5 2.5 0 0 1 4 7.5z"/><circle cx="16" cy="14" r="1.3" fill="currentColor"/>
+    </svg>
+    <span class="wdot" aria-hidden="true"></span><span class="wlbl" id="walletLbl">connect</span>
+  </button>
+  <div class="wpop" id="walletPop" role="dialog" aria-label="Wallet" hidden>
+    <p class="wp-addr"><span id="wpAddr">—</span><span class="wp-net" id="wpNet">Sepolia</span></p>
+    <p class="wp-sub">on Ethereum mainnet</p>
+    <p class="wp-row"><span>ETH</span><b id="wpEth">—</b></p>
+    <p class="wp-row"><span>$ICE</span><b id="wpIce">—</b></p>
+    <p class="wp-row"><span>$IMD</span><b id="wpImd">—</b></p>
+    <p class="wp-note">the arcade plays on Sepolia for now</p>
+    <button type="button" class="wp-out" id="wpOut">disconnect</button>
+  </div>
+  <p class="wmsg" id="walletMsg" role="status" aria-live="polite"></p>
+</div>
 <span class="meteor m1" aria-hidden="true"></span>
 <span class="meteor m2" aria-hidden="true"></span>
 <div class="pad">
@@ -1307,12 +1370,19 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
 <rect x="74" y="4412" width="58" height="60" rx="3" fill="none" stroke="#E3BE60" stroke-opacity=".5" stroke-width="1.5"/>
 <circle cx="132" cy="4480" r="4" fill="#E3BE60"/>
 <text x="103" y="4388" text-anchor="middle" font-family="Sniglet, sans-serif" font-size="18" letter-spacing="2" fill="none" stroke="#7BD85A" stroke-width="1.2">exit</text>
-<path d="M180 4550 L188 4488 H312 L320 4550 Z" fill="#2F6B4A" stroke="#1B3E2A" stroke-width="2.5"/>
-<path d="M176 4488 L190 4466 H300 L322 4488 Z" fill="#3E8A5E" stroke="#1B3E2A" stroke-width="2.5"/>
-<path d="M230 4466 q18 -26 44 -8 q-6 6 -18 8 q-12 -8 -26 0Z" fill="#D9A058" stroke="#8A5A22" stroke-width="2"/>
-<path d="M192 4510 H308" stroke="#1B3E2A" stroke-width="2"/>
-<text x="250" y="4440" text-anchor="middle" font-family="Sniglet, sans-serif" font-size="16" letter-spacing="1.2" fill="none" stroke="#9AA6C4" stroke-width="4" opacity="0.5" filter="url(#neon)">dumpster crust &#183; 0&#215;</text>
-<text x="250" y="4440" text-anchor="middle" font-family="Sniglet, sans-serif" font-size="16" letter-spacing="1.2" fill="none" stroke="#9AA6C4" stroke-width="1.2" opacity="0.9">dumpster crust &#183; 0&#215;</text></svg>
+<path d="M150 4550 L160 4466 H340 L350 4550 Z" fill="#2F6B4A" stroke="#1B3E2A" stroke-width="2.5"/>
+<path d="M146 4466 L162 4442 H330 L354 4466 Z" fill="#3E8A5E" stroke="#1B3E2A" stroke-width="2.5"/>
+<path d="M232 4442 q18 -26 44 -8 q-6 6 -18 8 q-12 -8 -26 0Z" fill="#D9A058" stroke="#8A5A22" stroke-width="2"/>
+<g class="dstats" aria-live="polite">
+<svg aria-hidden="true" class="jpmini" x="175" y="4471" width="150" height="52" viewBox="0 0 180 62">
+    <rect x="1" y="1" width="178" height="60" rx="11" fill="#7A1E1E" stroke="#E3BE60" stroke-width="2"/>
+    <rect x="9" y="10" width="162" height="42" rx="7" fill="#B8322B" stroke="#F7D46A" stroke-width="1.4"/>
+    <circle class="jb b0" cx="10.0" cy="5" r="2.4"/><circle class="jb b1" cx="10.0" cy="57" r="2.4"/><circle class="jb b1" cx="20.7" cy="5" r="2.4"/><circle class="jb b0" cx="20.7" cy="57" r="2.4"/><circle class="jb b0" cx="31.3" cy="5" r="2.4"/><circle class="jb b1" cx="31.3" cy="57" r="2.4"/><circle class="jb b1" cx="42.0" cy="5" r="2.4"/><circle class="jb b0" cx="42.0" cy="57" r="2.4"/><circle class="jb b0" cx="52.6" cy="5" r="2.4"/><circle class="jb b1" cx="52.6" cy="57" r="2.4"/><circle class="jb b1" cx="63.3" cy="5" r="2.4"/><circle class="jb b0" cx="63.3" cy="57" r="2.4"/><circle class="jb b0" cx="74.0" cy="5" r="2.4"/><circle class="jb b1" cx="74.0" cy="57" r="2.4"/><circle class="jb b1" cx="84.6" cy="5" r="2.4"/><circle class="jb b0" cx="84.6" cy="57" r="2.4"/><circle class="jb b0" cx="95.3" cy="5" r="2.4"/><circle class="jb b1" cx="95.3" cy="57" r="2.4"/><circle class="jb b1" cx="105.9" cy="5" r="2.4"/><circle class="jb b0" cx="105.9" cy="57" r="2.4"/><circle class="jb b0" cx="116.6" cy="5" r="2.4"/><circle class="jb b1" cx="116.6" cy="57" r="2.4"/><circle class="jb b1" cx="127.3" cy="5" r="2.4"/><circle class="jb b0" cx="127.3" cy="57" r="2.4"/><circle class="jb b0" cx="137.9" cy="5" r="2.4"/><circle class="jb b1" cx="137.9" cy="57" r="2.4"/><circle class="jb b1" cx="148.6" cy="5" r="2.4"/><circle class="jb b0" cx="148.6" cy="57" r="2.4"/><circle class="jb b0" cx="159.2" cy="5" r="2.4"/><circle class="jb b1" cx="159.2" cy="57" r="2.4"/><circle class="jb b1" cx="169.9" cy="5" r="2.4"/><circle class="jb b0" cx="169.9" cy="57" r="2.4"/><circle class="jb b0" cx="4" cy="15" r="2.4"/><circle class="jb b1" cx="176" cy="15" r="2.4"/><circle class="jb b1" cx="4" cy="25" r="2.4"/><circle class="jb b0" cx="176" cy="25" r="2.4"/><circle class="jb b0" cx="4" cy="35" r="2.4"/><circle class="jb b1" cx="176" cy="35" r="2.4"/><circle class="jb b1" cx="4" cy="45" r="2.4"/><circle class="jb b0" cx="176" cy="45" r="2.4"/>
+<text class="jp-title" x="90" y="26" text-anchor="middle" textLength="132" lengthAdjust="spacingAndGlyphs">jackpot pool</text>
+<text class="jp-amt" id="chPool" x="90" y="47.5" text-anchor="middle">1,500 points</text>
+</svg>
+<g id="chFreeRow" style="display:none"><text x="168" y="4541" class="dl dfree">golden bladder</text><text x="332" y="4541" class="dv dfree" id="chFree">5 free</text></g>
+</g></svg>
       <div id="climbPlats"></div>
       <div id="climbBugs"></div>
       <div class="tray t1" id="tray1"><svg aria-hidden="true" viewBox="0 0 60 44"><ellipse cx="30" cy="36" rx="28" ry="7" fill="#C9CFDC" stroke="#6B7390" stroke-width="1.4"/><ellipse cx="30" cy="35" rx="23" ry="4.5" fill="#E9EDF6"/><path d="M8 30 L50 12 Q56 22 52 32 Z" fill="#FFD45E" stroke="#8A5A22" stroke-width="1.4" stroke-linejoin="round"/><path d="M50 12 Q57 22 52 32" fill="none" stroke="#D9A058" stroke-width="4.5" stroke-linecap="round"/><circle cx="24" cy="26" r="2.6" fill="#D6443A" stroke="#8A2220" stroke-width=".6"/><circle cx="34" cy="22" r="2.6" fill="#D6443A" stroke="#8A2220" stroke-width=".6"/><circle cx="40" cy="27" r="2.6" fill="#D6443A" stroke="#8A2220" stroke-width=".6"/><circle cx="30" cy="29" r="2.6" fill="#D6443A" stroke="#8A2220" stroke-width=".6"/></svg></div><div class="tray t2" id="tray2"><svg aria-hidden="true" viewBox="0 0 60 44"><ellipse cx="30" cy="36" rx="28" ry="7" fill="#C9CFDC" stroke="#6B7390" stroke-width="1.4"/><ellipse cx="30" cy="35" rx="23" ry="4.5" fill="#E9EDF6"/><path d="M8 30 L50 12 Q56 22 52 32 Z" fill="#FFD45E" stroke="#8A5A22" stroke-width="1.4" stroke-linejoin="round"/><path d="M50 12 Q57 22 52 32" fill="none" stroke="#D9A058" stroke-width="6" stroke-linecap="round"/><path d="M50.5 14 Q55.5 22 51.5 30" fill="none" stroke="#FFF0B0" stroke-width="1.5"/><circle cx="24" cy="26" r="2.6" fill="#D6443A" stroke="#8A2220" stroke-width=".6"/><circle cx="34" cy="22" r="2.6" fill="#D6443A" stroke="#8A2220" stroke-width=".6"/><circle cx="40" cy="27" r="2.6" fill="#D6443A" stroke="#8A2220" stroke-width=".6"/><circle cx="30" cy="29" r="2.6" fill="#D6443A" stroke="#8A2220" stroke-width=".6"/><rect x="20" y="28" width="3.4" height="1.6" rx=".8" fill="#4FA64A"/><rect x="37" y="25" width="3.4" height="1.6" rx=".8" fill="#4FA64A"/><rect x="44" y="21" width="3.4" height="1.6" rx=".8" fill="#4FA64A"/><circle cx="28" cy="24" r="1.5" fill="#222" /><circle cx="28" cy="24" r=".6" fill="#555"/><circle cx="43" cy="28" r="1.5" fill="#222" /><circle cx="43" cy="28" r=".6" fill="#555"/></svg></div><div class="tray t3" id="tray3"><svg aria-hidden="true" viewBox="0 0 60 44"><ellipse cx="30" cy="36" rx="28" ry="7" fill="#C9CFDC" stroke="#6B7390" stroke-width="1.4"/><ellipse cx="30" cy="35" rx="23" ry="4.5" fill="#E9EDF6"/><path d="M8 30 L50 12 Q56 22 52 32 Z" fill="url(#goldSlice)" stroke="#8A5A22" stroke-width="1.4" stroke-linejoin="round"/><path d="M50 12 Q57 22 52 32" fill="none" stroke="#E3BE60" stroke-width="4.5" stroke-linecap="round"/><circle cx="24" cy="26" r="1.8" fill="#3A2A1A"/><circle cx="36" cy="23" r="1.8" fill="#3A2A1A"/><circle cx="42" cy="28" r="1.8" fill="#3A2A1A"/><path d="M30 16 l1.2 3 3 1.2 -3 1.2 -1.2 3 -1.2 -3 -3 -1.2 3 -1.2z" fill="#FFFDF0"/></svg></div>
@@ -1320,10 +1390,6 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
     </div>
     <div class="climbhud" id="climbHud" role="status" aria-live="polite">
       <div class="ch-top"><h2>pizza climb</h2><span id="chBalSlot"></span></div>
-      <p>fuel burned <b id="chFuel">0 $ICE</b></p>
-      <p>banked <b id="chBank" class="banked">—</b></p>
-      <p>jackpot pool <b id="chPool">1,500 points</b></p>
-      <p class="freeRow" id="chFreeRow" hidden>golden bladder <b id="chFree">5 free</b></p>
       <button type="button" id="cashBtn" disabled>cash out · C</button>
     </div>
     <div class="alt" id="altBar" aria-hidden="true"><i style="bottom:20.5%;background:#FF6FB5"></i><i style="bottom:52.3%;background:#5FE1F0"></i><i style="bottom:97.0%;background:#F7D46A"></i><span class="me" id="altMe"></span></div>
@@ -1417,11 +1483,11 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
       <div class="face"><div class="rig"><i class="leg"></i><i class="leg b"></i><i class="pants"></i><i class="arm"><svg aria-hidden="true" class="sword"><use href="#sword"/></svg></i><i class="arm b"><svg aria-hidden="true" class="shield"><use href="#ethshield"/></svg></i><i class="spine"></i><span class="tunic"></span><span class="butt"></span><div class="head"><span class="coin back"></span><span class="coin mid m3"></span><span class="coin mid m2"></span><span class="coin mid m1"></span><span class="coin front"></span></div></div><svg class="slash" viewBox="0 0 46 104" aria-hidden="true"><defs><linearGradient id="slashg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFDF4" stop-opacity="0"/><stop offset=".45" stop-color="#FFFDF4" stop-opacity=".9"/><stop offset="1" stop-color="#E3BE60" stop-opacity=".95"/></linearGradient></defs><path d="M41.1 -22.6 A70 70 0 0 1 76.6 90.0 A82 82 0 0 0 41.1 -22.6Z" fill="url(#slashg)"/></svg></div>
     </div>
     <div class="reward" id="reward" role="status" aria-live="polite"><div class="card"><span class="amt">1,000</span><span class="tk">points</span><span class="lbl">local prize</span></div></div>
-    <div class="balance imdbal" id="imdBal" role="status" aria-live="polite" aria-label="Wallet ETH balance unavailable">
+    <div class="balance imdbal" id="imdBal" role="status" aria-live="polite" aria-label="Mainnet $IMD balance unavailable">
       <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="#3A1B4E" stroke="#FF8CB3" stroke-width="1.6"/><path d="M10 5.6v1.1M10 8.6v5.8" stroke="#FFD1E1" stroke-width="2" stroke-linecap="round"/></svg>
-      <span class="amt" id="imdAmt">—</span><span class="tk">Sepolia ETH</span>
+      <span class="amt" id="imdAmt">—</span><span class="tk">$IMD</span>
     </div>
-    <div class="balance" id="balance" role="status" aria-live="polite" aria-label="Wallet ICE balance unavailable">
+    <div class="balance" id="balance" role="status" aria-live="polite" aria-label="Mainnet $ICE balance unavailable">
       <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="2.5" width="15" height="15" rx="3.5" fill="#9FCBF2" fill-opacity=".55" stroke="#EAF6FF" stroke-width="1.2"/><path d="M5.5 6.5 L10 5.2 M5.5 9 L7.5 8.4" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" opacity=".85"/></svg>
       <span class="amt" id="balAmt">—</span><span class="tk">$ICE</span>
     </div>
@@ -1466,6 +1532,8 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
       f.style.width=(W*s)+'px'; f.style.height=(H*s)+'px';
       f.querySelector('.slide').style.transform='scale('+s+')';
     });
+    var wal=document.getElementById('wallet');
+    if(wal){wal.style.transformOrigin='top right';wal.style.transform='scale('+Math.max(1,28/(34*s))+')';}
   }
   fit();
   window.addEventListener('resize',fit);
@@ -1675,8 +1743,9 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
   }
 
   // ---- first $ICE: logo, headline and balance converge in the upper left ----
-  function dockBrand(chip,amt,finalVal){
+  function dockBrand(chip,amt,finalVal,instant){
     var title=document.querySelector('h1.hook-title'), slide=title.closest('.slide');
+    if(instant)slide.classList.add('noanim');
     var sig=document.querySelector('.brandmark'), plate=document.getElementById('dockplate');
     var SIG=39, GAP=7, LEFT=sig.offsetLeft+SIG+GAP, MID=sig.offsetTop+SIG/2, VGAP=3;
     slide.classList.add('docked');   // compact chip styles apply before measuring
@@ -1697,10 +1766,13 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
     title.style.left=LEFT+'px';title.style.top=top.toFixed(1)+'px';
     var r1={l:title.offsetLeft,t:title.offsetTop,w:title.offsetWidth*k};
     // INVERT, then PLAY
-    title.style.transform='translate('+(r0.l-r1.l)+'px,'+(r0.t-r1.t)+'px) scale('+(r0.w/r1.w).toFixed(3)+')';
-    void title.offsetWidth;
-    title.style.transition='transform .85s cubic-bezier(.3,.8,.3,1)';
-    title.style.transform='scale('+k.toFixed(4)+')';
+    if(instant){title.style.transform='scale('+k.toFixed(4)+')';}
+    else{
+      title.style.transform='translate('+(r0.l-r1.l)+'px,'+(r0.t-r1.t)+'px) scale('+(r0.w/r1.w).toFixed(3)+')';
+      void title.offsetWidth;
+      title.style.transition='transform .85s cubic-bezier(.3,.8,.3,1)';
+      title.style.transform='scale('+k.toFixed(4)+')';
+    }
     // balance chips land right under the headline
     chip.style.right='auto';chip.style.left=LEFT+'px';
     chip.style.top=(top+th+VGAP).toFixed(1)+'px';chip.style.transformOrigin='left center';
@@ -1711,22 +1783,28 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
     var blockW=Math.max(chipW,title.offsetWidth*k);
     plate.style.width=(LEFT+blockW-sig.offsetLeft+pad*2).toFixed(1)+'px';
     plate.style.height=(Math.max(SIG,th+VGAP+chipH)+pad*2)+'px';
+    if(instant){chip.classList.add('show');imdEl.classList.add('show');placeImd();
+      requestAnimationFrame(function(){requestAnimationFrame(function(){slide.classList.remove('noanim');});});return;}
     setTimeout(function(){chip.classList.add('show');imdEl.classList.add('show');placeImd();},420);
   }
   var IMD_GAP=4, dockInfo=null;
   function placeImd(){
     var chip=document.getElementById('balance'), imd=document.getElementById('imdBal');
-    if(!dockInfo||CL.on)return;
+    if(!dockInfo)return;
     imd.style.left=(chip.offsetLeft+chip.offsetWidth+IMD_GAP)+'px';
     imd.style.top=chip.offsetTop+'px';
     var plate=document.getElementById('dockplate');
     var need=imd.offsetLeft+imd.offsetWidth+dockInfo.pad-dockInfo.plateLeft;
     if(need>parseFloat(plate.style.width||0))plate.style.width=need.toFixed(1)+'px';
   }
-  var balance=0, docked=false, balDone=true;
+  var balance=0, docked=true, balDone=true;
+  // start docked: logo + headline + chips in the upper left (measured once the font is in)
+  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(function(){
+    dockBrand(document.getElementById('balance'),document.getElementById('balAmt'),1000,true);
+  });
   function bridge(){return parent.pepe;}
   function live(){return bridge()?bridge().snapshot():{tank:0,free:0,points:0};}
-  function showBalance(add){if(add && bridge())bridge().addPoints(add);if(!docked){docked=true;dockBrand(document.getElementById('balance'),document.getElementById('balAmt'),1000);}}
+  function showBalance(add){if(add && bridge())bridge().addPoints(add);}
   function setImd(){ /* balances arrive only from the parent chain client */ }
 
   // Paid tank charges are local; wallet balances only change after chain reads.
@@ -2044,10 +2122,9 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
       CL.on=true;CL.stun=false;heroEl.classList.remove('tumble');slideEl2.classList.add('inclimb');
       bugs.forEach(function(b){if(b.axis==='x'){b.pos=b.a+Math.random()*(b.b-b.a);b.dir=Math.random()<.5?1:-1;}});
       climbEl.appendChild(heroEl);climbEl.appendChild(speechEl);fxRoot=climbFx;
-      document.getElementById('chBalSlot').appendChild(document.getElementById('balance'));
-      document.getElementById('chBalSlot').appendChild(document.getElementById('imdBal'));
+      stage.appendChild(document.getElementById('dockplate'));   // above the tower (and its bugs), under the chips
       PLATS=CPLATS;GROUND=CL.GROUND;WORLD.minX=64;WORLD.maxX=1216;
-      hero.x=190;hero.y=CL.GROUND;hero.vx=hero.vy=0;hero.facing=1;hero.grounded=true;
+      hero.x=400;hero.y=CL.GROUND;hero.vx=hero.vy=0;hero.facing=1;hero.grounded=true;
       CL.camY=CL.H-720;CL.armed=false;CL.run=null;resetTrays();renderHud();placeCam(0,true);
       hint.innerHTML='hold <b>space</b> to fly, <b>arrows</b> to steer<br><b>C</b> to cash out';hint.classList.add('show');
       clearTimeout(hint._t);hint._t=setTimeout(function(){hint.classList.remove('show');},2000);
@@ -2058,7 +2135,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
       climbFire(false);
       CL.on=false;slideEl2.classList.remove('inclimb');
       stage.appendChild(heroEl);stage.appendChild(speechEl);fxRoot=null;
-      stage.appendChild(document.getElementById('balance'));stage.appendChild(document.getElementById('imdBal'));
+      var dp=document.getElementById('dockplate'), ht=document.querySelector('h1.hook-title');ht.parentNode.insertBefore(dp,ht);
       jets.forEach(function(j){j.el.remove();});jets.length=0;
       PLATS=OUT_PLATS;GROUND=OUT_GROUND;WORLD.minX=38;WORLD.maxX=1242;
       hero.x=1120;hero.y=OUT_GROUND;hero.vx=hero.vy=0;hero.facing=-1;hero.grounded=true;
@@ -2069,12 +2146,11 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
   function resetTrays(){CTIERS.forEach(function(t){document.getElementById('tray'+t.id).classList.remove('gone');});}
   function renderHud(){
     var r=CL.run;
-    document.getElementById('chFuel').textContent=(r?r.fuel:0)+' points';
-    var bank=document.getElementById('chBank');
-    bank.textContent=r&&r.tier?('+'+r.prize.toLocaleString('en-US')+' points'):'—';
-    document.getElementById('chPool').textContent=Math.round(CL.pool).toLocaleString('en-US')+' points';
+    var cp=document.getElementById('chPool');cp.removeAttribute('textLength');
+    cp.textContent=Math.round(CL.pool).toLocaleString('en-US')+' points';
+    try{if(cp.getComputedTextLength()>150){cp.setAttribute('textLength','150');cp.setAttribute('lengthAdjust','spacingAndGlyphs');}}catch(e){}
     cashBtn.disabled=!(r&&r.tier)||CL.stun;
-    var fr=document.getElementById('chFreeRow');fr.hidden=!(CL.free>0);
+    document.getElementById('chFreeRow').style.display=CL.free>0?'':'none';
     document.getElementById('chFree').textContent=CL.free+' free';
     cashBtn.textContent=r&&r.tier?('cash out +'+r.prize.toLocaleString('en-US')+' · C'):'cash out · C';
   }
@@ -2295,7 +2371,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
     climbPop('+'+won.toLocaleString('en-US')+' points','spent '+r.fuel+' on fuel · net '+(won-r.fuel>=0?'+':'')+(won-r.fuel));
     CL.run=null;CL.credit=0;renderHud();
     setTimeout(function(){
-      fade(function(){hero.x=190;hero.y=CL.GROUND;hero.vx=hero.vy=0;hero.facing=1;resetTrays();placeCam(0,true);});
+      fade(function(){hero.x=400;hero.y=CL.GROUND;hero.vx=hero.vy=0;hero.facing=1;resetTrays();placeCam(0,true);});
     },900);
   }
   function bust(){
@@ -2378,6 +2454,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
     iceEl.classList.remove('empty');iceEl.classList.add('swapmode');
     countEl.textContent='--';
     jpEl.classList.add('on');signEl.classList.add('on');renderSign();
+    showThrone();                       // the golden throne rises with the jackpot sign
     setTimeout(function(){cueSwap.classList.add('swap');flashCue(cueSwap);},900);
   }
   // pee that hits the fridge splashes, runs down the front and pools on the hotdog
@@ -2490,7 +2567,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
       }else{p.x+=p.v*dt;if(p.x>1320){p.state='gone';p.el.style.display='none';return;}}
       p.el.style.transform='translateX('+p.x.toFixed(1)+'px) scale('+(p.s*(1-.18*k)).toFixed(3)+')';
     });
-    if(!left){PARADE.done=true;setTimeout(showThrone,800);}
+    if(!left){PARADE.done=true;}
   }
 
   // Golden throne buys ICE from the game wallet in the background; no wallet prompt.
@@ -2502,6 +2579,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
   }
 
   function showThrone(){
+    if(TH.shown)return;TH.shown=true;
     thEl.classList.add('on','rise');
     setTimeout(function(){thEl.classList.remove('rise');},1450);   // drop the clip so the glow and sign aren't cut off
     for(var k=0;k<14;k++)spawn('smoke',TH.x+(Math.random()-.5)*70,GROUND-6,(Math.random()-.5)*50,-20-Math.random()*30,1.5+Math.random(),-10);
@@ -2537,17 +2615,51 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
     if(showCue)cueAt(cueThrone,Math.max(TH.x,70),GROUND-172);
   }
 
+  // ---- wallet pill: the shell owns the wallet (parent.pepe.wallet); the scene renders pepeScene.wallet(view) ----
+  var WV={wrong:false,busy:false};
+  var wBox=document.getElementById('wallet'), wBtn=document.getElementById('walletBtn'), wPop=document.getElementById('walletPop');
+  function walletOpen(on){
+    wPop.hidden=!on;wBtn.setAttribute('aria-expanded',on?'true':'false');
+    if(on&&bridge())bridge().wallet.refresh();
+  }
+  wBtn.addEventListener('click',function(e){
+    e.stopPropagation();wBtn.blur();
+    var w=bridge()&&bridge().wallet;
+    if(!w||WV.busy)return;
+    if(!WV.account)w.connect();else if(WV.wrong)w.switchChain();else walletOpen(wPop.hidden);
+  });
+  document.getElementById('wpOut').addEventListener('click',function(e){e.stopPropagation();e.currentTarget.blur();walletOpen(false);if(bridge())bridge().wallet.disconnect();});
+  wPop.addEventListener('click',function(e){e.stopPropagation();});
+  document.addEventListener('click',function(){if(!wPop.hidden)walletOpen(false);});
+  window.addEventListener('blur',function(){if(!wPop.hidden)walletOpen(false);});   // a click on the page outside the scene
+  window.addEventListener('keydown',function(e){if(e.key==='Escape'&&!wPop.hidden)walletOpen(false);});
+  function chipLabel(tk,v){return v==='…'?'Loading mainnet '+tk+' balance':/[0-9]/.test(v)?'Mainnet '+tk+' balance '+v:'Mainnet '+tk+' balance unavailable';}
+
   var paused=false;
   window.pepeScene={
+    wallet:function(v){
+      var on=!!v.account, short=on?v.account.slice(0,6)+'…'+v.account.slice(-4):'—', h=v.holdings;
+      WV=v;
+      wBox.classList.toggle('on',on);wBox.classList.toggle('wrong',on&&v.wrong);wBox.classList.toggle('busy',!!v.busy);
+      document.getElementById('walletLbl').textContent=!on?'connect':v.wrong?'switch to '+v.network:short;
+      wBtn.setAttribute('aria-label',!on?'Connect wallet':v.wrong?'Wrong network, switch to '+v.network:'Wallet '+short);
+      document.getElementById('wpAddr').textContent=short;
+      document.getElementById('wpNet').textContent=on&&v.wrong?'wrong network':v.network;
+      document.getElementById('wpEth').textContent=h.eth;
+      document.getElementById('wpIce').textContent=h.ice;
+      document.getElementById('wpImd').textContent=h.imd;
+      // the chips show mainnet holdings; Sepolia balances stay in the stats row below the game
+      document.getElementById('balAmt').textContent=h.ice;
+      document.getElementById('imdAmt').textContent=h.imd;
+      document.getElementById('balance').setAttribute('aria-label',chipLabel('$ICE',h.ice));
+      document.getElementById('imdBal').setAttribute('aria-label',chipLabel('$IMD',h.imd));
+      placeImd();
+      var msg=document.getElementById('walletMsg');msg.textContent=v.message||'';msg.classList.toggle('show',!!v.message);
+      if(!on)walletOpen(false);
+    },
     update:function(state){
       function fmt(v,dec){return v==null?'—':(Number(v)/Math.pow(10,dec||18)).toLocaleString(undefined,{maximumFractionDigits:6});}
-      var ice=fmt(state.ice,state.decimals),eth=fmt(state.eth,18);
-      document.getElementById('balAmt').textContent=ice;
-      document.getElementById('imdAmt').textContent=eth;
-      document.getElementById('balance').setAttribute('aria-label',ice+' ICE');
-      document.getElementById('imdBal').setAttribute('aria-label',eth+' Sepolia ETH');
-      document.getElementById('balance').classList.add('done');
-      document.getElementById('imdBal').classList.add('done');
+      var eth=fmt(state.eth,18);
       document.getElementById('jpAmt').textContent=fmt(state.potIce,state.decimals)+' ICE + '+fmt(state.potEth,18)+' ETH';
       document.getElementById('ssPx').textContent=state.price?'1 ETH = '+state.price.toLocaleString(undefined,{maximumFractionDigits:2})+' ICE':'waiting for pool price';
       document.getElementById('gtWallet').textContent=eth+' ETH';
@@ -2637,10 +2749,9 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
   requestAnimationFrame(frame);
 })();
 </script>
-
 <script>
 (function(){
-  var btn=document.getElementById('soundBtn');
+  var btn=document.getElementById('soundBtn')||document.createElement('button');   // no speaker button any more; M key still mutes
   var audio=new Audio(); audio.loop=true; audio.preload='auto'; audio.volume=0;
   var TARGET=.45, muted=false, started=false, fadeRaf=0;
   audio.src='assets/bgm.mp3';

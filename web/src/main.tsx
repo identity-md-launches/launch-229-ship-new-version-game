@@ -3,15 +3,17 @@ import { createRoot } from 'react-dom/client';
 import { WagmiProvider, createConfig, http, useAccount, useConnect, useDisconnect } from 'wagmi';
 import { injected } from 'wagmi/connectors';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { RainbowKitProvider, ConnectButton, darkTheme } from '@rainbow-me/rainbowkit';
-import '@rainbow-me/rainbowkit/styles.css';
 import { loadDeployment, type Runtime } from './config';
 import { GameEngine, format, type Snapshot } from './engine';
-import { errorMessage, switchNetwork } from './protocol';
+import { errorMessage, rejected, switchNetwork } from './protocol';
+import { readHoldings, showHoldings, type Holdings, type HoldingsView } from './holdings';
 import { SESSION } from './chain.mjs';
 import { type EIP1193Provider } from 'viem';
 import './style.css';
-declare global {interface Window {pepe?:unknown;pepeScene?:{update:(s:Snapshot)=>void;control:(key:string,down:boolean)=>void;pause:(value:boolean)=>void;};}}
+// Shell → scene wallet pill state, as display strings (DESIGN M17).
+type WalletView={account?:string;wrong:boolean;busy:boolean;network:string;holdings:HoldingsView;message?:string};
+declare global {interface Window {pepe?:unknown;pepeScene?:{update:(s:Snapshot)=>void;control:(key:string,down:boolean)=>void;pause:(value:boolean)=>void;wallet:(view:WalletView)=>void;};}}
+const NO_WALLET='No browser wallet found. Install an injected wallet, then reload.';
 function Arcade({runtime,engine}:{runtime:Runtime;engine:GameEngine}) {
  const state=useSyncExternalStore(engine.subscribe,engine.snapshot);
  const {address,chainId,connector}=useAccount();const {connectAsync,connectors}=useConnect();const {disconnect}=useDisconnect();
@@ -19,6 +21,9 @@ function Arcade({runtime,engine}:{runtime:Runtime;engine:GameEngine}) {
  const [paused,setPaused]=useState(false);
  const [tankError,setTankError]=useState('');
  const [walletBusy,setWalletBusy]=useState(false);const [rules,setRules]=useState(location.hash==='#rules');
+ const [holdings,setHoldings]=useState<Holdings|'loading'>();const holdingsRead=useRef(0);const [walletNote,setWalletNote]=useState<{text:string}>();
+ // The scene's pill calls the latest render's wallet actions through this ref.
+ const wallet=useRef({connect:connectWallet,disconnect:()=>disconnect(),switchChain,refresh:loadHoldings});wallet.current={connect:connectWallet,disconnect:()=>disconnect(),switchChain,refresh:loadHoldings};
  const d=runtime.d;
  // While wagmi restores a saved connection the connector is plain stored data without getProvider; the effect reruns once it hydrates.
  useEffect(()=>{let active=true;void (async()=>{const provider=typeof connector?.getProvider==='function'?await connector.getProvider() as EIP1193Provider|undefined:undefined;if(active)await engine.connect(address,chainId,provider);})();return()=>{active=false;};},[address,chainId,connector,engine]);
@@ -26,23 +31,32 @@ function Arcade({runtime,engine}:{runtime:Runtime;engine:GameEngine}) {
  useEffect(()=>{
   window.pepe={snapshot:engine.snapshot,consumePee:()=>engine.consumePee(),consumeBurst:()=>engine.consumeBurst(),addPoints:(n:number)=>engine.addPoints(n),message:engine.message,
    swap:(native:boolean,amount:string,throne=false)=>{setEthIn(native);if(native)setEthAmount(amount);void engine.swap(native,amount,throne);},
-   flip:(native:boolean)=>setEthIn(native)};
+   flip:(native:boolean)=>setEthIn(native),
+   wallet:{connect:()=>void wallet.current.connect(),disconnect:()=>wallet.current.disconnect(),switchChain:()=>void wallet.current.switchChain(),refresh:()=>void wallet.current.refresh()}};
   return()=>{delete window.pepe;};
  },[engine]);
  useEffect(()=>{scene.current?.contentWindow?.pepeScene?.update(state);},[state]);
  useEffect(()=>{scene.current?.contentWindow?.pepeScene?.pause(paused);},[paused]);
- const syncScene=()=>{scene.current?.contentWindow?.pepeScene?.update(engine.state);scene.current?.contentWindow?.pepeScene?.pause(paused);};
+ const syncScene=()=>{scene.current?.contentWindow?.pepeScene?.update(engine.state);scene.current?.contentWindow?.pepeScene?.pause(paused);scene.current?.contentWindow?.pepeScene?.wallet(walletView());};
  const control=(key:string,down:boolean)=>scene.current?.contentWindow?.pepeScene?.control(key,down);
- async function connectWallet(){setWalletBusy(true);try{if(!connectors.length)throw Error('No browser wallet found. Install an injected wallet, then reload.');await connectAsync({connector:connectors[0]});}catch(e){engine.message(/provider.*not found/i.test(errorMessage(e))?'No browser wallet found. Install an injected wallet, then reload.':errorMessage(e));}finally{setWalletBusy(false);}}
- async function switchChain(){setWalletBusy(true);try{const provider=await connector?.getProvider() as EIP1193Provider|undefined;if(!provider)throw Error('Connect a browser wallet first.');await switchNetwork(provider as Parameters<typeof switchNetwork>[0],d);}catch(e){engine.message(errorMessage(e));}finally{setWalletBusy(false);}}
- const wrong=!!address&&chainId!==d.chainId;const session=state.session;const locked=!address||wrong||!state.ready||state.busy||!session;
+ // Wallet errors show in the pill's bubble for 6 s.
+ function walletError(e:unknown,cancelled:string){const text=errorMessage(e);setWalletNote({text:rejected(e)?cancelled:/provider.*not found/i.test(text)?NO_WALLET:text});}
+ async function connectWallet(){setWalletBusy(true);setWalletNote(undefined);try{if(!connectors.length)throw Error(NO_WALLET);await connectAsync({connector:connectors[0]});}catch(e){walletError(e,'connection cancelled');}finally{setWalletBusy(false);}}
+ async function switchChain(){setWalletBusy(true);setWalletNote(undefined);try{const provider=await connector?.getProvider() as EIP1193Provider|undefined;if(!provider)throw Error('Connect a browser wallet first.');await switchNetwork(provider as Parameters<typeof switchNetwork>[0],d);}catch(e){walletError(e,'network switch cancelled');}finally{setWalletBusy(false);}}
+ // Read-only mainnet holdings for the pill and chips; only the newest read lands.
+ async function loadHoldings(){const read=++holdingsRead.current;if(!address){setHoldings(undefined);return;}setHoldings('loading');const next=await readHoldings(address);if(read===holdingsRead.current)setHoldings(next);}
+ useEffect(()=>{void loadHoldings();},[address]);
+ const wrong=!!address&&chainId!==d.chainId;
+ const walletView=():WalletView=>({account:address,wrong,busy:walletBusy,network:d.network.name,holdings:showHoldings(address?holdings:undefined),message:walletNote?.text});
+ useEffect(()=>{scene.current?.contentWindow?.pepeScene?.wallet(walletView());},[address,wrong,walletBusy,holdings,walletNote]);
+ useEffect(()=>{if(!walletNote)return;const timer=setTimeout(()=>setWalletNote(undefined),6000);return()=>clearTimeout(timer);},[walletNote]);const session=state.session;const locked=!address||wrong||!state.ready||state.busy||!session;
  const refill=!session?'':session.refill==='granted'&&session.grant?`Auto-refill on · up to ${format(session.grant.eth)} ETH and ${format(session.grant.ice,state.decimals)} ICE a day from your wallet until ${new Date(session.grant.expiry*1000).toLocaleDateString()}.`
   :session.refill==='available'?'Auto-refill is off. Allow it once to skip top-ups for 7 days.':session.refill==='unavailable'?'Auto-refill needs the MetaMask browser extension. Top up by hand below.':'Checking auto-refill support…';
  return <>
   <a className="skip" href="#moves">Skip to Wallet Controls</a>
   <main id="arcade">
    <h1 className="sr-only">Pepe’s Sepolia Arcade</h1>
-   <section className="game-region" aria-label="Original Pepe arcade"><div className="scene"><iframe ref={scene} title="Pepe platform game: arrows to move, space to strike or pee, E for throne, T to flip" src="./game.html" onLoad={syncScene}/><div className="wallet-controls">{address?<><ConnectButton.Custom>{({openAccountModal})=><button onClick={openAccountModal} aria-label="Open wallet account">{address.slice(0,6)}…{address.slice(-4)}</button>}</ConnectButton.Custom><button className="quiet" onClick={()=>disconnect()}>Disconnect</button></>:<button disabled={walletBusy} onClick={()=>void connectWallet()}>{walletBusy?'Connecting…':'Connect Wallet'}</button>}</div></div>
+   <section className="game-region" aria-label="Original Pepe arcade"><div className="scene"><iframe ref={scene} title="Pepe platform game: arrows to move, space to strike or pee, E for throne, T to flip" src="./game.html" onLoad={syncScene}/></div>
     <div className="game-tools"><span>Arrows move · Hold Space to aim · E throne · T flip · C cash out · M music</span><button className="quiet" onClick={()=>setPaused(!paused)} aria-pressed={paused}>{paused?'Resume Animation':'Pause Animation'}</button></div>
     <div className="touch-controls" aria-label="Game controls">{[['ArrowLeft','← Left'],['ArrowUp','↑ Jump'],['ArrowRight','Right →'],[' ','Strike / Pee'],['e','Throne'],['t','Flip'],['c','Cash Out']].map(([key,text])=><button key={key} onPointerDown={e=>{e.currentTarget.setPointerCapture(e.pointerId);control(key,true);}} onPointerUp={()=>control(key,false)} onPointerCancel={()=>control(key,false)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();if(!e.repeat)control(key,true);}}} onKeyUp={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();control(key,false);}}}>{text}</button>)}</div>
    </section>
@@ -98,7 +112,7 @@ async function start(){
  try{
   const runtime=await loadDeployment();const engine=new GameEngine(runtime);
   const config=createConfig({chains:[runtime.chain],connectors:[injected()],transports:{[runtime.chain.id]:http(runtime.d.network.rpcUrls[0])},multiInjectedProviderDiscovery:true});
-  root.render(<WagmiProvider config={config}><QueryClientProvider client={new QueryClient()}><RainbowKitProvider theme={darkTheme({accentColor:'#e3be60',accentColorForeground:'#03061a',borderRadius:'medium'})}><Arcade runtime={runtime} engine={engine}/></RainbowKitProvider></QueryClientProvider></WagmiProvider>);
+  root.render(<WagmiProvider config={config}><QueryClientProvider client={new QueryClient()}><Arcade runtime={runtime} engine={engine}/></QueryClientProvider></WagmiProvider>);
  }catch(e){root.render(<main className="startup"><h1>Arcade Unavailable</h1><p role="alert">{errorMessage(e)}</p><button onClick={()=>location.reload()}>Retry Loading</button></main>);}
 }
 void start();

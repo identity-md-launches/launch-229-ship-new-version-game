@@ -5,6 +5,7 @@ import {privateKeyToAccount} from 'viem/accounts';
 import {delegationManagerAbi,poolId,poolKey,poolTuple,quoterAbi,routerAbi,permitAbi,stateAbi,rollFor} from '../src/protocol';
 import {sessionKeyFromSignature,sessionMessage} from '../src/session';
 import {DELEGATION_MANAGER} from '../src/chain.mjs';
+import {MAINNET_RPCS,MAINNET_TOKENS} from '../src/holdings';
 import type {Deployment} from '../src/config';
 export const d=JSON.parse(readFileSync('../dist/imd-deployment.json','utf8')) as Deployment;
 // Anvil / Hardhat test account #0: a published development key that holds nothing on real chains.
@@ -156,11 +157,27 @@ export async function fixture(page:Page,{wallet=true,wrong=false,poor=false,roll
   }
   throw {code:-32601,message:`Unmocked RPC: ${method}`};
  };
+ // Nothing leaves the machine: any host without a mock below is aborted and recorded.
+ const external:string[]=[];
+ await page.route(url=>!['127.0.0.1','localhost'].includes(url.hostname),async route=>{external.push(route.request().url());await route.abort();});
  await page.route(/https:\/\/(ethereum-sepolia-rpc\.publicnode\.com|rpc\.sepolia\.ethpandaops\.io|sepolia\.rpc\.sentio\.xyz)/,async route=>{
   const body=route.request().postDataJSON();
   const respond=async(req:{method:string;params:unknown[];id:number})=>{try{return {jsonrpc:'2.0',id:req.id,result:await rpc(req.method,req.params)};}catch(error){return {jsonrpc:'2.0',id:req.id,error};}};
   const result=Array.isArray(body)?await Promise.all(body.map(respond)):await respond(body);
   await route.fulfill({contentType:'application/json',body:JSON.stringify(result)});
+ });
+ // Read-only Ethereum mainnet holdings (R21): the player holds 1.5 ETH, 1,234.5 $ICE and 42 $IMD; everyone else holds nothing.
+ const mainnet=(req:{id:number;method:string;params:unknown[]})=>{
+  const [first]=req.params as [string|{to:string;data:Hex}];
+  const who=typeof first==='string'?first:`0x${first.data.slice(-40)}`;const mine=lc(who)===lc(player);
+  const value=req.method==='eth_getBalance'?(mine?15n*10n**17n:0n)
+   :req.method==='eth_call'&&typeof first!=='string'&&first.data.startsWith('0x70a08231')?(!mine?0n:lc(first.to)===lc(MAINNET_TOKENS.ice)?12345n*10n**17n:lc(first.to)===lc(MAINNET_TOKENS.imd)?42n*10n**18n:0n):undefined;
+  return value===undefined?{jsonrpc:'2.0',id:req.id,error:{code:-32601,message:`Unmocked mainnet RPC: ${req.method}`}}
+   :{jsonrpc:'2.0',id:req.id,result:req.method==='eth_getBalance'?toHex(value):encodeFunctionResult({abi:erc20Abi,functionName:'balanceOf',result:value})};
+ };
+ await page.route(url=>MAINNET_RPCS.some(rpc=>url.href.startsWith(rpc)),async route=>{
+  const body=route.request().postDataJSON();
+  await route.fulfill({contentType:'application/json',body:JSON.stringify(Array.isArray(body)?body.map(mainnet):mainnet(body))});
  });
  if(wallet)await page.addInitScript(({player,chain,wrong,rpcUrl})=>{
   let chainId=wrong?'0x1':chain;let added=!wrong;let connected=false;const listeners:Record<string,((value:unknown)=>void)[]>={};
@@ -177,7 +194,7 @@ export async function fixture(page:Page,{wallet=true,wrong=false,poor=false,roll
   }};
   Object.defineProperty(window,'ethereum',{value:provider});
  },{player,chain:toHex(d.chainId),wrong,rpcUrl:d.network.rpcUrls[0]});
- return {calls,sent,raw,session:game.address,sessionKey:game.key,get prompts(){return prompts;},get tank(){return st.tank;},
+ return {calls,sent,raw,external,session:game.address,sessionKey:game.key,get prompts(){return prompts;},get tank(){return st.tank;},
   balance:(address:string,kind:'eth'|'ice')=>get(kind==='eth'?st.eth:st.ice,address),
   fund:(address:string,{eth=0n,ice=0n}:{eth?:bigint;ice?:bigint})=>{add(st.eth,address,eth);add(st.ice,address,ice);},
   setBlock:(n:bigint)=>{block=n;},reject:(value=true)=>{reject=value;},revert:()=>{revert=true;},dropLogs:()=>{dropLogs=true;},

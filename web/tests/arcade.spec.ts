@@ -7,7 +7,10 @@ type Fx=Awaited<ReturnType<typeof fixture>>;
 const E=10n**18n;const lc=(a:unknown)=>String(a).toLowerCase();
 const status=(page:Page)=>page.getByRole('status').first();
 const button=(page:Page,name:string)=>page.getByRole('button',{name,exact:true});
-async function open(page:Page){await page.goto('/ipfs/test/');await expect(page.locator('.poolline')).toContainText('Block ');await expect(button(page,'Connect Wallet')).toBeVisible();await button(page,'Connect Wallet').click();await expect(button(page,'Start Background Play')).toBeEnabled();}
+const pill=(page:Page)=>page.frameLocator('iframe').locator('#walletBtn');
+// The wallet pill inside the scene; its label appears once the shell has pushed the first wallet view.
+async function connect(page:Page){await expect(pill(page)).toHaveAccessibleName('Connect wallet');await pill(page).click();}
+async function open(page:Page){await page.goto('/ipfs/test/');await expect(page.locator('.poolline')).toContainText('Block ');await connect(page);await expect(button(page,'Start Background Play')).toBeEnabled();}
 async function startSession(page:Page){await button(page,'Start Background Play').click();await expect(page.locator('.session-line').first()).toContainText('Game wallet');}
 // Funded before the session starts, so start-up also sends the one-time approvals.
 async function play(page:Page,fx:Fx,{eth=E/100n,ice=1000n*E}={}){fx.fund(fx.session,{eth,ice});await open(page);await startSession(page);await expect(status(page)).toContainText('Game wallet ready.');}
@@ -27,32 +30,61 @@ const hitFridge=(page:Page,sid:number)=>scene(page).evaluate(sid=>{(window as un
 const pageErrors=new WeakMap<Page,string[]>();
 test.beforeEach(({page})=>{const errors:string[]=[];pageErrors.set(page,errors);page.on('pageerror',e=>errors.push(e.message));});
 test.afterEach(({page})=>{expect(pageErrors.get(page)).toEqual([]);});
+// Records the scene's music calls; its Audio element is not in the DOM.
+function musicSpy(){const w=window as unknown as {music:string[]};w.music=[];const {play,pause}=HTMLMediaElement.prototype;
+ HTMLMediaElement.prototype.play=function(this:HTMLMediaElement){w.music.push('play');return play.call(this).then(()=>{w.music.push('playing');});};
+ HTMLMediaElement.prototype.pause=function(this:HTMLMediaElement){w.music.push('pause');return pause.call(this);};}
 
 test('static subpath, no wallet, no overflow, local assets, keyboard and mobile screenshots',async({page})=>{
- await fixture(page,{wallet:false});const failed:string[]=[];page.on('response',r=>{if(r.status()>=400)failed.push(r.url());});
+ const fx=await fixture(page,{wallet:false});const failed:string[]=[];page.on('response',r=>{if(r.status()>=400)failed.push(r.url());});
  await page.goto('/ipfs/test/');await expect(button(page,'Swap Now')).toBeDisabled();
- await button(page,'Connect Wallet').click();await expect(status(page)).toContainText('No browser wallet');
+ await connect(page);await expect(page.frameLocator('iframe').locator('#walletMsg')).toContainText('No browser wallet found.');
  await page.setViewportSize({width:1440,height:1100});await page.screenshot({path:'../docs/frontend/desktop.png',fullPage:true});
  await page.setViewportSize({width:390,height:844});await expect(page.locator('body')).toBeVisible();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  await page.screenshot({path:'../docs/frontend/mobile.png',fullPage:true});
  await page.keyboard.press('Tab');expect(await page.evaluate(()=>document.activeElement?.tagName)).not.toBe('BODY');
- expect(failed).toEqual([]);
+ expect(failed).toEqual([]);expect(fx.external).toEqual([]);
 });
-test('clean top: no header or status bar, wallet inside the scene, speaker bottom-right',async({page})=>{
+test('clean top: no header or status bar, hook title in the scene, status line in panel 03',async({page})=>{
  await fixture(page,{wallet:false});await page.goto('/ipfs/test/');
  await expect(page.locator('header')).toHaveCount(0);await expect(page.locator('.statusbar')).toHaveCount(0);await expect(page.getByText(/Test Value Only/)).toHaveCount(0);
- await expect(page.locator('.scene .wallet-controls').getByRole('button',{name:'Connect Wallet',exact:true})).toBeVisible();
- await page.setViewportSize({width:1440,height:1100});const frameBox=(await page.locator('iframe').boundingBox())!;const controlsBox=(await page.locator('.scene .wallet-controls').boundingBox())!;
- expect(controlsBox.x-frameBox.x).toBeGreaterThanOrEqual(0);expect(controlsBox.x-frameBox.x).toBeLessThanOrEqual(16);expect(controlsBox.y-frameBox.y).toBeGreaterThanOrEqual(0);expect(controlsBox.y-frameBox.y).toBeLessThanOrEqual(14);
  const frame=page.frameLocator('iframe');await expect(frame.locator('#chainMessage')).toHaveCount(0);await expect(frame.locator('h1.hook-title')).toHaveText('pepes armed with ai');
- const slide=(await frame.locator('.slide').boundingBox())!;const sound=(await frame.locator('#soundBtn').boundingBox())!;const scale=slide.width/1280;
- expect(Math.abs((slide.y+slide.height)-(sound.y+sound.height)-26*scale)).toBeLessThanOrEqual(3);expect(Math.abs((slide.x+slide.width)-(sound.x+sound.width)-26*scale)).toBeLessThanOrEqual(3);
  expect(await page.locator('[role=status]').first().evaluate(el=>!!el.closest('#review'))).toBe(true);
  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
 });
+test('scene redesign: docked brand, wallet pill top-right, no speaker, mainnet holdings in the dropdown and chips',async({page})=>{
+ const fx=await fixture(page);await page.setViewportSize({width:1440,height:1100});await page.goto('/ipfs/test/');
+ const frame=page.frameLocator('iframe');const lbl=frame.locator('#walletLbl');const pop=frame.locator('#walletPop');
+ await expect(frame.locator('.slide')).toHaveClass(/docked/);await expect(frame.locator('#soundBtn')).toHaveCount(0);await expect(page.locator('.wallet-controls')).toHaveCount(0);
+ await expect(frame.locator('#balance')).toHaveClass(/show/);await expect(frame.locator('#imdBal')).toHaveClass(/show/);
+ await expect(frame.locator('#balAmt')).toHaveText('—');await expect(frame.locator('#imdAmt')).toHaveText('—');await expect(lbl).toHaveText('connect');
+ // positions in scene units (the slide is 1280 wide)
+ const slide=(await frame.locator('.slide').boundingBox())!;const k=slide.width/1280;
+ const at=async(sel:string)=>{const b=(await frame.locator(sel).boundingBox())!;return {left:(b.x-slide.x)/k,top:(b.y-slide.y)/k,right:(slide.x+slide.width-b.x-b.width)/k,bottom:(b.y+b.height-slide.y)/k};};
+ const brand=await at('.brandmark');expect(Math.abs(brand.left-20)).toBeLessThanOrEqual(2);expect(Math.abs(brand.top-20)).toBeLessThanOrEqual(2);
+ for(const chip of ['#balance','#imdBal']){const c=await at(chip);expect(c.left).toBeLessThan(400);expect(c.bottom).toBeLessThan(120);}
+ const top=await at('#walletBtn');expect(Math.abs(top.top-22.5)).toBeLessThanOrEqual(3);expect(Math.abs(top.right-14)).toBeLessThanOrEqual(3);
+ // connect: short address on the pill, mainnet $ICE / $IMD in the chips
+ await connect(page);await expect(lbl).toHaveText(`${player.slice(0,6)}…${player.slice(-4)}`);await expect(frame.locator('#wallet')).toHaveClass(/on/);
+ await expect(frame.locator('#balAmt')).toHaveText('1,234.5');await expect(frame.locator('#imdAmt')).toHaveText('42');
+ await expect(frame.locator('#balance')).toHaveAttribute('aria-label','Mainnet $ICE balance 1,234.5');
+ // dropdown: mainnet holdings; Escape and a click outside the scene close it
+ await pill(page).click();await expect(pop).toBeVisible();await expect(pill(page)).toHaveAttribute('aria-expanded','true');
+ await expect(frame.locator('#wpNet')).toHaveText('Sepolia');await expect(frame.locator('#wpEth')).toHaveText('1.5');await expect(frame.locator('#wpIce')).toHaveText('1,234.5');await expect(frame.locator('#wpImd')).toHaveText('42');
+ await expect(pop).toContainText('on Ethereum mainnet');await expect(pop).toContainText('the arcade plays on Sepolia for now');
+ await page.keyboard.press('Escape');await expect(pop).toBeHidden();await expect(pill(page)).toHaveAttribute('aria-expanded','false');
+ await pill(page).click();await expect(pop).toBeVisible();await page.locator('.poolline').click();await expect(pop).toBeHidden();
+ // disconnect from the dropdown
+ await pill(page).click();await frame.locator('#wpOut').click();await expect(lbl).toHaveText('connect');await expect(frame.locator('#balAmt')).toHaveText('—');await expect(button(page,'Start Background Play')).toBeDisabled();
+ // small screens: the pill stays at least 28 px tall
+ await page.setViewportSize({width:390,height:844});await expect.poll(async()=>Math.round((await pill(page).boundingBox())!.height*100)/100).toBeGreaterThanOrEqual(28);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ expect(fx.external).toEqual([]);
+});
 test('unknown network offers switch, adds exact vetted chain, reconnects live reads',async({page})=>{
- await fixture(page,{wrong:true});await page.goto('/');await button(page,'Connect Wallet').click();await expect(page.getByText('Wrong network.',{exact:false})).toBeVisible();
- await expect(button(page,'Start Background Play')).toBeDisabled();await page.getByRole('button',{name:'Switch to Sepolia'}).click();await expect(button(page,'Start Background Play')).toBeEnabled();expect(await page.evaluate(()=>(window as unknown as {addedChain:unknown}).addedChain)).toEqual(walletAddChain(d.network));
+ await fixture(page,{wrong:true});await page.goto('/');await connect(page);await expect(page.getByText('Wrong network.',{exact:false})).toBeVisible();
+ await expect(page.frameLocator('iframe').locator('#walletLbl')).toHaveText('switch to Sepolia');await expect(page.frameLocator('iframe').locator('#wallet')).toHaveClass(/wrong/);
+ await expect(button(page,'Start Background Play')).toBeDisabled();await pill(page).click();await expect(button(page,'Start Background Play')).toBeEnabled();expect(await page.evaluate(()=>(window as unknown as {addedChain:unknown}).addedChain)).toEqual(walletAddChain(d.network));
  await expect(page.getByLabel('Live chain state')).toContainText('100,000');await expect(page.getByText('1 ETH = 1,000,000 ICE',{exact:false})).toBeVisible();
 });
 test('background ICE sale: one-time approvals, router payload with player hookData, no wallet prompt',async({page})=>{
@@ -79,7 +111,7 @@ test('losing roll shows outcome without broadcasting draw',async({page})=>{
 });
 test('tank fill from the game wallet credits local pees and survives reload',async({page})=>{
  const fx=await fixture(page);await play(page,fx);await page.getByLabel('Pees to Buy').fill('3');await button(page,'Fill Tank').click();await expect(page.getByText('3 pees left',{exact:true})).toBeVisible();expect(fx.tank).toBe(3n);expect(fx.balance(fx.session,'ice')).toBe(970n*E);
- expect(await page.evaluate(()=>(window.pepe as {consumePee:()=>boolean}).consumePee())).toBe(true);await expect(page.getByText('2 pees left',{exact:true})).toBeVisible();await page.reload();await button(page,'Connect Wallet').click();await expect(page.getByText('2 pees left',{exact:true})).toBeVisible();
+ expect(await page.evaluate(()=>(window.pepe as {consumePee:()=>boolean}).consumePee())).toBe(true);await expect(page.getByText('2 pees left',{exact:true})).toBeVisible();await page.reload();await connect(page);await expect(page.getByText('2 pees left',{exact:true})).toBeVisible();
  expect(functions(fx)).toEqual(['approve','approve','approve','fillTank']);expect(fx.prompts).toBe(1);
 });
 test('short game wallet and invalid tank range give actionable messages',async({page})=>{
@@ -97,10 +129,12 @@ test('router simulation revert prevents game-wallet signing',async({page})=>{
  const fx=await fixture(page);await play(page,fx);const before=fx.raw.length;fx.revert();await button(page,'0.001 Sepolia ETH').click();await expect(status(page)).toContainText('SlippageTooHigh');expect(fx.raw.length).toBe(before);
 });
 test('missing deployed code keeps value controls locked',async({page})=>{
- await fixture(page,{missingCode:true});await page.goto('/');await expect(status(page)).toContainText('code is missing');await button(page,'Connect Wallet').click();await expect(button(page,'Start Background Play')).toBeDisabled();await expect(button(page,'Swap Now')).toBeDisabled();
+ await fixture(page,{missingCode:true});await page.goto('/');await expect(status(page)).toContainText('code is missing');await connect(page);await expect(button(page,'Start Background Play')).toBeDisabled();await expect(button(page,'Swap Now')).toBeDisabled();
 });
-test('scene runs like the prototype; pause, rules and music are keyboard accessible',async({page})=>{
- await page.emulateMedia({reducedMotion:'reduce'});await fixture(page);await page.goto('/');const frame=page.frameLocator('iframe');await expect(frame.locator('html')).not.toHaveClass('paused');await page.getByRole('button',{name:'Pause Animation'}).click();await expect(frame.locator('html')).toHaveClass('paused');await expect(page.getByRole('button',{name:'Resume Animation'})).toBeVisible();await frame.getByRole('button',{name:'Mute music',exact:true}).focus();await page.keyboard.press('Enter');await expect(frame.getByRole('button',{name:'Play music',exact:true})).toBeVisible();await page.getByText('Rules of the Arcade',{exact:true}).click();await expect(page.getByText('Block proposers can influence',{exact:false})).toBeVisible();
+test('scene runs like the prototype; pause, rules and music (M key) are keyboard accessible',async({page})=>{
+ await page.emulateMedia({reducedMotion:'reduce'});await page.addInitScript(musicSpy);await fixture(page);await page.goto('/');const frame=page.frameLocator('iframe');await expect(frame.locator('html')).not.toHaveClass('paused');await page.getByRole('button',{name:'Pause Animation'}).click();await expect(frame.locator('html')).toHaveClass('paused');await expect(page.getByRole('button',{name:'Resume Animation'})).toBeVisible();const music=()=>scene(page).evaluate(()=>(window as unknown as {music:string[]}).music.at(-1));
+ await frame.locator('#hero').focus();await page.keyboard.press('Shift');await expect.poll(music).toBe('playing');
+ await page.keyboard.press('m');await expect.poll(music).toBe('pause');await page.keyboard.press('m');await expect.poll(music).toBe('playing');await page.getByText('Rules of the Arcade',{exact:true}).click();await expect(page.getByText('Block proposers can influence',{exact:false})).toBeVisible();
 });
 test('fridge collision swaps in the background',async({page})=>{
  const fx=await fixture(page);await instrument(page);await play(page,fx);await armFridge(page);
@@ -116,7 +150,7 @@ test('session start: one signature, key never stored, same game wallet after rel
  const stored=await page.evaluate(()=>[...Object.values(localStorage),...Object.values(sessionStorage)].join('\n').toLowerCase());
  expect(stored).not.toContain(fx.sessionKey.slice(2).toLowerCase());expect(stored).toContain(lc(fx.session));
  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(await page.locator('#review').evaluate(el=>el.scrollWidth<=el.clientWidth)).toBe(true);
- await page.reload();await button(page,'Connect Wallet').click();await expect(button(page,'Start Background Play')).toBeEnabled();await startSession(page);
+ await page.reload();await connect(page);await expect(button(page,'Start Background Play')).toBeEnabled();await startSession(page);
  await expect(page.locator('.session-line').first()).toContainText(short);await expect(status(page)).not.toContainText('signed differently');expect(fx.prompts).toBe(2);
 });
 test('auto-refill: one grant, then fridge swaps pull ICE with zero prompts',async({page})=>{

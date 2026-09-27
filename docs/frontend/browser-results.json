@@ -83,12 +83,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1199,
+                  "duration": 1298,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T04:00:43.856Z",
+                  "startTime": "2026-09-27T04:51:37.372Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -98,11 +98,11 @@
           ],
           "id": "41922fa1b760a3f76b44-9c344d66fb32d63a1cb2",
           "file": "arcade.spec.ts",
-          "line": 86,
+          "line": 110,
           "column": 1
         },
         {
-          "title": "clean top: no header or status bar, wallet inside the scene, speaker bottom-right",
+          "title": "clean top: no header or status bar, hook title in the scene, status line in panel 03",
           "ok": true,
           "tags": [],
           "tests": [
@@ -117,12 +117,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 512,
+                  "duration": 393,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T04:00:45.115Z",
+                  "startTime": "2026-09-27T04:51:38.732Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -130,9 +130,49 @@
               "status": "expected"
             }
           ],
-          "id": "41922fa1b760a3f76b44-4d9ab08d0e6d54bb2a9d",
+          "id": "41922fa1b760a3f76b44-a8735cf67274283a780a",
           "file": "arcade.spec.ts",
-          "line": 125,
+          "line": 150,
+          "column": 1
+        },
+        {
+          "title": "scene redesign: docked brand, wallet pill top-right, no speaker, mainnet holdings in the dropdown and chips",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1258,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBeGreaterThanOrEqual\"",
+                      "duration": 14
+                    }
+                  ],
+                  "startTime": "2026-09-27T04:51:39.135Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41922fa1b760a3f76b44-4624f805e48ffee51755",
+          "file": "arcade.spec.ts",
+          "line": 170,
           "column": 1
         },
         {
@@ -151,12 +191,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 617,
+                  "duration": 1077,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T04:00:45.641Z",
+                  "startTime": "2026-09-27T04:51:40.401Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -166,7 +206,7 @@
           ],
           "id": "41922fa1b760a3f76b44-d34174054e599ae25513",
           "file": "arcade.spec.ts",
-          "line": 164,
+          "line": 252,
           "column": 1
         },
         {
@@ -185,7 +225,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1146,
+                  "duration": 1159,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -193,10 +233,10 @@
                   "steps": [
                     {
                       "title": "Expect \"poll toBe\"",
-                      "duration": 102
+                      "duration": 103
                     }
                   ],
-                  "startTime": "2026-09-27T04:00:46.273Z",
+                  "startTime": "2026-09-27T04:51:41.486Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -206,7 +246,7 @@
           ],
           "id": "41922fa1b760a3f76b44-ca1750a03d551143873a",
           "file": "arcade.spec.ts",
-          "line": 186,
+          "line": 274,
           "column": 1
         },
         {
@@ -225,7 +265,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1299,
+                  "duration": 1277,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -233,10 +273,10 @@
                   "steps": [
                     {
                       "title": "Expect \"poll toBe\"",
-                      "duration": 102
+                      "duration": 101
                     }
                   ],
-                  "startTime": "2026-09-27T04:00:47.429Z",
+                  "startTime": "2026-09-27T04:51:42.653Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -246,7 +286,7 @@
           ],
           "id": "41922fa1b760a3f76b44-39002241356a8a81520d",
           "file": "arcade.spec.ts",
-          "line": 219,
+          "line": 307,
           "column": 1
         },
         {
@@ -265,12 +305,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1263,
+                  "duration": 1254,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T04:00:48.736Z",
+                  "startTime": "2026-09-27T04:51:43.938Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -280,7 +320,7 @@
           ],
           "id": "41922fa1b760a3f76b44-40b59c1cae17fd01296c",
           "file": "arcade.spec.ts",
-          "line": 249,
+          "line": 337,
           "column": 1
         },
         {
@@ -299,12 +339,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1410,
+                  "duration": 1420,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T04:00:50.007Z",
+                  "startTime": "2026-09-27T04:51:45.200Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -314,7 +354,7 @@
           ],
           "id": "41922fa1b760a3f76b44-9d486146c82d0bb14282",
           "file": "arcade.spec.ts",
-          "line": 265,
+          "line": 353,
           "column": 1
         },
         {
@@ -333,12 +373,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1226,
+                  "duration": 1197,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T04:00:51.425Z",
+                  "startTime": "2026-09-27T04:51:46.628Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -348,7 +388,7 @@
           ],
           "id": "41922fa1b760a3f76b44-09d14600e2a9b360a80e",
           "file": "arcade.spec.ts",
-          "line": 289,
+          "line": 377,
           "column": 1
         },
         {
@@ -367,12 +407,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1146,
+                  "duration": 1165,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T04:00:52.660Z",
+                  "startTime": "2026-09-27T04:51:47.835Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -382,7 +422,7 @@
           ],
           "id": "41922fa1b760a3f76b44-01c28fb0a5d4ca7b9c0a",
           "file": "arcade.spec.ts",
-          "line": 306,
+          "line": 394,
           "column": 1
         },
         {
@@ -401,12 +441,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1388,
+                  "duration": 1122,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T04:00:53.814Z",
+                  "startTime": "2026-09-27T04:51:49.008Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -416,7 +456,7 @@
           ],
           "id": "41922fa1b760a3f76b44-62e1cff1830707c6cd0a",
           "file": "arcade.spec.ts",
-          "line": 328,
+          "line": 416,
           "column": 1
         },
         {
@@ -435,12 +475,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 621,
+                  "duration": 599,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T04:00:55.209Z",
+                  "startTime": "2026-09-27T04:51:50.138Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -450,11 +490,11 @@
           ],
           "id": "41922fa1b760a3f76b44-f62ee29775e0fdcf8e8b",
           "file": "arcade.spec.ts",
-          "line": 339,
+          "line": 427,
           "column": 1
         },
         {
-          "title": "scene runs like the prototype; pause, rules and music are keyboard accessible",
+          "title": "scene runs like the prototype; pause, rules and music (M key) are keyboard accessible",
           "ok": true,
           "tags": [],
           "tests": [
@@ -469,12 +509,26 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 471,
+                  "duration": 1343,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T04:00:55.839Z",
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 2
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 858
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 103
+                    }
+                  ],
+                  "startTime": "2026-09-27T04:51:50.744Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -482,9 +536,9 @@
               "status": "expected"
             }
           ],
-          "id": "41922fa1b760a3f76b44-d772d86b7564b66ae883",
+          "id": "41922fa1b760a3f76b44-9ae34ecec9ec33ddbe99",
           "file": "arcade.spec.ts",
-          "line": 351,
+          "line": 439,
           "column": 1
         },
         {
@@ -503,7 +557,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2991,
+                  "duration": 2961,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -514,7 +568,7 @@
                       "duration": 102
                     }
                   ],
-                  "startTime": "2026-09-27T04:00:56.318Z",
+                  "startTime": "2026-09-27T04:51:52.094Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -524,7 +578,7 @@
           ],
           "id": "41922fa1b760a3f76b44-f599b972c54f42fac284",
           "file": "arcade.spec.ts",
-          "line": 384,
+          "line": 472,
           "column": 1
         },
         {
@@ -543,12 +597,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1105,
+                  "duration": 1002,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T04:00:59.316Z",
+                  "startTime": "2026-09-27T04:51:55.063Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -558,7 +612,7 @@
           ],
           "id": "41922fa1b760a3f76b44-6db7dac3b45d1effdc98",
           "file": "arcade.spec.ts",
-          "line": 400,
+          "line": 488,
           "column": 1
         },
         {
@@ -577,12 +631,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1377,
+                  "duration": 1375,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T04:01:00.428Z",
+                  "startTime": "2026-09-27T04:51:56.072Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -592,7 +646,7 @@
           ],
           "id": "41922fa1b760a3f76b44-750805242406c0bfaec1",
           "file": "arcade.spec.ts",
-          "line": 412,
+          "line": 500,
           "column": 1
         },
         {
@@ -611,7 +665,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1873,
+                  "duration": 1849,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -623,14 +677,14 @@
                     },
                     {
                       "title": "Expect \"poll toBe\"",
-                      "duration": 100
+                      "duration": 101
                     },
                     {
                       "title": "Expect \"poll toBe\"",
-                      "duration": 101
+                      "duration": 102
                     }
                   ],
-                  "startTime": "2026-09-27T04:01:01.812Z",
+                  "startTime": "2026-09-27T04:51:57.454Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -640,7 +694,7 @@
           ],
           "id": "41922fa1b760a3f76b44-8a4a840370459880367c",
           "file": "arcade.spec.ts",
-          "line": 438,
+          "line": 526,
           "column": 1
         },
         {
@@ -659,7 +713,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1863,
+                  "duration": 1752,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -667,10 +721,10 @@
                   "steps": [
                     {
                       "title": "Expect \"poll toBe\"",
-                      "duration": 100
+                      "duration": 101
                     }
                   ],
-                  "startTime": "2026-09-27T04:01:03.693Z",
+                  "startTime": "2026-09-27T04:51:59.310Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -680,7 +734,7 @@
           ],
           "id": "41922fa1b760a3f76b44-0761af5a792127a8bf28",
           "file": "arcade.spec.ts",
-          "line": 465,
+          "line": 553,
           "column": 1
         },
         {
@@ -699,12 +753,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 856,
+                  "duration": 846,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T04:01:05.563Z",
+                  "startTime": "2026-09-27T04:52:01.071Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -714,7 +768,7 @@
           ],
           "id": "41922fa1b760a3f76b44-198d824cd75a9514239a",
           "file": "arcade.spec.ts",
-          "line": 495,
+          "line": 583,
           "column": 1
         },
         {
@@ -733,7 +787,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 7854,
+                  "duration": 8064,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -744,7 +798,7 @@
                       "duration": 102
                     }
                   ],
-                  "startTime": "2026-09-27T04:01:06.426Z",
+                  "startTime": "2026-09-27T04:52:01.924Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -754,7 +808,7 @@
           ],
           "id": "41922fa1b760a3f76b44-a765b48a374c6337ebea",
           "file": "arcade.spec.ts",
-          "line": 507,
+          "line": 595,
           "column": 1
         },
         {
@@ -773,12 +827,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1283,
+                  "duration": 1268,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T04:01:14.287Z",
+                  "startTime": "2026-09-27T04:52:09.995Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -788,7 +842,7 @@
           ],
           "id": "41922fa1b760a3f76b44-d7f569a98b9922ae06c7",
           "file": "arcade.spec.ts",
-          "line": 527,
+          "line": 615,
           "column": 1
         },
         {
@@ -807,12 +861,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1913,
+                  "duration": 1761,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T04:01:15.577Z",
+                  "startTime": "2026-09-27T04:52:11.270Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -822,7 +876,7 @@
           ],
           "id": "41922fa1b760a3f76b44-8c90a07cf50a5d3aeafb",
           "file": "arcade.spec.ts",
-          "line": 548,
+          "line": 636,
           "column": 1
         }
       ]
@@ -830,9 +884,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-09-27T04:00:42.783Z",
-    "duration": 34778.428,
-    "expected": 21,
+    "startTime": "2026-09-27T04:51:35.760Z",
+    "duration": 37342.751000000004,
+    "expected": 22,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

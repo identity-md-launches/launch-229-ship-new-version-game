@@ -68,12 +68,12 @@
       "sha256": "102c5b5d05d135df6022ae8318c796a480d2a5e08452a05ca8a7e2bc10b4bbf2"
     },
     {
-      "path": "assets/index-BM1EmAi2.css",
-      "sha256": "b34921d0a6475e4ff0c375d4db34c96ed5131d0f9bdd5bdd6ea1347845677c42"
+      "path": "assets/index-CgZZiCFQ.js",
+      "sha256": "4fe9c21de6505e8a64566e27a11e4a20ae683fbeaa020a3460d072ccd90215e7"
     },
     {
-      "path": "assets/index-qsG-MZt8.js",
-      "sha256": "48a71c40d3f96f557c33d702cfc3a47b7d110fd1bb7383d978fe3f49632c043e"
+      "path": "assets/index-eKXOXgw0.css",
+      "sha256": "542de29f04b0d402815dd1943f4b89b67d9352b0540f849808046972435ea83f"
     },
     {
       "path": "assets/medallion.webp",
@@ -89,11 +89,11 @@
     },
     {
       "path": "game.html",
-      "sha256": "f18e0ddb23ed24252a688ef923c3d5750af32031283c23c86d2e223b9e8ba2ea"
+      "sha256": "e898b6f8d152a942cc52777466059e8f6eac9e21a407423f36783fe04364bae7"
     },
     {
       "path": "index.html",
-      "sha256": "b4765969bcc81af68a85f3a7876387966d4599a534c7891d3e8c87fe559b25fe"
+      "sha256": "675ef4e7138d6096b4f9bdc94dd69e9ca2f9c9c9f9378d42c2be0981864530c7"
     }
   ],
   "network": {

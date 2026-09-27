@@ -9,14 +9,42 @@ s=s.replace('<title>GenkiAI — Agent Harness</title>','<title>Pepe Arcade Scene
 m=re.search(r'data:image/webp;base64,([A-Za-z0-9+/=]+)',s)
 (root/'web/public/assets/medallion.webp').write_bytes(base64.b64decode(m[1]))
 s=s.replace(m[0],'./assets/medallion.webp')
+# Lobby's scene carries its own Ethereum-mainnet MetaMask script and inline music: the shell drives the wallet, and the music is the asset file.
+s,n=re.subn(r'<script>\s*/\* =+ MetaMask connect =+.*?</script>\s*','',s,count=1,flags=re.S);assert n==1
+s,n=re.subn(r'<script type="text/plain" id="bgmData">[A-Za-z0-9+/=\s]*</script>\s*','',s,count=1);assert n==1
+a=s.index("  var raw=document.getElementById('bgmData')");b=s.index("  function fadeTo(",a);s=s[:a]+"  audio.src='assets/bgm.mp3';\n\n"+s[b:]
+# The $IMD chip and dropdown row show mainnet $IMD; everywhere else the Sepolia game swaps against ETH.
+keep=['<span class="tk">$IMD</span>','<p class="wp-row"><span>$IMD</span>','aria-label="Balance 0 $IMD"']
+for i,k in enumerate(keep):assert s.count(k)==1,k;s=s.replace(k,'\0keep%d\0'%i)
 s=s.replace('$IMD','Sepolia ETH')
+for i,k in enumerate(keep):s=s.replace('\0keep%d\0'%i,k)
+def once(old,new):
+ global s
+ assert s.count(old)==1,old;s=s.replace(old,new)
+# The pill drives the Sepolia arcade wallet; the dropdown lists mainnet holdings (read-only).
+once('<span class="wp-net" id="wpNet">Ethereum</span>','<span class="wp-net" id="wpNet">Sepolia</span>')
+once('<p class="wp-sub">in your wallet</p>','<p class="wp-sub">on Ethereum mainnet</p>')
+once('<p class="wp-note">the game still uses play balances for now</p>','<p class="wp-note">the arcade plays on Sepolia for now</p>')
+for k in ('wpEth','wpIce','wpImd'):once('<b id="%s">…</b>'%k,'<b id="%s">—</b>'%k)
+# On small screens the pill is scaled up from its top-right corner so it is never under 28 CSS px tall.
+once("""      f.querySelector('.slide').style.transform='scale('+s+')';
+    });
+""","""      f.querySelector('.slide').style.transform='scale('+s+')';
+    });
+    var wal=document.getElementById('wallet');
+    if(wal){wal.style.transformOrigin='top right';wal.style.transform='scale('+Math.max(1,28/(34*s))+')';}
+""")
 def between(start,end,content):
  global s
  a=s.index(start);b=s.index(end,a);s=s[:a]+content+'\n'+s[b:]
-between('  var imdShown=0;','  // ---- paying for a pee', '''  var balance=0, docked=false, balDone=true;
+between('  var imdShown=0;','  // ---- paying for a pee', '''  var balance=0, docked=true, balDone=true;
+  // start docked: logo + headline + chips in the upper left (measured once the font is in)
+  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(function(){
+    dockBrand(document.getElementById('balance'),document.getElementById('balAmt'),1000,true);
+  });
   function bridge(){return parent.pepe;}
   function live(){return bridge()?bridge().snapshot():{tank:0,free:0,points:0};}
-  function showBalance(add){if(add && bridge())bridge().addPoints(add);if(!docked){docked=true;dockBrand(document.getElementById('balance'),document.getElementById('balAmt'),1000);}}
+  function showBalance(add){if(add && bridge())bridge().addPoints(add);}
   function setImd(){ /* balances arrive only from the parent chain client */ }
 ''')
 between('  // ---- paying for a pee','  // ================= chapter 2', '''  // Paid tank charges are local; wallet balances only change after chain reads.
@@ -29,7 +57,7 @@ between('  // ---- paying for a pee','  // ================= chapter 2', '''  //
 ''')
 s=s.replace("g.textContent='+'+ICE.per+' $ICE'","g.textContent='+'+ICE.per+' points'")
 s=s.replace('<span class="tk">$ICE</span><span class="lbl">earned</span>', '<span class="tk">points</span><span class="lbl">local prize</span>')
-s=s.replace('Balance 1,000 $ICE','Wallet ICE balance unavailable').replace('Balance 0 Sepolia ETH','Wallet ETH balance unavailable')
+s=s.replace('Balance 1,000 $ICE','Mainnet $ICE balance unavailable').replace('Balance 0 $IMD','Mainnet $IMD balance unavailable')
 s=s.replace('<span class="amt" id="balAmt">0</span>','<span class="amt" id="balAmt">—</span>').replace('<span class="amt" id="imdAmt">0</span>','<span class="amt" id="imdAmt">—</span>')
 s=s.replace('45 $ICE','45 points').replace('240 $ICE','240 points').replace('1,500 $ICE','1,500 points')
 s=s.replace("roll a <b>77</b> and it's all yours", 'roll <b>77</b> · win 90% of both pots').replace('every pee + 1% of each swap → jackpot','tank fills + 1% of each swap → jackpot')
@@ -86,17 +114,51 @@ s=s.replace("window.addEventListener('keydown',function(e){", "window.addEventLi
 s=s.replace("window.addEventListener('keyup',function(e){", "window.addEventListener('keyup',function(e){\n    if(/INPUT|SELECT|TEXTAREA|BUTTON/.test(e.target.tagName))return;")
 # Small parent bridge, preserving the existing game world and all controls.
 pos=s.index('  // ---- loop ----')
-s=s[:pos]+'''  var paused=false;
+s=s[:pos]+'''  // ---- wallet pill: the shell owns the wallet (parent.pepe.wallet); the scene renders pepeScene.wallet(view) ----
+  var WV={wrong:false,busy:false};
+  var wBox=document.getElementById('wallet'), wBtn=document.getElementById('walletBtn'), wPop=document.getElementById('walletPop');
+  function walletOpen(on){
+    wPop.hidden=!on;wBtn.setAttribute('aria-expanded',on?'true':'false');
+    if(on&&bridge())bridge().wallet.refresh();
+  }
+  wBtn.addEventListener('click',function(e){
+    e.stopPropagation();wBtn.blur();
+    var w=bridge()&&bridge().wallet;
+    if(!w||WV.busy)return;
+    if(!WV.account)w.connect();else if(WV.wrong)w.switchChain();else walletOpen(wPop.hidden);
+  });
+  document.getElementById('wpOut').addEventListener('click',function(e){e.stopPropagation();e.currentTarget.blur();walletOpen(false);if(bridge())bridge().wallet.disconnect();});
+  wPop.addEventListener('click',function(e){e.stopPropagation();});
+  document.addEventListener('click',function(){if(!wPop.hidden)walletOpen(false);});
+  window.addEventListener('blur',function(){if(!wPop.hidden)walletOpen(false);});   // a click on the page outside the scene
+  window.addEventListener('keydown',function(e){if(e.key==='Escape'&&!wPop.hidden)walletOpen(false);});
+  function chipLabel(tk,v){return v==='…'?'Loading mainnet '+tk+' balance':/[0-9]/.test(v)?'Mainnet '+tk+' balance '+v:'Mainnet '+tk+' balance unavailable';}
+
+  var paused=false;
   window.pepeScene={
+    wallet:function(v){
+      var on=!!v.account, short=on?v.account.slice(0,6)+'…'+v.account.slice(-4):'—', h=v.holdings;
+      WV=v;
+      wBox.classList.toggle('on',on);wBox.classList.toggle('wrong',on&&v.wrong);wBox.classList.toggle('busy',!!v.busy);
+      document.getElementById('walletLbl').textContent=!on?'connect':v.wrong?'switch to '+v.network:short;
+      wBtn.setAttribute('aria-label',!on?'Connect wallet':v.wrong?'Wrong network, switch to '+v.network:'Wallet '+short);
+      document.getElementById('wpAddr').textContent=short;
+      document.getElementById('wpNet').textContent=on&&v.wrong?'wrong network':v.network;
+      document.getElementById('wpEth').textContent=h.eth;
+      document.getElementById('wpIce').textContent=h.ice;
+      document.getElementById('wpImd').textContent=h.imd;
+      // the chips show mainnet holdings; Sepolia balances stay in the stats row below the game
+      document.getElementById('balAmt').textContent=h.ice;
+      document.getElementById('imdAmt').textContent=h.imd;
+      document.getElementById('balance').setAttribute('aria-label',chipLabel('$ICE',h.ice));
+      document.getElementById('imdBal').setAttribute('aria-label',chipLabel('$IMD',h.imd));
+      placeImd();
+      var msg=document.getElementById('walletMsg');msg.textContent=v.message||'';msg.classList.toggle('show',!!v.message);
+      if(!on)walletOpen(false);
+    },
     update:function(state){
       function fmt(v,dec){return v==null?'—':(Number(v)/Math.pow(10,dec||18)).toLocaleString(undefined,{maximumFractionDigits:6});}
-      var ice=fmt(state.ice,state.decimals),eth=fmt(state.eth,18);
-      document.getElementById('balAmt').textContent=ice;
-      document.getElementById('imdAmt').textContent=eth;
-      document.getElementById('balance').setAttribute('aria-label',ice+' ICE');
-      document.getElementById('imdBal').setAttribute('aria-label',eth+' Sepolia ETH');
-      document.getElementById('balance').classList.add('done');
-      document.getElementById('imdBal').classList.add('done');
+      var eth=fmt(state.eth,18);
       document.getElementById('jpAmt').textContent=fmt(state.potIce,state.decimals)+' ICE + '+fmt(state.potEth,18)+' ETH';
       document.getElementById('ssPx').textContent=state.price?'1 ETH = '+state.price.toLocaleString(undefined,{maximumFractionDigits:2})+' ICE':'waiting for pool price';
       document.getElementById('gtWallet').textContent=eth+' ETH';
@@ -121,8 +183,6 @@ s=s.replace('h5','h2').replace('h4','h2')
 s=re.sub(r'(?<!utf8,)<svg(?![^>]*aria-hidden)', '<svg aria-hidden="true"',s)
 s=s.replace('role="dialog" aria-label="Golden throne: swap ETH for ICE"','role="region" aria-label="Golden throne: swap ETH for ICE"')
 s=s.replace('</style>', '''
-.slide:not(.docked):not(.inclimb) #imdBal{left:220px;right:auto;top:140px}
-.sound{top:auto;bottom:26px}
 .paused *, .paused *::before,.paused *::after{animation-play-state:paused!important;transition:none!important}
 </style>''',1)
 (root/'web/public/game.html').write_text(s)

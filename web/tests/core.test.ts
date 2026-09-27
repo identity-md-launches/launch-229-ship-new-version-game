@@ -9,6 +9,9 @@ import {safePath,type Deployment} from '../src/config';
 import {acquireTabLock,checkSessionCall,sessionKeyFromSignature,sessionMessage,type SessionContext} from '../src/session';
 import {loadGrant,redeemCall,refillSupport,requestRefill,saveGrant,clearGrant,type Grant} from '../src/refill';
 import {privateKeyToAccount} from 'viem/accounts';
+import {MAINNET_RPCS,MAINNET_TOKENS,readHoldings,showHoldings} from '../src/holdings';
+import {createPublicClient,custom} from 'viem';
+import {mainnet} from 'viem/chains';
 import {type Abi} from 'viem';
 const d=JSON.parse(readFileSync('public/imd-deployment.json','utf8')) as Deployment;
 const player='0x0000000000000000000000000000000000001234' as Address;
@@ -151,4 +154,28 @@ test('auto-refill pulls pass the game wallet allowlist',()=>{
  for(const kind of ['eth','ice'] as const){const c=redeemCall(grant,kind,{token:ctx.token,session:ctx.session},3n);assert.equal(c.to,DELEGATION_MANAGER);assert.equal(c.value,0n);assert.doesNotThrow(()=>checkSessionCall(c,ctx));}
  const [ctxIce]=decodeFunctionData({abi:delegationManagerAbi,data:redeemCall(grant,'ice',{token:ctx.token,session:ctx.session},3n).data}).args[0];assert.equal(ctxIce,'0x02');
 });
-
+test('mainnet holdings pin checksummed tokens and HTTPS RPCs',()=>{
+ for(const a of Object.values(MAINNET_TOKENS))assert.equal(getAddress(a),a);
+ assert.ok(MAINNET_RPCS.length>=2&&MAINNET_RPCS.every(u=>u.startsWith('https://')));
+});
+test('mainnet holdings read ETH, ICE and IMD; a failed read leaves only that field empty',async t=>{
+ const warn=t.mock.method(console,'warn',()=>{});
+ const word=(v:bigint)=>encodeAbiParameters([{type:'uint256'}],[v]);
+ const client=(failImd:boolean)=>createPublicClient({chain:mainnet,transport:custom({async request({method,params}:{method:string;params?:unknown}){
+  if(method==='eth_getBalance'){assert.equal((params as [string])[0].toLowerCase(),player.toLowerCase());return toHex(15n*10n**17n);}
+  if(method==='eth_call'){const {to,data}=(params as [{to:string;data:Hex}])[0];assert.equal(decodeFunctionData({abi:erc20Abi,data}).args[0],getAddress(player));
+   if(to.toLowerCase()===MAINNET_TOKENS.ice.toLowerCase())return word(12345n*10n**17n);
+   if(failImd)throw Error('rpc down');return word(42n*10n**18n);}
+  throw Error(`unexpected ${method}`);
+ }})});
+ assert.deepEqual(await readHoldings(player,client(false)),{eth:15n*10n**17n,ice:12345n*10n**17n,imd:42n*10n**18n});
+ assert.equal(warn.mock.callCount(),0);
+ assert.deepEqual(await readHoldings(player,client(true)),{eth:15n*10n**17n,ice:12345n*10n**17n});
+ assert.equal(warn.mock.callCount(),1);assert.equal(warn.mock.calls[0].arguments[0],'mainnet holdings read failed');assert.equal((warn.mock.calls[0].arguments[1] as {field:string}).field,'imd');
+});
+test('mainnet holdings display: dash when disconnected, ellipsis while loading, ? on a failed read, 4 decimals truncated',()=>{
+ assert.deepEqual(showHoldings(undefined),{eth:'—',ice:'—',imd:'—'});
+ assert.deepEqual(showHoldings('loading'),{eth:'…',ice:'…',imd:'…'});
+ assert.deepEqual(showHoldings({eth:15n*10n**17n,ice:12345n*10n**17n}),{eth:'1.5',ice:'1,234.5',imd:'?'});
+ assert.deepEqual(showHoldings({eth:0n,ice:1234567n*10n**18n+123456789n*10n**9n,imd:42n*10n**18n}),{eth:'0',ice:'1,234,567.1234',imd:'42'});
+});

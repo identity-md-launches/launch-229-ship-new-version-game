@@ -23,11 +23,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,su
 main,footer{max-width:1440px;margin:auto;padding:0 max(24px,env(safe-area-inset-left)) 24px}
 iframe{width:100%;aspect-ratio:1280/720;border:1px solid #26386c;border-radius:18px;display:block;background:#03061a}
 .scene{position:relative}
-.wallet-controls{position:absolute;top:10px;left:12px;z-index:2;display:flex;align-items:center;gap:8px;max-width:calc(100% - 24px);pointer-events:none}
-.wallet-controls>*{pointer-events:auto}
-.wallet-controls button{min-height:34px;padding:0 12px;font-size:13px;border-radius:9px;background:rgba(8,15,58,.86);border:1px solid rgba(227,190,96,.7);color:var(--gold);box-shadow:0 4px 12px rgba(3,6,26,.5);white-space:nowrap}
-.wallet-controls button.quiet{background:rgba(8,15,58,.6)}
-.wallet-controls button:hover:enabled{background:rgba(21,34,104,.95);border-color:var(--gold)}
 .game-tools{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 0;color:var(--muted);font-size:12px}
 .touch-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
 .touch-controls button{flex:1;white-space:nowrap;font-size:13px;user-select:none;touch-action:none}
@@ -84,8 +79,6 @@ footer b{color:#f3f1e8}
 }
 
 @media(max-width:600px){main,footer{padding-left:14px;padding-right:14px}
-.wallet-controls{top:8px;left:10px;gap:6px}
-.wallet-controls button{min-height:30px;padding:0 9px;font-size:12px}
 .balances{grid-template-columns:1fr 1fr}
 .panels{grid-template-columns:1fr}
 .panel{padding:20px}

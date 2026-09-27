@@ -420,7 +420,7 @@ Game wallet (session EOA in this tab; signs locally, broadcasts through the publ
 #### M16: Mainnet holdings reader — new
 - Purpose: read-only mainnet ETH, $ICE and $IMD for the connected address (R21).
 - Location: `web/src/holdings.ts`.
-- Interface: `MAINNET_RPCS: string[]`, `MAINNET_TOKENS: {ice: Address; imd: Address}`, `type Holdings = {eth?: bigint; ice?: bigint; imd?: bigint}`, `readHoldings(address: Address, client?: PublicClient): Promise<Holdings>`.
+- Interface: `MAINNET_RPCS: string[]`, `MAINNET_TOKENS: {ice: Address; imd: Address}`, `type Holdings = {eth?: bigint; ice?: bigint; imd?: bigint}`, `readHoldings(address: Address, client?: PublicClient): Promise<Holdings>`, `showHoldings(holdings | 'loading' | undefined): {eth, ice, imd}` (display strings: "—", "…", "?" or up to 4 decimals, truncated, en-US).
 - Internals: viem `createPublicClient({chain: mainnet, transport: fallback(MAINNET_RPCS.map(url => http(url, {timeout: 10000, retryCount: 1})))})`, created once; `getBalance` plus two `balanceOf` reads via `Promise.allSettled`; both tokens use 18 decimals (verified on-chain 2026-09-27). RPCs: `ethereum-rpc.publicnode.com`, `1rpc.io/eth`, `eth.drpc.org` (all CORS `*`, checked 2026-09-27).
 - Edge & error policy: a failed field stays undefined and is logged with `console.warn('mainnet holdings read failed', {field, error})`; never throws.
 - Covers: R21 · Depends on: none.
@@ -430,7 +430,7 @@ Game wallet (session EOA in this tab; signs locally, broadcasts through the publ
 - Location: `web/src/main.tsx`, `web/src/style.css`, `web/scripts/adapt-game.py` (scene side).
 - Interface: shell → scene `pepeScene.wallet({account?, wrong, busy, network, holdings: {eth, ice, imd}, message?})` with display strings; scene → shell `parent.pepe.wallet.{connect(), disconnect(), switchChain(), refresh()}`.
 - Internals: 1) remove the `.wallet-controls` overlay, the `ConnectButton` / `RainbowKitProvider` usage, its stylesheet import and the `@rainbow-me/rainbowkit` dependency; 2) keep `connectWallet` / `switchChain` / `disconnect`, sending their errors to the pill bubble (6 s) instead of the status line; 3) a `useEffect` reads holdings on connect / account change and on `refresh()`, and pushes the view on every change and on iframe load; 4) scene: pill click → connect / switchChain / toggle dropdown; dropdown open → `refresh()`; Escape and outside click close it; chips show `$ICE` / `$IMD` holdings; `update(state)` no longer writes the chips; 5) `fit()` sets `.wallet` `transform: scale(max(1, 28 / (34 * s)))` with origin top right.
-- Edge & error policy: no wallet → "No browser wallet found. Install an injected wallet, then reload."; a rejected request → "connection cancelled"; holdings reads never block play.
+- Edge & error policy: no wallet → "No browser wallet found. Install an injected wallet, then reload."; a rejected connect → "connection cancelled"; a rejected network switch → "network switch cancelled"; holdings reads never block play.
 - Covers: R20, R21 · Depends on: M15, M16.
 
 #### M18: Browser tests for the redesign — changed

@@ -94,3 +94,30 @@ Design decisions (Lobby, 2026-09-27): session permissions; key re-derived from a
 | T14 | `git status --short` | changes only under `web/`, `dist/`, `docs/frontend/`, AUDIT.md, DESIGN.md, PLAN.md, STATUS.md; `prototype/` clean; the Anvil test keys appear in no file under `dist/` or `web/src/` |
 | T14 | `git show --stat HEAD` | `a54dffa` "Add background play with a session game wallet and auto-refill": 25 files, 1357 insertions, 427 deletions; source under `web/src/`, `web/tests/`, `web/scripts/`, `web/public/` and the rebuilt `dist/` (new asset hashes, `game.html`, `index.html`, `imd-deployment.json`) in one commit |
 
+## Scene redesign (T15–T19)
+
+Decisions (Lobby, 2026-09-27): scene matches `genkiai-page1.html` (SHA-1 `f528db33…`; a second upload was byte-identical); the page below the game stays; the wallet dropdown and chips show mainnet $ICE / $IMD read-only while play stays on Sepolia; mainnet play is a separate design next.
+
+T17 notes: wallet rejections are detected by a shared `rejected()` in `protocol.ts` (same rule `errorMessage` already used); a rejected network switch says "network switch cancelled" (DESIGN M17 updated). A click on the page outside the scene closes the dropdown through the scene window's `blur`. Scratch scripts run under `tsx` need a `window.__name` shim before the fixture's init script; the Playwright runner does not.
+
+### Redesign evidence
+
+| Task | Check | Result |
+|---|---|---|
+| T15 | `sha1sum prototype/index.html` | `f528db33d762c012c622dc0aa451298b9106aeaf` |
+| T15 | `python3 web/scripts/adapt-game.py` twice, `sha1sum web/public/game.html` | `3cf729ee…` both runs; `grep -c 'bgmData\|eth_requestAccounts\|id="soundBtn"'` = 0; one `assets/bgm.mp3` loader; embedded music SHA-256 `48c660ac…` equals `prototype/assets/bgm.mp3` |
+| T15 | `diff` of old vs new `game.html` | only Lobby's edits (brandmark 20/20, wallet pill, docked start, climb dumpster stats, hero x=400, throne timing, no speaker) plus the adapt changes (chip labels `$IMD`, mainnet aria labels, `.sound` override removed) |
+| T15 | Playwright on `web/public/game.html` at 1280×720 | `docked: true`, no `#soundBtn`, `#imdBal .tk` = "$IMD", pill at x 1139–1237 / y 38 (top-right), brandmark at 49/36; no page errors |
+| T15 | `npm run typecheck && npm test` (log `test/scratch/t15.log`) | exit 0; 24 tests, 24 pass |
+| T16 | `npm run typecheck && npm test` (log `test/scratch/t16.log`) | exit 0; 26 tests, 26 pass (new: checksummed tokens and HTTPS RPCs; stub client returns all three values, a failing `balanceOf` leaves only `imd` undefined with one `console.warn`) |
+| T16 | live read-only `readHoldings(0x…dEaD)` against the real mainnet RPCs | `{"eth":"12640615121762768233863","ice":"0","imd":"0"}` |
+| T17 | `grep -rn "wallet-controls\|rainbowkit\|ConnectButton" web/src web/package.json` | no output (exit 1) |
+| T17 | `npm uninstall @rainbow-me/rainbowkit` (log `test/scratch/t17-npm.log`) | lockfile: 102 packages removed, 0 added, 0 version changes; JS bundle 2,564,547 → 627,481 bytes |
+| T17 | `python3 web/scripts/adapt-game.py` twice | `game.html` sha1 `3aa07a46…` both runs; new anchors use `once()` (fail when missing) |
+| T17 | `npm run typecheck && npm test && npm run build` (log `test/scratch/t17-chain.log`) | exit 0; 27 tests, 27 pass (new: `showHoldings` "—" / "…" / "?" / truncated 4 decimals); `✓ built in 5.98s` |
+| T17 | scratch Playwright on built `dist/` with the T12 wallet fixture and a stubbed mainnet RPC (`test/scratch/t17-smoke.mts`, log `t17-smoke.log`) | 18 PASS, 0 FAIL: pill "connect" → `0xf39F…2266`; chips `1,234.5` / `42`, aria "Mainnet $ICE balance 1,234.5"; dropdown "Sepolia · on Ethereum mainnet · ETH 1.5 / $ICE 1,234.5 / $IMD 42 · the arcade plays on Sepolia for now"; opening refreshes; Escape and a click on the page close it; disconnect resets chips to "—"; pill 28.0 px at 390 px; wrong network → "switch to Sepolia" (red); failed reads → "?"; no wallet → bubble text, cleared after 6 s; no page errors |
+| T18 | fixture (`web/tests/wallet-fixture.ts`) | mainnet RPCs (`MAINNET_RPCS`) answered: player holds 1.5 ETH, 1,234.5 $ICE, 42 $IMD; every other non-local host is aborted and recorded in `fx.external` (asserted empty in the subpath and redesign tests) |
+| T18 | spec (`web/tests/arcade.spec.ts`) | helpers connect through the in-scene pill; new "scene redesign" test (docked brand at 20/20, chips top-left, pill top 22.5 / right 14 scene units, no `#soundBtn`, dropdown ETH 1.5 / $ICE 1,234.5 / $IMD 42, Escape and outside click close, disconnect resets, pill ≥ 28 px at 390 px); wrong network switches from the pill; music test toggles with M (media spy sees `pause` then `playing`); no-wallet text in the pill bubble |
+| T18 | `npm run test:browser`, twice (logs `test/scratch/t18-run1.log`, `t18-run2.log`) | `22 passed (37.5s)`, `22 passed (37.4s)`; 0 failed, 0 flaky; desktop screenshot shows docked brand, "— $ICE" / "— $IMD" chips, "connect" pill with the no-wallet bubble |
+| T19 | `npm run typecheck && npm test && npm run build && npm run check:export && npm run test:browser` from `web/` (log `test/scratch/t19-chain.log`) | exit 0; 27 tests, 27 pass; `✓ built in 5.89s`; `PASS: exact handoff, network, pinned ABI hashes, 19 assets, 3414059 export bytes.` (was 5,370,024); `22 passed (37.3s)` |
+| T19 | `git status --short` | changes only under `prototype/`, `web/`, `dist/`, `docs/frontend/` and the project docs; `dist/game.html` equals `web/public/game.html`; `KEYS.md` and `.gitlawb/identity.pem` still ignored |

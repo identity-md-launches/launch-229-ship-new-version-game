@@ -31,9 +31,10 @@ export function rollFor(hash:Hex,id:Hex,ticket:bigint) { return Number(BigInt(ke
 export function isWin(roll:number) { return roll===77 || [20,40,60,80,100].includes(roll); }
 export function drawWindow(ticketBlock:bigint,current:bigint) { return current<=ticketBlock+1n?'waiting':current>ticketBlock+256n?'expired':'ready'; }
 export function minimumOut(quote:bigint,bps:number) { if(!Number.isInteger(bps)||bps<10||bps>500) throw Error('Choose slippage from 0.1% to 5%.'); return quote*BigInt(10000-bps)/10000n; }
+export const rejected=(error:unknown)=>{const e=error as {code?:number;message?:string};return e?.code===4001 || /reject|denied/i.test(e?.message||'');};
 export function errorMessage(error:unknown):string {
  const e=error as {code?:number;shortMessage?:string;message?:string;cause?:unknown};
- if(e?.code===4001 || /reject|denied/i.test(e?.message||'')) return 'Wallet said no. Nothing spent; try again when ready.';
+ if(rejected(error)) return 'Wallet said no. Nothing spent; try again when ready.';
  return (e?.shortMessage||e?.message||'The chain did not answer. Try refresh.').slice(0,240);
 }
 export async function switchNetwork(provider:{request:(arg:{method:string;params?:unknown[]})=>Promise<unknown>},d:Deployment) {

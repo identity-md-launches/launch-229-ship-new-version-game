@@ -174,10 +174,10 @@
 - Modules: `prototype/index.html`, `web/scripts/adapt-game.py`, `web/public/game.html`
 - Requirements: R18, R19, R22, R23, R24
 - Acceptance:
-  - [ ] `sha1sum prototype/index.html` prints `f528db33d762c012c622dc0aa451298b9106aeaf`.
-  - [ ] `python3 web/scripts/adapt-game.py` runs twice with an identical `game.html`; it contains no `bgmData`, no `eth_requestAccounts` and no `soundBtn` element, and loads `assets/bgm.mp3`.
-  - [ ] In a browser at 1280×720, `game.html` shows the docked brand block top-left and the wallet pill top-right on first paint, with no speaker button; the `#imdBal` chip reads "$IMD".
-  - [ ] `npm run typecheck` and `npm test` exit 0.
+  - [x] `sha1sum prototype/index.html` prints `f528db33d762c012c622dc0aa451298b9106aeaf`.
+  - [x] `python3 web/scripts/adapt-game.py` runs twice with an identical `game.html`; it contains no `bgmData`, no `eth_requestAccounts` and no `soundBtn` element, and loads `assets/bgm.mp3`.
+  - [x] In a browser at 1280×720, `game.html` shows the docked brand block top-left and the wallet pill top-right on first paint, with no speaker button; the `#imdBal` chip reads "$IMD".
+  - [x] `npm run typecheck` and `npm test` exit 0.
 - Verify: adapt twice + `sha1sum web/public/game.html`; grep; Playwright screenshot of `/game.html`.
 
 ### T16: Mainnet holdings reader [S]
@@ -185,9 +185,9 @@
 - Modules: `web/src/holdings.ts`, `web/tests/core.test.ts`
 - Requirements: R21
 - Acceptance:
-  - [ ] `holdings.ts` exports `MAINNET_RPCS`, `MAINNET_TOKENS` and `readHoldings` per M16; token addresses are checksummed.
-  - [ ] Unit tests: a stub client returns all three values; a failing `balanceOf` leaves only that field undefined and logs a warning.
-  - [ ] `npm run typecheck` and `npm test` exit 0.
+  - [x] `holdings.ts` exports `MAINNET_RPCS`, `MAINNET_TOKENS` and `readHoldings` per M16; token addresses are checksummed.
+  - [x] Unit tests: a stub client returns all three values; a failing `balanceOf` leaves only that field undefined and logs a warning.
+  - [x] `npm run typecheck` and `npm test` exit 0.
 - Verify: `npm run typecheck && npm test` from `web/`.
 
 ### T17: Wire the in-scene wallet pill to the shell [M]
@@ -195,9 +195,9 @@
 - Modules: `web/src/main.tsx`, `web/src/style.css`, `web/package.json`, `web/scripts/adapt-game.py`, `web/public/game.html`
 - Requirements: R20, R21
 - Acceptance:
-  - [ ] `grep -rn "wallet-controls\|rainbowkit\|ConnectButton" web/src web/package.json` prints nothing.
-  - [ ] Scene bridge `pepeScene.wallet(view)` and `parent.pepe.wallet.{connect,disconnect,switchChain,refresh}` exist per M17; the chips show holdings, not Sepolia balances.
-  - [ ] `npm run typecheck`, `npm test` and `npm run build` exit 0.
+  - [x] `grep -rn "wallet-controls\|rainbowkit\|ConnectButton" web/src web/package.json` prints nothing.
+  - [x] Scene bridge `pepeScene.wallet(view)` and `parent.pepe.wallet.{connect,disconnect,switchChain,refresh}` exist per M17; the chips show holdings, not Sepolia balances.
+  - [x] `npm run typecheck`, `npm test` and `npm run build` exit 0.
 - Verify: grep; `npm run typecheck && npm test && npm run build` from `web/`.
 
 ### T18: Browser tests for the redesign [M]
@@ -205,10 +205,10 @@
 - Modules: `web/tests/wallet-fixture.ts`, `web/tests/arcade.spec.ts`
 - Requirements: R18, R19, R20, R21, R22, R23, R25
 - Acceptance:
-  - [ ] The fixture answers the three mainnet RPC hosts; no test reaches the network.
-  - [ ] "scene redesign" test: brand block docked at load, pill top-right, no speaker, dropdown shows ETH 1.5 / $ICE 1,234.5 / $IMD 42 and closes on Escape, chips show the same $ICE / $IMD, pill ≥ 28 px tall at 390 px width.
-  - [ ] The music test toggles with the M key; all helpers connect through the pill.
-  - [ ] `npm run test:browser` reports all tests passed, 0 failed.
+  - [x] The fixture answers the three mainnet RPC hosts; no test reaches the network.
+  - [x] "scene redesign" test: brand block docked at load, pill top-right, no speaker, dropdown shows ETH 1.5 / $ICE 1,234.5 / $IMD 42 and closes on Escape, chips show the same $ICE / $IMD, pill ≥ 28 px tall at 390 px width.
+  - [x] The music test toggles with the M key; all helpers connect through the pill.
+  - [x] `npm run test:browser` reports all tests passed, 0 failed.
 - Verify: `npm run test:browser` from `web/` (PLAYWRIGHT_BROWSERS_PATH as in AUDIT F1).
 
 ### T19: Rebuild the export and commit the redesign [S]
@@ -216,7 +216,7 @@
 - Modules: `dist/`, `docs/frontend/`
 - Requirements: R25
 - Acceptance:
-  - [ ] `cd web && npm run typecheck && npm test && npm run build && npm run check:export && npm run test:browser` exits 0 and `check:export` prints PASS with N ≤ 128 assets and B < 31457280 bytes.
-  - [ ] `git status --short` lists changes only under `prototype/`, `web/`, `dist/`, `docs/frontend/` and the project docs.
+  - [x] `cd web && npm run typecheck && npm test && npm run build && npm run check:export && npm run test:browser` exits 0 and `check:export` prints PASS with N ≤ 128 assets and B < 31457280 bytes.
+  - [x] `git status --short` lists changes only under `prototype/`, `web/`, `dist/`, `docs/frontend/` and the project docs.
   - [ ] Source and `dist/` committed together.
 - Verify: command chain from `web/`; `git show --stat HEAD`.
