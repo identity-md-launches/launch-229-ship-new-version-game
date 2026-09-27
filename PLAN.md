@@ -166,5 +166,5 @@
   - [x] `cd web && npm run typecheck && npm test && npm run build && npm run check:export` exits 0 and prints `PASS: … N assets, B export bytes.` with N ≤ 128 and B < 31457280.
   - [x] `grep -rl "Quote Fridge Swap\|Cancel Review\|Review your quote" dist/` prints nothing.
   - [x] `git status --short` lists changes only under `web/`, `dist/`, `docs/frontend/` and the project docs; `prototype/` unchanged.
-  - [ ] Source and `dist/` committed together.
+  - [x] Source and `dist/` committed together.
 - Verify: command chain and grep above from `web/`; `git show --stat HEAD`.

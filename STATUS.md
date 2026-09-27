@@ -5,9 +5,9 @@
 # STATUS.md
 
 ## State
-- Last Action: 2026-09-27 13:01 - Background play (T7-T14) built and verified: typecheck, 24 unit tests, build, export check (19 assets) and 21 browser tests pass. Source, `dist/` and docs staged; waiting on Lobby for a review pass or commit, then the VERIFY gate.
+- Last Action: 2026-09-27 13:04 - Background play (T7-T14) committed in a54dffa: typecheck, 24 unit tests, build, export check (19 assets) and 21 browser tests pass. All PLAN.md tasks done; VERIFY gate requested.
 - Blocker: none
-- Updated: 2026-09-27 13:01
+- Updated: 2026-09-27 13:04
 
 ## Repository
 - Fork (ours): https://gitlawb.com/z6MkiyAV9MAfGzqLQpFtAxD2KzY7TyBTSD2bQUWioZSeXaqa/pepes-armed-with-ai

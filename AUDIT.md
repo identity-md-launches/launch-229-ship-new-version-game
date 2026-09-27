@@ -92,4 +92,5 @@ Design decisions (Lobby, 2026-09-27): session permissions; key re-derived from a
 | T14 | `npm run typecheck && npm test && npm run build && npm run check:export && npm run test:browser` (log `test/scratch/t14-chain.log`) | exit 0; 24 unit tests passed; `✓ built in 6.48s`; `PASS: exact handoff, network, pinned ABI hashes, 19 assets, 5370024 export bytes.`; 21 browser tests passed (34.8 s) |
 | T14 | `grep -rl "Quote Fridge Swap\|Cancel Review\|Review your quote" dist/` | no output |
 | T14 | `git status --short` | changes only under `web/`, `dist/`, `docs/frontend/`, AUDIT.md, DESIGN.md, PLAN.md, STATUS.md; `prototype/` clean; the Anvil test keys appear in no file under `dist/` or `web/src/` |
+| T14 | `git show --stat HEAD` | `a54dffa` "Add background play with a session game wallet and auto-refill": 25 files, 1357 insertions, 427 deletions; source under `web/src/`, `web/tests/`, `web/scripts/`, `web/public/` and the rebuilt `dist/` (new asset hashes, `game.html`, `index.html`, `imd-deployment.json`) in one commit |
 
