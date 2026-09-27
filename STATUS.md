@@ -1,9 +1,13 @@
+## Phase: DEVELOP
+## Checkpoint C: approved (Lobby, 2026-09-27 02:35)
+## Checkpoint B: approved (Lobby, 2026-09-27 02:34)
+## Checkpoint A: approved (Lobby, 2026-09-27 02:34)
 # STATUS.md
 
 ## State
-- Last Action: 2026-09-27 11:25 - Forked pepes-armed-with-ai from IMD's gitlawb into this project's own gitlawb identity (did:key:z6MkiyAV9MAfGzqLQpFtAxD2KzY7TyBTSD2bQUWioZSeXaqa); project root is the fork checkout (`origin` = fork, `upstream` = IMD's original). Awaiting the scope of the site work.
+- Last Action: 2026-09-27 12:20 - Design approved (Gates A/B/C) and DEVELOP entered for the clean-top change (PLAN.md T1-T6): remove page header and status bar, drop the in-game ready overlay, wallet controls top-left inside the game window, speaker bottom-right.
 - Blocker: none
-- Updated: 2026-09-27 11:25
+- Updated: 2026-09-27 12:20
 
 ## Repository
 - Fork (ours): https://gitlawb.com/z6MkiyAV9MAfGzqLQpFtAxD2KzY7TyBTSD2bQUWioZSeXaqa/pepes-armed-with-ai
