@@ -5,9 +5,9 @@
 # STATUS.md
 
 ## State
-- Last Action: 2026-09-27 12:10 - Clean-top change committed (PLAN.md T1-T6 complete; 15/15 browser tests, export check PASS). Next: background wallet moves via smart-account session permissions (Lobby, 2026-09-27) going through DESIGN.
+- Last Action: 2026-09-27 13:05 - Background play (game wallet from one signature per visit, ERC-7715 auto-refill where supported, manual top-ups otherwise) added to DESIGN.md as R9-R17 / M7-M14 and to PLAN.md as T7-T14. Staying in DEVELOP per Lobby (design gate declined, no A/B/C reset). Next: T7.
 - Blocker: none
-- Updated: 2026-09-27 12:10
+- Updated: 2026-09-27 13:05
 
 ## Repository
 - Fork (ours): https://gitlawb.com/z6MkiyAV9MAfGzqLQpFtAxD2KzY7TyBTSD2bQUWioZSeXaqa/pepes-armed-with-ai

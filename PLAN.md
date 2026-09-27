@@ -1,8 +1,8 @@
 # PLAN.md
 
 ## Meta
-- Design: DESIGN.md (R1..R8)
-- Updated: 2026-09-27 12:10
+- Design: DESIGN.md (R1..R17)
+- Updated: 2026-09-27 13:05
 
 ## Tasks
 
@@ -73,3 +73,98 @@
   - [x] `git status --short` lists changes only under `web/`, `dist/`, `docs/frontend/` and the project docs (DESIGN.md, PLAN.md, AUDIT.md, STATUS.md); `prototype/` unchanged.
   - [x] Source and `dist/` are committed together in one commit.
 - Verify: the command chain and greps above from `web/`; `git show --stat HEAD`.
+
+### T7: Session protocol helpers and shared transport [S]
+- Goal: `DELEGATION_MANAGER`, `SESSION`, `delegationManagerAbi`, `MAX_UINT160/48`, `SINGLE_DEFAULT_MODE`, `encodeRedeem` exist; `Runtime` exposes `transport`.
+- Modules: `web/src/chain.mjs`, `web/src/protocol.ts`, `web/src/config.ts`, `web/tests/core.test.ts`
+- Requirements: R10, R12, R16
+- Acceptance:
+  - [ ] `chain.mjs` exports `DELEGATION_MANAGER = '0xdb9B1e94B5b69Df7e401DDbedE43491141047dB3'` and `SESSION` with exactly the M7 values, each with a one-line comment.
+  - [ ] `protocol.ts` exports `delegationManagerAbi`, `MAX_UINT160`, `MAX_UINT48`, `SINGLE_DEFAULT_MODE` and `encodeRedeem(context,target,value,callData)` as specified in M7.
+  - [ ] `loadDeployment()` returns `transport`, the same instance passed to `createPublicClient`.
+  - [ ] `npm test` includes the 3 new M7 cases (redeem round-trip with 120-byte ICE execution, checksummed manager address, presets parse) and exits 0; `npm run typecheck` exits 0.
+- Verify: `npm run typecheck && npm test` from `web/`.
+
+### T8: Session key, tab lock and call allowlist [M]
+- Goal: `web/src/session.ts` derives the game wallet from one signature, locks one tab per player, and blocks every call outside the allowlist.
+- Modules: `web/src/session.ts` (new), `web/tests/core.test.ts`
+- Requirements: R9, R14, R16
+- Acceptance:
+  - [ ] `sessionMessage(11155111, player)` returns the exact M8 text with the checksummed player.
+  - [ ] `sessionKeyFromSignature` returns the same key for the same signature, and refuses a 64-byte signature and another account's signature with `Session play needs a wallet that signs with a regular account key.`
+  - [ ] `checkSessionCall` accepts each of the 6 allowlist branches in M8 and throws `Blocked an unexpected game-wallet call.` for each blocked case listed in M8's budget (≥ 9 cases).
+  - [ ] `acquireTabLock` returns a release function, returns `null` while the lock is held, and returns a no-op release without `navigator.locks`.
+  - [ ] `session.ts` never touches storage or logs (`grep -c "localStorage\|sessionStorage\|console\." web/src/session.ts` = 0); `npm run typecheck` and `npm test` exit 0.
+- Verify: `npm run typecheck && npm test` from `web/`; grep above.
+
+### T9: Auto-refill grant request, validation and redemption calls [M]
+- Goal: `web/src/refill.ts` detects ERC-7715 support, requests and validates the daily ETH + ICE grant, persists its public parts and builds redemption calls.
+- Modules: `web/src/refill.ts` (new), `web/tests/core.test.ts`
+- Requirements: R12, R16
+- Acceptance:
+  - [ ] `refillSupport` returns the shared rule types when both periodic types list `0xaa36a7`, and `undefined` when a type is missing, the chain is absent or the call throws.
+  - [ ] `requestRefill` sends one `wallet_requestExecutionPermissions` with two items matching M9 (amounts from `SESSION`, 86400 s period, 7-day expiry, redeemer/payee only when supported) and returns the granted amounts read from the response.
+  - [ ] A response with a foreign `delegationManager`, a foreign `to`, an empty `context` or unmet `dependencies` throws `The wallet returned an auto-refill grant this arcade cannot use. Use manual top-ups.`
+  - [ ] `saveGrant`/`loadGrant` round-trip under `pepe:grant:<chainId>:<player>:<session>`; expired grants load as `undefined` and are removed.
+  - [ ] `redeemCall` for ICE and ETH produce calls that pass `checkSessionCall`; `npm run typecheck` and `npm test` exit 0 (≥ 4 new cases).
+- Verify: `npm run typecheck && npm test` from `web/`.
+
+### T10: Engine plays every move from the game wallet [L]
+- Goal: `GameEngine` gains the session API of M10, funds the game wallet (refill or manual), runs approvals once, and loses the intent/review flow.
+- Modules: `web/src/engine.ts`
+- Requirements: R9, R10, R11, R12, R13, R14, R15, R16
+- Acceptance:
+  - [ ] `Snapshot` has `session?:SessionView` and no `intent`; `engine.ts` exports no `Intent`; `grep -c "intent\|prepareSwap\|prepareTank\|advance(" web/src/engine.ts` = 0.
+  - [ ] Public methods `startSession`, `endSession`, `allowRefill`, `topUp`, `moveIce`, `withdraw`, `swap`, `fillTank`, `draw` exist with the M10 signatures; the session account lives only in a private field (never in `state`, never stored).
+  - [ ] Every game-wallet transaction goes through one `sendSession` that calls `checkSessionCall` before signing; `TankFilled` crediting compares with the payer; the pending record carries `from`.
+  - [ ] Funding (`ensureFunds`), approvals (`ensureApprovals`, `warmUp`), busy message, tab-lock message and signature-mismatch warning use the exact M10 texts.
+  - [ ] The `refreshing` guard is keyed by the connect session number (AUDIT F3 fix).
+  - [ ] `npm run typecheck` exits 0 once T11 lands (T10 and T11 may be verified together because `main.tsx` calls the removed methods); `npm test` exits 0.
+- Verify: `npm run typecheck && npm test` from `web/` (after T11); grep above.
+
+### T11: Session panel, instant controls and scene copy [M]
+- Goal: panel 03 becomes "03 · Session / Background Play"; fridge, throne and tank act immediately; the scene no longer waits on `intent`.
+- Modules: `web/src/main.tsx`, `web/src/style.css`, `web/scripts/adapt-game.py`, `web/public/game.html`
+- Requirements: R10, R11, R12, R14, R15
+- Acceptance:
+  - [ ] Panel 03 renders the M11 JSX: status line unchanged, Start Background Play (no session) or game-wallet line, refill line, Allow Auto-Refill (when available), Top Up 0.005/0.01/0.05 ETH, Move ICE 1,000/10,000 ICE, Withdraw to Wallet, End Session.
+  - [ ] Fridge button reads `Swap Now`, throne buttons and `Fill Tank` call the engine directly; `locked` requires a session; `window.pepe.swap` calls `engine.swap` without scrolling.
+  - [ ] Rules copy replaced as in M11; `grep -c "Quote Fridge Swap\|Review Tank Fill\|Cancel Review\|Review & Confirm\|intent" web/src/main.tsx` = 0.
+  - [ ] `style.css` has the 4 M11 rules and no `.review-panel .quote` / `.review-panel ol` rules.
+  - [ ] After `python3 scripts/adapt-game.py`: `grep -c "intent\|Review your quote" public/game.html` = 0, `grep -c "Still confirming the last move" public/game.html` = 1; a second run leaves `game.html` unchanged; `prototype/` untouched.
+  - [ ] `npm run typecheck`, `npm test` and `npm run build` exit 0.
+- Verify: grep commands, `python3 scripts/adapt-game.py` twice, `npm run typecheck && npm test && npm run build` from `web/`.
+
+### T12: Session-aware wallet fixture [M]
+- Goal: the Playwright fixture signs for a real test player, runs game-wallet raw transactions, mocks ERC-7715 and counts wallet prompts.
+- Modules: `web/tests/wallet-fixture.ts`
+- Requirements: R17
+- Acceptance:
+  - [ ] `player` is Anvil test account #0; `session` is derived Node-side from its signature of `sessionMessage`; `badSignature` returns a 64-byte signature.
+  - [ ] Per-address ETH/ICE balances and allowances; `eth_sendRawTransaction` decoded with `parseTransaction` + `recoverTransactionAddress` and recorded in `raw` with timestamps.
+  - [ ] `eth_getTransactionCount`, `eth_estimateGas`, `eth_maxPriorityFeePerGas`, `eth_gasPrice` answered; unknown methods still throw -32601.
+  - [ ] `permissions` option mocks both `wallet_*ExecutionPermissions` methods; `redeemDelegations` moves player funds to the game wallet within the granted cap and reverts above it.
+  - [ ] `prompts` counts exactly `personal_sign`, `eth_sendTransaction` and `wallet_requestExecutionPermissions`; `npm run typecheck` exits 0.
+- Verify: `npm run typecheck` from `web/`; exercised by T13.
+
+### T13: Browser tests for background play [L]
+- Goal: the Playwright suite proves zero-prompt play, refills, withdraw, the tab lock and the refusals.
+- Modules: `web/tests/arcade.spec.ts`
+- Requirements: R9, R10, R11, R12, R13, R14, R15, R16, R17
+- Acceptance:
+  - [ ] The suite contains the 21 tests named in M13 (5 kept, 9 rewritten, 7 new); the expired-quote test is gone.
+  - [ ] After session start and funding, the prompt count stays unchanged across ≥ 3 background moves, and each Swap Now click reaches `eth_sendRawTransaction` within 3 s.
+  - [ ] No localStorage or sessionStorage value contains the session key hex; the same game-wallet address appears after a reload and a new signature.
+  - [ ] `npm run test:browser` reports 21 passed, 0 failed, and `npm test` exits 0.
+- Verify: `npm test && npm run test:browser` from `web/` (PLAYWRIGHT_BROWSERS_PATH as in AUDIT F1).
+
+### T14: Rebuild the export and commit background play [S]
+- Goal: `dist/` matches the changed source; source, export and docs committed together.
+- Modules: `dist/`, `docs/frontend/`
+- Requirements: R17
+- Acceptance:
+  - [ ] `cd web && npm run typecheck && npm test && npm run build && npm run check:export` exits 0 and prints `PASS: … N assets, B export bytes.` with N ≤ 128 and B < 31457280.
+  - [ ] `grep -rl "Quote Fridge Swap\|Cancel Review\|Review your quote" dist/` prints nothing.
+  - [ ] `git status --short` lists changes only under `web/`, `dist/`, `docs/frontend/` and the project docs; `prototype/` unchanged.
+  - [ ] Source and `dist/` committed together.
+- Verify: command chain and grep above from `web/`; `git show --stat HEAD`.
