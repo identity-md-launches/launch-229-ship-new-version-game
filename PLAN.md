@@ -218,5 +218,5 @@
 - Acceptance:
   - [x] `cd web && npm run typecheck && npm test && npm run build && npm run check:export && npm run test:browser` exits 0 and `check:export` prints PASS with N ≤ 128 assets and B < 31457280 bytes.
   - [x] `git status --short` lists changes only under `prototype/`, `web/`, `dist/`, `docs/frontend/` and the project docs.
-  - [ ] Source and `dist/` committed together.
+  - [x] Source and `dist/` committed together.
 - Verify: command chain from `web/`; `git show --stat HEAD`.
