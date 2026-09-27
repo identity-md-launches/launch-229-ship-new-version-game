@@ -11,8 +11,8 @@ The game page stacks a page header (wordmark, network label, wallet buttons, Rul
 - R1. No header above the game window. The wordmark "pepes armed with ai", the label "Sepolia · Test Value Only", the Rules link and the header wallet buttons are absent from the page DOM. The game window is the first visible element of the page (only the visually hidden skip link and h1 precede it).
 - R2. No status overlay inside the game window. The strings "Sepolia arcade ready. Connect your wallet to play for test value." and "Connect your wallet below to play for test value." appear nowhere in `web/src`, `web/public/game.html` or `dist/`.
 - R3. No status bar under the game window. Engine messages (errors, confirmations, progress) and the "View Transaction ↗" link are shown in one status line inside the "03 · Wallet Move" panel; the line is empty when the engine has no message.
-- R4. Wallet controls live inside the game window, top-left, at every viewport width from 320px up: "Connect Wallet" (or "Connecting…") when disconnected; the address chip (opens the account dialog) and "Disconnect" when connected. No auto-connect on play.
-- R5. The music (speaker) button sits in the bottom-right corner of the game window, 26 game-units from the bottom and right edges, with unchanged labels ("Mute music" / "Play music"), title, M-key behaviour and reduced-motion handling.
+- R4. Wallet controls live inside the game window, top-left, at every viewport width from 320px up: "Connect Wallet" (or "Connecting…") when disconnected; the address chip (opens the account dialog) and "Disconnect" when connected. No auto-connect on play. Superseded by R20 (scene redesign).
+- R5. The music (speaker) button sits in the bottom-right corner of the game window, 26 game-units from the bottom and right edges, with unchanged labels ("Mute music" / "Play music"), title, M-key behaviour and reduced-motion handling. Superseded by R22 (scene redesign).
 - R6. The in-game neon title "pepes armed with ai" (upper right of the scene) is unchanged.
 - R7. Everything else is unchanged: game play, keyboard and touch controls, pause, panels, tickets, the Rules panel, footer, chain bindings and the deployment manifest. `npm run typecheck`, `npm test`, `npm run build`, `npm run check:export` and the Playwright suite pass.
 - R8. The tracked `dist/` export is rebuilt from the changed source and `npm run check:export` prints PASS.
@@ -67,6 +67,24 @@ Every fridge hit opens a chain of wallet prompts: an ICE sale needs `ICE.approve
 ### Background play: accepted risks
 - Any site that obtains the same signature can derive the same key. Exposure is bounded by the game-wallet balance plus the remaining daily refill allowance until the grant expires (at most 7 days × daily cap). The signed text names the arcade and warns against signing elsewhere. Test value only. Grants can be revoked in MetaMask and expire on their own.
 - Auto-refill upgrades the player's account to an EIP-7702 smart account (MetaMask prompts for it during the grant). This is the wallet's standard flow; the arcade does not ask for it separately.
+
+### Scene redesign: problem
+Lobby redesigned the game scene (`genkiai-page1.html`, SHA-1 `f528db33d762c012c622dc0aa451298b9106aeaf`, 2026-09-27). The arcade scene must match its layout and placement. The page below the game stays (Lobby, 2026-09-27). Lobby also chose to show the player's real Ethereum mainnet $ICE and $IMD read-only while play stays on Sepolia; moving the game itself to mainnet is a separate design that comes next.
+
+### Scene redesign: requirements
+- R18. Scene source. `prototype/index.html` is Lobby's file byte-for-byte. `web/public/game.html` is regenerated from it by `adapt-game.py`. The file's inline music (byte-identical to `assets/bgm.mp3`) is served from the asset file, and the file's own MetaMask script (Ethereum mainnet, MetaMask only) is not shipped: the shell drives the wallet.
+- R19. Brand block. From first paint the small logo, the "pepes armed with ai" headline and the two balance chips sit docked top-left (brandmark at 20/20 scene units) with no intro animation, as in the file. The block stays visible during the pizza climb on a solid plate.
+- R20. Wallet pill. The wallet control lives inside the scene, top-right (scene units: top 22.5, right 14), styled as in the file. Disconnected: wallet icon and "connect". Connected on Sepolia: green dot and short address; a click toggles a dropdown under the pill with the short address, the network ("Sepolia"), mainnet ETH / $ICE / $IMD rows, the note "the arcade plays on Sepolia for now" and "disconnect". Other network: red pill "switch to Sepolia"; a click switches (adding the chain if needed). Busy: dimmed. Escape or a click outside closes the dropdown. Wallet errors (no wallet, rejected, switch failed) show in the bubble under the pill. On screen the pill is never shorter than 28 CSS px (scaled up from its top-right corner when the scene is small). The top-left "Connect Wallet" / address / "Disconnect" overlay and the RainbowKit account modal are removed.
+- R21. Mainnet holdings, read-only. While a wallet is connected, the arcade reads that address's Ethereum mainnet ETH, $ICE (`0x64914921E03069dA66823F84fFcfB9931F05281A`, "Initial Compute Event") and $IMD (`0xD34a99Bc0f67aE1bbd63C660e6d0b0dd03E263B7`, "Identity.md") through public mainnet RPCs, whatever network the wallet is on. They show in the dropdown and in the two chips ("$ICE", "$IMD"): "—" when disconnected, "…" while loading, "?" when a read fails. Reads run on connect, on account change and each time the dropdown opens. Nothing is signed or sent on mainnet. Sepolia wallet ICE / ETH stay in the stats row below the game.
+- R22. No speaker button. The music button is removed; M still toggles music.
+- R23. Climb layout. In the pizza climb the stats HUD and the cash-out button are hidden (C cashes out); the jackpot pool shows on a mini marquee on the enlarged dumpster, with the golden-bladder free-burst row under it; the hero starts at x = 400; the chips stay in the top-left block.
+- R24. Throne timing. The golden throne rises together with the jackpot sign, not after the parade.
+- R25. Everything else is unchanged: the page below the game, all Sepolia game logic, background play, keyboard and touch controls. `npm run typecheck`, `npm test`, `npm run build`, `npm run check:export` and the Playwright suite pass; `dist/` is rebuilt and committed with the source.
+
+### Scene redesign: non-goals
+- Playing on mainnet (contracts, pool, Chainlink VRF, funding, security review): the next, separate design.
+- The file's MetaMask-only detection: any injected wallet keeps working.
+- Balances for other networks or tokens in the dropdown.
 
 ## Architecture
 
@@ -391,6 +409,43 @@ Game wallet (session EOA in this tab; signs locally, broadcasts through the publ
 - Budgets: `check:export` prints PASS with N ≤ 128 assets and B < 31457280 bytes; `grep -rl "Quote Fridge Swap\|Cancel Review" dist/` prints nothing.
 - Covers: R17 · Depends on: M7–M13.
 
+#### M15: Scene source and adaptation — changed
+- Purpose: ship Lobby's scene through the existing pipeline (R18, R19, R22, R23, R24).
+- Location: `prototype/index.html` (replaced), `web/scripts/adapt-game.py`, `web/public/game.html` (regenerated).
+- Interface: `python3 web/scripts/adapt-game.py` stays idempotent; the scene bridge gains `pepeScene.wallet(view)` (M17).
+- Internals: 1) copy the file verbatim into `prototype/index.html`; 2) in adapt: drop the `<script type="text/plain" id="bgmData">` block and restore the asset loader `audio.src='assets/bgm.mp3'`; 3) drop the file's "MetaMask connect" script; keep the wallet markup and CSS; 4) scope the `$IMD` → `Sepolia ETH` rewrite so the `#imdBal` chip and the dropdown row keep "$IMD"; 5) keep the file's docked start (`docked=true` plus the instant `dockBrand` on `document.fonts.ready`) inside the replaced balance block; 6) remove the `.sound` override; 7) add the pill minimum-size rule to `fit()` (M17).
+- Edge & error policy: every anchor the adapt script edits must exist once; a missing anchor fails the script.
+- Covers: R18, R19, R22, R23, R24 · Depends on: none.
+
+#### M16: Mainnet holdings reader — new
+- Purpose: read-only mainnet ETH, $ICE and $IMD for the connected address (R21).
+- Location: `web/src/holdings.ts`.
+- Interface: `MAINNET_RPCS: string[]`, `MAINNET_TOKENS: {ice: Address; imd: Address}`, `type Holdings = {eth?: bigint; ice?: bigint; imd?: bigint}`, `readHoldings(address: Address, client?: PublicClient): Promise<Holdings>`.
+- Internals: viem `createPublicClient({chain: mainnet, transport: fallback(MAINNET_RPCS.map(url => http(url, {timeout: 10000, retryCount: 1})))})`, created once; `getBalance` plus two `balanceOf` reads via `Promise.allSettled`; both tokens use 18 decimals (verified on-chain 2026-09-27). RPCs: `ethereum-rpc.publicnode.com`, `1rpc.io/eth`, `eth.drpc.org` (all CORS `*`, checked 2026-09-27).
+- Edge & error policy: a failed field stays undefined and is logged with `console.warn('mainnet holdings read failed', {field, error})`; never throws.
+- Covers: R21 · Depends on: none.
+
+#### M17: In-scene wallet wired to the shell — changed
+- Purpose: the scene's pill drives the shell's wagmi wallet (R20, R21).
+- Location: `web/src/main.tsx`, `web/src/style.css`, `web/scripts/adapt-game.py` (scene side).
+- Interface: shell → scene `pepeScene.wallet({account?, wrong, busy, network, holdings: {eth, ice, imd}, message?})` with display strings; scene → shell `parent.pepe.wallet.{connect(), disconnect(), switchChain(), refresh()}`.
+- Internals: 1) remove the `.wallet-controls` overlay, the `ConnectButton` / `RainbowKitProvider` usage, its stylesheet import and the `@rainbow-me/rainbowkit` dependency; 2) keep `connectWallet` / `switchChain` / `disconnect`, sending their errors to the pill bubble (6 s) instead of the status line; 3) a `useEffect` reads holdings on connect / account change and on `refresh()`, and pushes the view on every change and on iframe load; 4) scene: pill click → connect / switchChain / toggle dropdown; dropdown open → `refresh()`; Escape and outside click close it; chips show `$ICE` / `$IMD` holdings; `update(state)` no longer writes the chips; 5) `fit()` sets `.wallet` `transform: scale(max(1, 28 / (34 * s)))` with origin top right.
+- Edge & error policy: no wallet → "No browser wallet found. Install an injected wallet, then reload."; a rejected request → "connection cancelled"; holdings reads never block play.
+- Covers: R20, R21 · Depends on: M15, M16.
+
+#### M18: Browser tests for the redesign — changed
+- Purpose: prove R18–R25 in the suite.
+- Location: `web/tests/wallet-fixture.ts`, `web/tests/arcade.spec.ts`, `web/tests/core.test.ts`.
+- Internals: 1) the fixture answers the three mainnet RPC hosts (ETH 1.5, $ICE 1234.5, $IMD 42 for the player); 2) helpers connect through the in-scene pill; 3) the clean-top test becomes "scene redesign": brand block docked at load, pill top-right, no speaker, dropdown shows the mainnet rows and closes on Escape, chips show the mainnet values, pill ≥ 28 px at 390 px width; 4) the music test uses the M key; 5) unit tests for `holdings.ts` (checksummed constants, a failed field stays undefined).
+- Covers: R18–R25 · Depends on: M15–M17.
+
+#### M19: Export rebuild for the redesign — changed
+- Purpose: keep `dist/` equal to the source (R25).
+- Location: `dist/`, `docs/frontend/*.png`, `docs/frontend/browser-results.json`.
+- Internals: same chain as M14; commit source and `dist/` together.
+- Budgets: `check:export` PASS with N ≤ 128 assets and B < 31457280 bytes.
+- Covers: R25 · Depends on: M15–M18.
+
 ### Impact analysis
 | Removed / changed | Referenced by | Decision |
 |---|---|---|
@@ -409,10 +464,16 @@ Game wallet (session EOA in this tab; signs locally, broadcasts through the publ
 | Fixture `player` `0x…1234` (no key) | every browser test; ticket logs | Anvil test account #0 with a real key (M12) |
 | localStorage | `pepe:<launchId>:<player>` (tank, points, pending) | pending gains `from`; new public keys `pepe:grant:…` and `pepe:session:…`; the session key is never stored (M9, M10) |
 | `Runtime` shape | `engine.ts`, tests | gains `transport` (M7) |
+| `prototype/index.html` | `adapt-game.py` anchors; "prototype unchanged" checks in T6/T14 | replaced by Lobby's file on purpose (M15); adapt anchors updated |
+| Top-left `.wallet-controls` overlay, RainbowKit | `main.tsx`, `style.css`, `package.json`, browser helpers that click "Connect Wallet" | replaced by the in-scene pill (M17); helpers updated (M18) |
+| Speaker button `#soundBtn` | `adapt-game.py` `.sound` override; browser music test | override removed (M15); test uses the M key (M18) |
+| Chips `#balance` / `#imdBal` (Sepolia ICE / ETH) | `pepeScene.update` | now mainnet $ICE / $IMD from M16; Sepolia balances stay in the stats row (M17) |
+| Climb HUD `#chFuel`, `#chBank`, `#chBalSlot` moves | scene climb script only | removed or unused in the file; nothing else references them |
 
 ### Dependency topology
 - Clean top (shipped): M3 → M1 → M2 (message home first, then remove the bar and header, then place the overlay) ; M4 independent of M1–M3 ; M5 after M1–M4 ; M6 last. Plan order: M4, M3, M1, M2, M5, M6.
 - Background play: M7 → M8 → M9 → M10 → M11 ; M12 mirrors M10 ; M13 after M11 and M12 ; M14 last. Plan order: M7 (T7), M8 (T8), M9 (T9), M10 (T10), M11 (T11), M12 (T12), M13 (T13), M14 (T14). Until T13 lands, `npm run test:browser` is expected to fail on the rewritten flows; each earlier task gates on typecheck and `npm test`.
+- Scene redesign: M15 → M16 → M17 → M18 → M19. Plan order: T15 (M15), T16 (M16), T17 (M17), T18 (M18), T19 (M19). Between T15 and T18 the browser tests that click "Connect Wallet" are expected to fail.
 - Rollback: revert the background-play commit(s). Grants already given expire after 7 days and can be revoked in MetaMask; funds left in a game wallet stay reachable with the same signature once the feature returns.
 
 ### File layout touched
@@ -429,4 +490,7 @@ web/scripts/adapt-game.py        (M11)  web/public/game.html (regenerated, M11)
 web/tests/core.test.ts           (M7, M8, M9)
 web/tests/wallet-fixture.ts      (M12)  web/tests/arcade.spec.ts (M13)
 dist/**, docs/frontend/**        (M14)
+prototype/index.html (replaced, M15)   web/scripts/adapt-game.py, web/public/game.html (M15, M17)
+web/src/holdings.ts (new, M16)          web/src/main.tsx, style.css, package.json (M17)
+web/tests/*                      (M18)  dist/**, docs/frontend/** (M19)
 ```

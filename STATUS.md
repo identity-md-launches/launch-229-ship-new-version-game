@@ -5,9 +5,9 @@
 # STATUS.md
 
 ## State
-- Last Action: 2026-09-27 13:10 - Background play shipped to the gitlawb fork (main). Cloudflare hosting dropped at Lobby's call; the live site is republished only by an IMD site job.
-- Blocker: live site https://pepes-armed.site.identitymd.eth.limo still serves the old build until IMD runs a site job for our fork's main (no publishing access from this project).
-- Updated: 2026-09-27 13:10
+- Last Action: 2026-09-27 13:30 - Scene redesign planned from Lobby's genkiai-page1.html: R18-R25 in DESIGN.md, T15-T19 in PLAN.md; mainnet $ICE/$IMD shown read-only, play stays on Sepolia. DEVELOP gate requested.
+- Blocker: IMD site job still needed to publish (after the redesign ships).
+- Updated: 2026-09-27 13:30
 
 ## Repository
 - Fork (ours): https://gitlawb.com/z6MkiyAV9MAfGzqLQpFtAxD2KzY7TyBTSD2bQUWioZSeXaqa/pepes-armed-with-ai
