@@ -78,7 +78,8 @@ Every fridge hit opens a chain of wallet prompts: an ICE sale needs `ICE.approve
 - Scene pipeline: `prototype/index.html` → `python3 web/scripts/adapt-game.py` → `web/public/game.html` (committed; currently byte-reproducible). The scene is a 1280×720 `.slide` scaled by `fit()` to the iframe; in-scene pixels scale with the frame width (s ≈ frameWidth/1280).
 - Export pipeline: `npm run build` = `scripts/prepare.mjs` (pins ABIs from `handoff.sourceCommit` e145493b, present in our clone) → `vite build` → `scripts/manifest.mjs` → `dist/` (tracked). `npm run check:export` verifies `dist/` against the manifest.
 - Tests: `web/tests/core.test.ts` (node), `web/tests/arcade.spec.ts` (Playwright, 15 tests after the clean-top change, mock wallet fixture, server `tests/server.mjs` on 4173), `web/scripts/check-browser-live.mjs` (read-only live check writing `docs/frontend/live-browser.json`).
-- Tech stack: inherited (React 19.3, Vite 7, wagmi/viem/RainbowKit, TanStack Query via wagmi). House default deviation (no TanStack Router, no Cloudflare deploy yet) is inherited from upstream; no change in this feature.
+- Tech stack: inherited (React 19.3, Vite 7, wagmi/viem/RainbowKit, TanStack Query via wagmi). House default deviation (no TanStack Router) is inherited from upstream; no change in this feature.
+- Hosting: our build is published as-is from the tracked `dist/` to Cloudflare Pages (direct upload, no build step on Cloudflare): `wrangler pages deploy dist --project-name pepes-armed-with-ai --branch main` → `https://pepes-armed-with-ai.pages.dev`. The export is relative-path static files with injected-wallet connectors and public Sepolia RPCs only, so it needs no server config or allowed-origin setup. IMD's own site (pepes-armed.site.identitymd.eth.limo) is separate and unchanged.
 
 ### Clean top: page layout (top to bottom)
 ```
