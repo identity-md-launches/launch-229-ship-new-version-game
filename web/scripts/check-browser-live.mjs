@@ -10,8 +10,8 @@ try{
  page.on('pageerror',e=>result.errors.push(e.message));
  page.on('requestfailed',req=>result.failedRequests.push({url:req.url(),error:req.failure()?.errorText}));
  await page.goto('http://127.0.0.1:4173/ipfs/test/');
- await page.waitForFunction(()=>document.querySelector('.statusbar')?.textContent?.includes('Sepolia arcade ready'),{},{timeout:45000});
- result.status=await page.locator('.statusbar').innerText();
+ await page.waitForFunction(()=>document.querySelector('.poolline')?.textContent?.includes('Block '),{},{timeout:45000});
+ result.status=await page.locator('#review .status').innerText();
  result.balances=await page.locator('.balances').innerText();
  result.price=await page.locator('.poolline').innerText();
  result.walletWritesDisabled=await page.getByRole('button',{name:'Quote Fridge Swap'}).isDisabled();

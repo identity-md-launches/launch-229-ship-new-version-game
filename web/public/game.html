@@ -706,7 +706,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
   .walker:nth-child(n+4){display:none}}
 
 .slide:not(.docked):not(.inclimb) #imdBal{left:220px;right:auto;top:140px}
-#chainMessage{position:absolute;top:26px;left:50%;transform:translateX(-50%);max-width:560px;text-align:center;margin:0;background:#03061ae8;color:#f7e1a0;font:13px 'IBM Plex Sans',sans-serif;padding:8px 12px;border-radius:8px;z-index:20;pointer-events:none}
+.sound{top:auto;bottom:26px}
 .paused *, .paused *::before,.paused *::after{animation-play-state:paused!important;transition:none!important}
 </style>
 </head>
@@ -1413,7 +1413,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
       <div class="pop"><span class="ring"></span>
       <svg aria-hidden="true" class="spin" viewBox="0 0 44 44"><use href="#toileticon"/></svg></div>
     </div>
-    <p id="chainMessage" role="status" aria-live="polite">Connect your wallet below to play for test value.</p><div class="hero dormant" id="hero" role="button" tabindex="0" aria-label="Wake this pepe to play">
+    <div class="hero dormant" id="hero" role="button" tabindex="0" aria-label="Wake this pepe to play">
       <div class="face"><div class="rig"><i class="leg"></i><i class="leg b"></i><i class="pants"></i><i class="arm"><svg aria-hidden="true" class="sword"><use href="#sword"/></svg></i><i class="arm b"><svg aria-hidden="true" class="shield"><use href="#ethshield"/></svg></i><i class="spine"></i><span class="tunic"></span><span class="butt"></span><div class="head"><span class="coin back"></span><span class="coin mid m3"></span><span class="coin mid m2"></span><span class="coin mid m1"></span><span class="coin front"></span></div></div><svg class="slash" viewBox="0 0 46 104" aria-hidden="true"><defs><linearGradient id="slashg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFDF4" stop-opacity="0"/><stop offset=".45" stop-color="#FFFDF4" stop-opacity=".9"/><stop offset="1" stop-color="#E3BE60" stop-opacity=".95"/></linearGradient></defs><path d="M41.1 -22.6 A70 70 0 0 1 76.6 90.0 A82 82 0 0 0 41.1 -22.6Z" fill="url(#slashg)"/></svg></div>
     </div>
     <div class="reward" id="reward" role="status" aria-live="polite"><div class="card"><span class="amt">1,000</span><span class="tk">points</span><span class="lbl">local prize</span></div></div>
@@ -2553,7 +2553,6 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
       JS.busy=state.busy;TH.busy=state.busy;CL.free=state.free;
       var last=state.tickets.find(function(t){return t.roll;});
       if(last){document.getElementById('ssRoll').textContent=String(last.roll);if(JS.on)countEl.textContent=String(last.roll);}
-      var msg=document.getElementById('chainMessage');msg.textContent=state.message;
       renderHud();renderSign();thRender();
     },
     control:function(key,down){

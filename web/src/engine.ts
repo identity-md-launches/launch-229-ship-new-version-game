@@ -56,7 +56,7 @@ export class GameEngine {
    const active=slot[0]>0n; // A one-sided position may be crossed from zero current liquidity.
    this.set({block,potEth:pots[0],potIce:pots[1],eth,ice,liquidity,price:slot[0]===0n?undefined:(Number(slot[0])/2**96)**2*10**(18-this.state.decimals),ready:this.state.verified&&active,loading:false,updated:Date.now()});
    if(!active)this.message('The pool is not initialized. Transactions are locked; try refresh later.');
-   else if(this.state.message==='Checking deployment and pool…')this.message('Sepolia arcade ready. Connect your wallet to play for test value.');
+   else if(this.state.message==='Checking deployment and pool…')this.message('');
    if(account)await this.updateTickets(block,account,session);
   }catch(e){if(session===this.session)this.set({ready:false,loading:false,message:`Live reads unavailable. ${errorMessage(e)}`});}
   finally{this.refreshing=false;}

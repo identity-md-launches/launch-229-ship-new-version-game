@@ -3,7 +3,7 @@ import {decodeAbiParameters,parseAbiParameters} from 'viem';
 import {fixture,d,player} from './wallet-fixture';
 import {poolTuple} from '../src/protocol';
 import {walletAddChain} from '../src/chain.mjs';
-async function open(page:import('@playwright/test').Page){await page.goto('/ipfs/test/');await expect(page.getByRole('button',{name:'Connect Wallet',exact:true})).toBeVisible();await page.getByRole('button',{name:'Connect Wallet',exact:true}).click();await expect(page.getByRole('button',{name:'Quote Fridge Swap'})).toBeEnabled();}
+async function open(page:import('@playwright/test').Page){await page.goto('/ipfs/test/');await expect(page.locator('.poolline')).toContainText('Block ');await expect(page.getByRole('button',{name:'Connect Wallet',exact:true})).toBeVisible();await page.getByRole('button',{name:'Connect Wallet',exact:true}).click();await expect(page.getByRole('button',{name:'Quote Fridge Swap'})).toBeEnabled();}
 const quote=(page:import('@playwright/test').Page)=>page.getByRole('button',{name:'Quote Fridge Swap'}).click();
 test('static subpath, no wallet, no overflow, local assets, keyboard and mobile screenshots',async({page})=>{
  await fixture(page,{wallet:false});const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));const failed:string[]=[];page.on('response',r=>{if(r.status()>=400)failed.push(r.url());});
@@ -14,6 +14,18 @@ test('static subpath, no wallet, no overflow, local assets, keyboard and mobile 
  await page.screenshot({path:'../docs/frontend/mobile.png',fullPage:true});
  await page.keyboard.press('Tab');expect(await page.evaluate(()=>document.activeElement?.tagName)).not.toBe('BODY');
  expect(errors).toEqual([]);expect(failed).toEqual([]);
+});
+test('clean top: no header or status bar, wallet inside the scene, speaker bottom-right',async({page})=>{
+ await fixture(page,{wallet:false});await page.goto('/ipfs/test/');
+ await expect(page.locator('header')).toHaveCount(0);await expect(page.locator('.statusbar')).toHaveCount(0);await expect(page.getByText(/Test Value Only/)).toHaveCount(0);
+ await expect(page.locator('.scene .wallet-controls').getByRole('button',{name:'Connect Wallet',exact:true})).toBeVisible();
+ await page.setViewportSize({width:1440,height:1100});const frameBox=(await page.locator('iframe').boundingBox())!;const controlsBox=(await page.locator('.scene .wallet-controls').boundingBox())!;
+ expect(controlsBox.x-frameBox.x).toBeGreaterThanOrEqual(0);expect(controlsBox.x-frameBox.x).toBeLessThanOrEqual(16);expect(controlsBox.y-frameBox.y).toBeGreaterThanOrEqual(0);expect(controlsBox.y-frameBox.y).toBeLessThanOrEqual(14);
+ const frame=page.frameLocator('iframe');await expect(frame.locator('#chainMessage')).toHaveCount(0);await expect(frame.locator('h1.hook-title')).toHaveText('pepes armed with ai');
+ const slide=(await frame.locator('.slide').boundingBox())!;const sound=(await frame.locator('#soundBtn').boundingBox())!;const scale=slide.width/1280;
+ expect(Math.abs((slide.y+slide.height)-(sound.y+sound.height)-26*scale)).toBeLessThanOrEqual(3);expect(Math.abs((slide.x+slide.width)-(sound.x+sound.width)-26*scale)).toBeLessThanOrEqual(3);
+ expect(await page.locator('[role=status]').first().evaluate(el=>!!el.closest('#review'))).toBe(true);
+ await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
 });
 test('unknown network offers switch, adds exact vetted chain, reconnects live reads',async({page})=>{
  await fixture(page,{wrong:true});await page.goto('/');await page.getByRole('button',{name:'Connect Wallet',exact:true}).click();await expect(page.getByText('Wrong network.',{exact:false})).toBeVisible();
@@ -53,7 +65,7 @@ test('missing deployed code keeps value controls locked',async({page})=>{
  await fixture(page,{missingCode:true});await page.goto('/');await expect(page.getByRole('status').first()).toContainText('code is missing');await page.getByRole('button',{name:'Connect Wallet',exact:true}).click();await expect(page.getByRole('button',{name:'Quote Fridge Swap'})).toBeDisabled();
 });
 test('scene runs like the prototype; pause, rules and music are keyboard accessible',async({page})=>{
- await page.emulateMedia({reducedMotion:'reduce'});await fixture(page);await page.goto('/');const frame=page.frameLocator('iframe');await expect(frame.locator('html')).not.toHaveClass('paused');await page.getByRole('button',{name:'Pause Animation'}).click();await expect(frame.locator('html')).toHaveClass('paused');await expect(page.getByRole('button',{name:'Resume Animation'})).toBeVisible();await frame.getByRole('button',{name:'Mute music',exact:true}).focus();await page.keyboard.press('Enter');await expect(frame.getByRole('button',{name:'Play music',exact:true})).toBeVisible();await page.getByRole('link',{name:'Rules',exact:true}).click();await expect(page.getByText('Block proposers can influence',{exact:false})).toBeVisible();
+ await page.emulateMedia({reducedMotion:'reduce'});await fixture(page);await page.goto('/');const frame=page.frameLocator('iframe');await expect(frame.locator('html')).not.toHaveClass('paused');await page.getByRole('button',{name:'Pause Animation'}).click();await expect(frame.locator('html')).toHaveClass('paused');await expect(page.getByRole('button',{name:'Resume Animation'})).toBeVisible();await frame.getByRole('button',{name:'Mute music',exact:true}).focus();await page.keyboard.press('Enter');await expect(frame.getByRole('button',{name:'Play music',exact:true})).toBeVisible();await page.getByText('Rules of the Arcade',{exact:true}).click();await expect(page.getByText('Block proposers can influence',{exact:false})).toBeVisible();
 });
 test('prototype gameplay keeps points local and fridge collision prepares a real swap',async({page})=>{
  await fixture(page);
@@ -69,7 +81,7 @@ test('prototype gameplay keeps points local and fridge collision prepares a real
 });
 test('expired quote prevents signing and requires a fresh review',async({page})=>{
  const mock=await fixture(page);await open(page);await page.getByRole('button',{name:'0.001 Sepolia ETH',exact:true}).click();
- await page.evaluate(()=>{const before=Date.now.bind(Date);Date.now=()=>before()+31000;});
+ await expect(page.getByRole('button',{name:'Confirm Swap',exact:true})).toBeVisible();await page.evaluate(()=>{const before=Date.now.bind(Date);Date.now=()=>before()+31000;});
  await page.getByRole('button',{name:'Confirm Swap',exact:true}).click();await expect(page.getByRole('status').first()).toContainText('Quote expired');expect(mock.sent).toEqual([]);
 });
 test('a successful replacement receipt without TankFilled cannot create local pees',async({page})=>{

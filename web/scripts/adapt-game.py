@@ -103,7 +103,6 @@ s=s[:pos]+'''  var paused=false;
       JS.busy=state.busy;TH.busy=state.busy;CL.free=state.free;
       var last=state.tickets.find(function(t){return t.roll;});
       if(last){document.getElementById('ssRoll').textContent=String(last.roll);if(JS.on)countEl.textContent=String(last.roll);}
-      var msg=document.getElementById('chainMessage');msg.textContent=state.message;
       renderHud();renderSign();thRender();
     },
     control:function(key,down){
@@ -123,8 +122,7 @@ s=re.sub(r'(?<!utf8,)<svg(?![^>]*aria-hidden)', '<svg aria-hidden="true"',s)
 s=s.replace('role="dialog" aria-label="Golden throne: swap ETH for ICE"','role="region" aria-label="Golden throne: swap ETH for ICE"')
 s=s.replace('</style>', '''
 .slide:not(.docked):not(.inclimb) #imdBal{left:220px;right:auto;top:140px}
-#chainMessage{position:absolute;top:26px;left:50%;transform:translateX(-50%);max-width:560px;text-align:center;margin:0;background:#03061ae8;color:#f7e1a0;font:13px 'IBM Plex Sans',sans-serif;padding:8px 12px;border-radius:8px;z-index:20;pointer-events:none}
+.sound{top:auto;bottom:26px}
 .paused *, .paused *::before,.paused *::after{animation-play-state:paused!important;transition:none!important}
 </style>''',1)
-s=s.replace('<div class="hero dormant"', '<p id="chainMessage" role="status" aria-live="polite">Connect your wallet below to play for test value.</p><div class="hero dormant"')
 (root/'web/public/game.html').write_text(s)

@@ -20,21 +20,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,su
 .skip:focus{top:12px}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 
-.topbar{max-width:1440px;margin:auto;padding:20px max(24px,env(safe-area-inset-left));display:flex;align-items:center;justify-content:space-between;gap:16px}
-.wordmark{font-family:Sniglet,sans-serif;font-size:25px;text-decoration:none}
-.wordmark em{color:#9cdaba}
-.network{display:block;color:var(--muted);font-size:12px;margin-top:5px;letter-spacing:.08em}
-.wallet-controls{display:flex;align-items:center;gap:12px}
-.wallet-controls a{font-size:14px}
 main,footer{max-width:1440px;margin:auto;padding:0 max(24px,env(safe-area-inset-left)) 24px}
 iframe{width:100%;aspect-ratio:1280/720;border:1px solid #26386c;border-radius:18px;display:block;background:#03061a}
+.scene{position:relative}
+.wallet-controls{position:absolute;top:10px;left:12px;z-index:2;display:flex;align-items:center;gap:8px;max-width:calc(100% - 24px);pointer-events:none}
+.wallet-controls>*{pointer-events:auto}
+.wallet-controls button{min-height:34px;padding:0 12px;font-size:13px;border-radius:9px;background:rgba(8,15,58,.86);border:1px solid rgba(227,190,96,.7);color:var(--gold);box-shadow:0 4px 12px rgba(3,6,26,.5);white-space:nowrap}
+.wallet-controls button.quiet{background:rgba(8,15,58,.6)}
+.wallet-controls button:hover:enabled{background:rgba(21,34,104,.95);border-color:var(--gold)}
 .game-tools{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 0;color:var(--muted);font-size:12px}
 .touch-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
 .touch-controls button{flex:1;white-space:nowrap;font-size:13px;user-select:none;touch-action:none}
-.statusbar{display:flex;align-items:center;gap:12px;min-height:58px;border:1px solid #39467c;background:#101c42;border-radius:12px;padding:14px 18px;margin:8px 0 20px;overflow-wrap:anywhere}
-.statusbar a{margin-left:auto;flex-shrink:0;font-size:13px}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0}
-.dot.live{background:#8df1c0}
 .network-alert{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px;border:1px solid #d78888;border-radius:12px;margin-bottom:20px}
 .balances{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border:1px solid #2b3c6e;border-radius:12px;overflow:hidden;background:#2b3c6e}
 .balances>div{min-width:0;background:#0a1231;padding:18px 24px}
@@ -58,6 +54,9 @@ input{font-variant-numeric:tabular-nums}
 .tank-title span{font-size:12px;color:var(--gold)}
 .panel p.help{font-size:12px;color:var(--muted);margin-bottom:0}
 .review-panel .quote{font-size:19px;color:#fff;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.review-panel .status{min-height:20px;margin:0 0 14px;font-size:13px;line-height:1.5;color:var(--gold);overflow-wrap:anywhere}
+.review-panel .status:empty{min-height:0;margin:0}
+.review-panel .status a{margin-left:8px;font-size:13px}
 .review-panel ol{padding-left:20px;color:#c1cbed;font-size:13px;line-height:1.8}
 .review-panel button{margin:5px 5px 5px 0}
 .tickets,.rules{margin-top:18px}
@@ -78,24 +77,19 @@ footer b{color:#f3f1e8}
 
 @media(max-width:1000px){.panels{grid-template-columns:1fr 1fr}
 .review-panel{grid-column:1/-1}
-.topbar{padding-top:14px}
-.wordmark{font-size:20px}
 .balances>div{padding:15px}
 .balances strong{font-size:24px}
 }
 
 @media(max-width:600px){main,footer{padding-left:14px;padding-right:14px}
-.topbar{padding:16px 14px;flex-wrap:wrap}
-.wallet-controls{width:100%;justify-content:space-between}
+.wallet-controls{top:8px;left:10px;gap:6px}
+.wallet-controls button{min-height:30px;padding:0 9px;font-size:12px}
 .balances{grid-template-columns:1fr 1fr}
 .panels{grid-template-columns:1fr}
 .panel{padding:20px}
 .review-panel{grid-column:auto}
 .game-tools{flex-wrap:wrap}
 .game-tools span{font-size:11px}
-.statusbar{align-items:flex-start;flex-wrap:wrap;font-size:14px}
-.statusbar a{margin-left:20px}
-.statusbar .dot{margin-top:6px}
 .poolline{align-items:flex-start;font-size:12px}
 .network-alert{flex-direction:column;align-items:flex-start}
 .tickets>div{display:block}

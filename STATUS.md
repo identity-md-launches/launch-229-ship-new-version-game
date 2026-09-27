@@ -5,9 +5,9 @@
 # STATUS.md
 
 ## State
-- Last Action: 2026-09-27 12:20 - Design approved (Gates A/B/C) and DEVELOP entered for the clean-top change (PLAN.md T1-T6): remove page header and status bar, drop the in-game ready overlay, wallet controls top-left inside the game window, speaker bottom-right.
+- Last Action: 2026-09-27 12:10 - Clean-top change committed (PLAN.md T1-T6 complete; 15/15 browser tests, export check PASS). Next: background wallet moves via smart-account session permissions (Lobby, 2026-09-27) going through DESIGN.
 - Blocker: none
-- Updated: 2026-09-27 12:20
+- Updated: 2026-09-27 12:10
 
 ## Repository
 - Fork (ours): https://gitlawb.com/z6MkiyAV9MAfGzqLQpFtAxD2KzY7TyBTSD2bQUWioZSeXaqa/pepes-armed-with-ai
