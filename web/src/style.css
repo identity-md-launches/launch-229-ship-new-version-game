@@ -53,12 +53,14 @@ input{font-variant-numeric:tabular-nums}
 .tank-title{border-top:1px solid #33416e;padding-top:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .tank-title span{font-size:12px;color:var(--gold)}
 .panel p.help{font-size:12px;color:var(--muted);margin-bottom:0}
-.review-panel .quote{font-size:19px;color:#fff;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
 .review-panel .status{min-height:20px;margin:0 0 14px;font-size:13px;line-height:1.5;color:var(--gold);overflow-wrap:anywhere}
 .review-panel .status:empty{min-height:0;margin:0}
 .review-panel .status a{margin-left:8px;font-size:13px}
-.review-panel ol{padding-left:20px;color:#c1cbed;font-size:13px;line-height:1.8}
 .review-panel button{margin:5px 5px 5px 0}
+.review-panel .session-line{margin:0 0 12px;font-size:14px;line-height:1.5;color:#c1cbed;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.review-panel .session-group{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 12px}
+.review-panel .session-group>span{min-width:76px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.review-panel .session-group button{margin:0}
 .tickets,.rules{margin-top:18px}
 .tickets>div{display:flex;justify-content:space-between;gap:16px;align-items:center}
 .tickets ul{list-style:none;padding:0}

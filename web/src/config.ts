@@ -24,7 +24,8 @@ export async function loadDeployment() {
   abis[c.name]=abi;
  }
  const chain=defineChain({id:d.chainId,name:d.network.name,nativeCurrency:d.network.nativeCurrency,rpcUrls:{default:{http:d.network.rpcUrls}},blockExplorers:{default:{name:d.network.name,url:d.network.explorer}},testnet:d.network.testnet});
- const client=createPublicClient({chain,transport:fallback(d.network.rpcUrls.map(url=>http(url,{timeout:10000,retryCount:1}))),batch:{multicall:false}});
- return {d,abis,chain,client};
+ const transport=fallback(d.network.rpcUrls.map(url=>http(url,{timeout:10000,retryCount:1})));
+ const client=createPublicClient({chain,transport,batch:{multicall:false}});
+ return {d,abis,chain,client,transport};
 }
 export type Runtime=Awaited<ReturnType<typeof loadDeployment>>;

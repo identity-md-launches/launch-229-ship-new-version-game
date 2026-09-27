@@ -1432,11 +1432,11 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
     <span class="cue gtcue" id="cueThrone">E · insert ETH</span>
     <div class="gtpanel" id="gtPanel" role="region" aria-label="Golden throne: swap ETH for ICE">
       <h2>golden throne</h2>
-      <p class="gt-sub">v4 hook · offer Sepolia ETH, get ICE · live quote below</p>
+      <p class="gt-sub">v4 hook · offer Sepolia ETH, get ICE</p>
       <div class="gt-opts">
-        <button type="button" data-i="0"><span class="k">1</span>0.001<small>quote ICE output</small></button>
-        <button type="button" data-i="1"><span class="k">2</span>0.005<small>quote ICE output</small></button>
-        <button type="button" data-i="2"><span class="k">3</span>0.01<small>quote ICE output</small></button>
+        <button type="button" data-i="0"><span class="k">1</span>0.001<small>instant ICE buy</small></button>
+        <button type="button" data-i="1"><span class="k">2</span>0.005<small>instant ICE buy</small></button>
+        <button type="button" data-i="2"><span class="k">3</span>0.01<small>instant ICE buy</small></button>
       </div>
       <div class="gt-rules">
         <p>min <b>0.001 ETH</b> · <b>1%</b> to the pot</p>
@@ -2389,7 +2389,8 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
     if(JS.on&&d.sid&&!JS.swapped[d.sid]){JS.swapped[d.sid]=true;jackpotSwap();}
   }
   function jackpotSwap(){
-    if(JS.busy || !bridge())return;
+    if(JS.busy){if(bridge())bridge().message('Still confirming the last move. Try again in a moment.');return;}
+    if(!bridge())return;
     bridge().swap(JS.dir==='imd',JS.dir==='ice'?'100':'0.001',false);
     countEl.textContent='…';
     iceEl.classList.add('flash');setTimeout(function(){iceEl.classList.remove('flash');},200);
@@ -2407,7 +2408,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
     return JS.on&&!CL.on&&hero.active&&hero.weapon==='pee'&&hero.grounded&&hero.plat===AUTO.plat&&hero.x>=AUTO.l&&hero.x<=AUTO.r;
   }
   // a round is only worth it if you can pay for the pee AND the swap it triggers
-  function autoViable(dir){return live().tank>0 && !live().busy && !live().intent;}
+  function autoViable(dir){return live().tank>0 && !live().busy;}
 
   function padLabel(t){if(padLbl.textContent!==t){padLbl.textContent=t;}}
   function autoOff(){
@@ -2434,7 +2435,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
       if(AUTO.drawing&&DRAW.p>=AUTO.P){AUTO.drawing=false;releaseDraw();}
       return;
     }
-    if(DRAW.hold>0||JS.busy||live().intent||drops.length)return; // wait for the stream to land and the swap to finish
+    if(DRAW.hold>0||JS.busy||drops.length)return; // wait for the stream to land and the swap to finish
     AUTO.wait-=dt;if(AUTO.wait>0)return;
     if(!autoViable(JS.dir)){                       // too low for a full pee + swap in this currency
       var other=JS.dir==='ice'?'imd':'ice';
@@ -2492,12 +2493,12 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
     if(!left){PARADE.done=true;setTimeout(showThrone,800);}
   }
 
-  // Golden throne requests a live quote; confirmation stays in wallet controls.
+  // Golden throne buys ICE from the game wallet in the background; no wallet prompt.
   var TH={up:false,open:false,busy:false,x:118,BUFF:5,OPTS:[0.001,0.005,0.01]};
   var thEl=document.getElementById('gThrone'), thPanel=document.getElementById('gtPanel'), cueThrone=document.getElementById('cueThrone');
   jitterLetters(cueThrone,57);
   function thRender(){
-    [].forEach.call(thPanel.querySelectorAll('.gt-opts button'),function(b){b.disabled=!!live().busy; b.querySelector('small').textContent='quote ICE output';});
+    [].forEach.call(thPanel.querySelectorAll('.gt-opts button'),function(b){b.disabled=!!live().busy; b.querySelector('small').textContent='instant ICE buy';});
   }
 
   function showThrone(){
@@ -2522,7 +2523,7 @@ h1.hook-title em{font-style:normal;color:transparent;-webkit-text-stroke-color:v
   function thBuy(i){
     if(!TH.open||TH.busy||!bridge())return;
     bridge().swap(true,String(TH.OPTS[i]),true);
-    thMsg('Review your quote below the game.');
+    thMsg('Buying ICE in the background.');
   }
 
   [].forEach.call(thPanel.querySelectorAll('.gt-opts button'),function(b){

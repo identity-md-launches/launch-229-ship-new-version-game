@@ -83,12 +83,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1175,
+                  "duration": 1199,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T02:48:04.161Z",
+                  "startTime": "2026-09-27T04:00:43.856Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -98,7 +98,7 @@
           ],
           "id": "41922fa1b760a3f76b44-9c344d66fb32d63a1cb2",
           "file": "arcade.spec.ts",
-          "line": 24,
+          "line": 86,
           "column": 1
         },
         {
@@ -117,12 +117,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 461,
+                  "duration": 512,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T02:48:05.399Z",
+                  "startTime": "2026-09-27T04:00:45.115Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -132,7 +132,7 @@
           ],
           "id": "41922fa1b760a3f76b44-4d9ab08d0e6d54bb2a9d",
           "file": "arcade.spec.ts",
-          "line": 71,
+          "line": 125,
           "column": 1
         },
         {
@@ -151,12 +151,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 596,
+                  "duration": 617,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T02:48:05.868Z",
+                  "startTime": "2026-09-27T04:00:45.641Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -166,11 +166,11 @@
           ],
           "id": "41922fa1b760a3f76b44-d34174054e599ae25513",
           "file": "arcade.spec.ts",
-          "line": 110,
+          "line": 164,
           "column": 1
         },
         {
-          "title": "ICE sale uses separate exact approvals then router payload with hookData",
+          "title": "background ICE sale: one-time approvals, router payload with player hookData, no wallet prompt",
           "ok": true,
           "tags": [],
           "tests": [
@@ -185,52 +185,18 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1386,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-09-27T02:48:06.472Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "41922fa1b760a3f76b44-d5f681d319633666471e",
-          "file": "arcade.spec.ts",
-          "line": 139,
-          "column": 1
-        },
-        {
-          "title": "golden throne native swap has no approvals; winning draw only at B+2; free bursts after receipt",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 30000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "",
-              "projectName": "",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 1049,
+                  "duration": 1146,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
                   "steps": [
                     {
-                      "title": "Expect \"poll toEqual\"",
-                      "duration": 104
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 102
                     }
                   ],
-                  "startTime": "2026-09-27T02:48:07.865Z",
+                  "startTime": "2026-09-27T04:00:46.273Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -238,9 +204,49 @@
               "status": "expected"
             }
           ],
-          "id": "41922fa1b760a3f76b44-11bcf987efdd5bc9b826",
+          "id": "41922fa1b760a3f76b44-ca1750a03d551143873a",
           "file": "arcade.spec.ts",
-          "line": 178,
+          "line": 186,
+          "column": 1
+        },
+        {
+          "title": "golden throne buy is instant; winning draw by the game wallet at B+2; free bursts after receipt",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1299,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 102
+                    }
+                  ],
+                  "startTime": "2026-09-27T04:00:47.429Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41922fa1b760a3f76b44-39002241356a8a81520d",
+          "file": "arcade.spec.ts",
+          "line": 219,
           "column": 1
         },
         {
@@ -259,12 +265,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 975,
+                  "duration": 1263,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T02:48:08.921Z",
+                  "startTime": "2026-09-27T04:00:48.736Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -274,11 +280,11 @@
           ],
           "id": "41922fa1b760a3f76b44-40b59c1cae17fd01296c",
           "file": "arcade.spec.ts",
-          "line": 218,
+          "line": 249,
           "column": 1
         },
         {
-          "title": "tank approval and fill confirmed; scene pees decrement local charges and reload preserves them",
+          "title": "tank fill from the game wallet credits local pees and survives reload",
           "ok": true,
           "tags": [],
           "tests": [
@@ -293,12 +299,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1455,
+                  "duration": 1410,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T02:48:09.903Z",
+                  "startTime": "2026-09-27T04:00:50.007Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -306,13 +312,13 @@
               "status": "expected"
             }
           ],
-          "id": "41922fa1b760a3f76b44-afeb1780a2a59a6ff11b",
+          "id": "41922fa1b760a3f76b44-9d486146c82d0bb14282",
           "file": "arcade.spec.ts",
-          "line": 244,
+          "line": 265,
           "column": 1
         },
         {
-          "title": "insufficient balances and invalid tank range give actionable messages",
+          "title": "short game wallet and invalid tank range give actionable messages",
           "ok": true,
           "tags": [],
           "tests": [
@@ -327,12 +333,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 775,
+                  "duration": 1226,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T02:48:11.365Z",
+                  "startTime": "2026-09-27T04:00:51.425Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -340,13 +346,13 @@
               "status": "expected"
             }
           ],
-          "id": "41922fa1b760a3f76b44-895b68d958e05957adb6",
+          "id": "41922fa1b760a3f76b44-09d14600e2a9b360a80e",
           "file": "arcade.spec.ts",
-          "line": 281,
+          "line": 289,
           "column": 1
         },
         {
-          "title": "wallet rejection leaves balances and free bursts uncredited",
+          "title": "wallet rejection of the session signature or a top-up changes nothing",
           "ok": true,
           "tags": [],
           "tests": [
@@ -361,12 +367,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 936,
+                  "duration": 1146,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T02:48:12.147Z",
+                  "startTime": "2026-09-27T04:00:52.660Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -374,13 +380,13 @@
               "status": "expected"
             }
           ],
-          "id": "41922fa1b760a3f76b44-45854ae6acd2f7f78bce",
+          "id": "41922fa1b760a3f76b44-01c28fb0a5d4ca7b9c0a",
           "file": "arcade.spec.ts",
-          "line": 302,
+          "line": 306,
           "column": 1
         },
         {
-          "title": "router simulation revert prevents wallet signing",
+          "title": "router simulation revert prevents game-wallet signing",
           "ok": true,
           "tags": [],
           "tests": [
@@ -395,12 +401,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 840,
+                  "duration": 1388,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T02:48:13.090Z",
+                  "startTime": "2026-09-27T04:00:53.814Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -408,9 +414,9 @@
               "status": "expected"
             }
           ],
-          "id": "41922fa1b760a3f76b44-963e34f1ab73a4bf29cf",
+          "id": "41922fa1b760a3f76b44-62e1cff1830707c6cd0a",
           "file": "arcade.spec.ts",
-          "line": 322,
+          "line": 328,
           "column": 1
         },
         {
@@ -429,12 +435,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 642,
+                  "duration": 621,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T02:48:13.937Z",
+                  "startTime": "2026-09-27T04:00:55.209Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -463,12 +469,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 500,
+                  "duration": 471,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T02:48:14.586Z",
+                  "startTime": "2026-09-27T04:00:55.839Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -478,11 +484,11 @@
           ],
           "id": "41922fa1b760a3f76b44-d772d86b7564b66ae883",
           "file": "arcade.spec.ts",
-          "line": 355,
+          "line": 351,
           "column": 1
         },
         {
-          "title": "prototype gameplay keeps points local and fridge collision prepares a real swap",
+          "title": "fridge collision swaps in the background",
           "ok": true,
           "tags": [],
           "tests": [
@@ -497,12 +503,18 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2694,
+                  "duration": 2991,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T02:48:15.093Z",
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 102
+                    }
+                  ],
+                  "startTime": "2026-09-27T04:00:56.318Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -510,13 +522,13 @@
               "status": "expected"
             }
           ],
-          "id": "41922fa1b760a3f76b44-db8667e3f6dfb36d963a",
+          "id": "41922fa1b760a3f76b44-f599b972c54f42fac284",
           "file": "arcade.spec.ts",
-          "line": 388,
+          "line": 384,
           "column": 1
         },
         {
-          "title": "expired quote prevents signing and requires a fresh review",
+          "title": "a receipt without TankFilled cannot create local pees",
           "ok": true,
           "tags": [],
           "tests": [
@@ -531,12 +543,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 852,
+                  "duration": 1105,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T02:48:17.794Z",
+                  "startTime": "2026-09-27T04:00:59.316Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -544,13 +556,13 @@
               "status": "expected"
             }
           ],
-          "id": "41922fa1b760a3f76b44-f36eb14687d06f6e9538",
+          "id": "41922fa1b760a3f76b44-6db7dac3b45d1effdc98",
           "file": "arcade.spec.ts",
-          "line": 428,
+          "line": 400,
           "column": 1
         },
         {
-          "title": "a successful replacement receipt without TankFilled cannot create local pees",
+          "title": "session start: one signature, key never stored, same game wallet after reload",
           "ok": true,
           "tags": [],
           "tests": [
@@ -565,12 +577,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1033,
+                  "duration": 1377,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-09-27T02:48:18.653Z",
+                  "startTime": "2026-09-27T04:01:00.428Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -578,9 +590,239 @@
               "status": "expected"
             }
           ],
-          "id": "41922fa1b760a3f76b44-a5848c931b7a7dff70e3",
+          "id": "41922fa1b760a3f76b44-750805242406c0bfaec1",
           "file": "arcade.spec.ts",
-          "line": 452,
+          "line": 412,
+          "column": 1
+        },
+        {
+          "title": "auto-refill: one grant, then fridge swaps pull ICE with zero prompts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1873,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 101
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 100
+                    },
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 101
+                    }
+                  ],
+                  "startTime": "2026-09-27T04:01:01.812Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41922fa1b760a3f76b44-8a4a840370459880367c",
+          "file": "arcade.spec.ts",
+          "line": 438,
+          "column": 1
+        },
+        {
+          "title": "manual mode: top up and move ICE, then play with zero prompts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1863,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 100
+                    }
+                  ],
+                  "startTime": "2026-09-27T04:01:03.693Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41922fa1b760a3f76b44-0761af5a792127a8bf28",
+          "file": "arcade.spec.ts",
+          "line": 465,
+          "column": 1
+        },
+        {
+          "title": "a non-ECDSA signature is refused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 856,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T04:01:05.563Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41922fa1b760a3f76b44-198d824cd75a9514239a",
+          "file": "arcade.spec.ts",
+          "line": 495,
+          "column": 1
+        },
+        {
+          "title": "one move at a time: a second hit during a pending swap is skipped with a message",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7854,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBe\"",
+                      "duration": 102
+                    }
+                  ],
+                  "startTime": "2026-09-27T04:01:06.426Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41922fa1b760a3f76b44-a765b48a374c6337ebea",
+          "file": "arcade.spec.ts",
+          "line": 507,
+          "column": 1
+        },
+        {
+          "title": "withdraw to wallet returns ICE and ETH to the player",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1283,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T04:01:14.287Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41922fa1b760a3f76b44-d7f569a98b9922ae06c7",
+          "file": "arcade.spec.ts",
+          "line": 527,
+          "column": 1
+        },
+        {
+          "title": "a second tab cannot start background play",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1913,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-27T04:01:15.577Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41922fa1b760a3f76b44-8c90a07cf50a5d3aeafb",
+          "file": "arcade.spec.ts",
+          "line": 548,
           "column": 1
         }
       ]
@@ -588,9 +830,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-09-27T02:48:02.987Z",
-    "duration": 16763.375,
-    "expected": 15,
+    "startTime": "2026-09-27T04:00:42.783Z",
+    "duration": 34778.428,
+    "expected": 21,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

@@ -5,9 +5,9 @@
 # STATUS.md
 
 ## State
-- Last Action: 2026-09-27 13:05 - Background play (game wallet from one signature per visit, ERC-7715 auto-refill where supported, manual top-ups otherwise) added to DESIGN.md as R9-R17 / M7-M14 and to PLAN.md as T7-T14. Staying in DEVELOP per Lobby (design gate declined, no A/B/C reset). Next: T7.
+- Last Action: 2026-09-27 13:01 - Background play (T7-T14) built and verified: typecheck, 24 unit tests, build, export check (19 assets) and 21 browser tests pass. Source, `dist/` and docs staged; waiting on Lobby for a review pass or commit, then the VERIFY gate.
 - Blocker: none
-- Updated: 2026-09-27 13:05
+- Updated: 2026-09-27 13:01
 
 ## Repository
 - Fork (ours): https://gitlawb.com/z6MkiyAV9MAfGzqLQpFtAxD2KzY7TyBTSD2bQUWioZSeXaqa/pepes-armed-with-ai

@@ -51,33 +51,33 @@ between('  var JS={','  function enableSwap(){', '''  var JS={on:false,busy:fals
   document.getElementById('ssFlip').addEventListener('click',function(e){e.currentTarget.blur();flipSwap();});
 ''')
 between('  function jackpotSwap(){','  function updateSwap(){', '''  function jackpotSwap(){
-    if(JS.busy || !bridge())return;
+    if(JS.busy){if(bridge())bridge().message('Still confirming the last move. Try again in a moment.');return;}
+    if(!bridge())return;
     bridge().swap(JS.dir==='imd',JS.dir==='ice'?'100':'0.001',false);
     countEl.textContent='…';
     iceEl.classList.add('flash');setTimeout(function(){iceEl.classList.remove('flash');},200);
   }
 ''')
-between('  function autoViable(dir){','  function padLabel(t){', '''  function autoViable(dir){return live().tank>0 && !live().busy && !live().intent;}
+between('  function autoViable(dir){','  function padLabel(t){', '''  function autoViable(dir){return live().tank>0 && !live().busy;}
 ''')
-s=s.replace('if(DRAW.hold>0||JS.busy||drops.length)return;', 'if(DRAW.hold>0||JS.busy||live().intent||drops.length)return;')
 s=s.replace("padLabel('out of $ICE + Sepolia ETH')","padLabel('fill the tank')")
-between('  // ================= golden throne:', '  function showThrone(){', '''  // Golden throne requests a live quote; confirmation stays in wallet controls.
+between('  // ================= golden throne:', '  function showThrone(){', '''  // Golden throne buys ICE from the game wallet in the background; no wallet prompt.
   var TH={up:false,open:false,busy:false,x:118,BUFF:5,OPTS:[0.001,0.005,0.01]};
   var thEl=document.getElementById('gThrone'), thPanel=document.getElementById('gtPanel'), cueThrone=document.getElementById('cueThrone');
   jitterLetters(cueThrone,57);
   function thRender(){
-    [].forEach.call(thPanel.querySelectorAll('.gt-opts button'),function(b){b.disabled=!!live().busy; b.querySelector('small').textContent='quote ICE output';});
+    [].forEach.call(thPanel.querySelectorAll('.gt-opts button'),function(b){b.disabled=!!live().busy; b.querySelector('small').textContent='instant ICE buy';});
   }
 ''')
 between('  function thBuy(i){', "  [].forEach.call(thPanel.querySelectorAll('.gt-opts button')", '''  function thBuy(i){
     if(!TH.open||TH.busy||!bridge())return;
     bridge().swap(true,String(TH.OPTS[i]),true);
-    thMsg('Review your quote below the game.');
+    thMsg('Buying ICE in the background.');
   }
 ''')
-s=s.replace('v4 hook · offer ETH to the porcelain god, get Sepolia ETH · 1 ETH ≈ 497 Sepolia ETH','v4 hook · offer Sepolia ETH, get ICE · live quote below')
+s=s.replace('v4 hook · offer ETH to the porcelain god, get Sepolia ETH · 1 ETH ≈ 497 Sepolia ETH','v4 hook · offer Sepolia ETH, get ICE')
 s=s.replace('Golden throne: swap ETH for Sepolia ETH','Golden throne: swap ETH for ICE')
-s=re.sub(r'≈ [\d.]+ Sepolia ETH', 'quote ICE output',s)
+s=re.sub(r'≈ [\d.]+ Sepolia ETH', 'instant ICE buy',s)
 s=s.replace('<b>2%</b> house rake','<b>1%</b> to the pot').replace('pays <b>+20%</b>','pays <b>20× fee, pot cap 10%</b>').replace('demo wallet','live wallet').replace('0.050 ETH','— ETH')
 s=s.replace('swap <b>100 $ICE</b> → <b>99 Sepolia ETH</b>','swap <b>100 ICE</b> → <b>live ETH quote</b>')
 s=s.replace('2,500 $ICE','live pots').replace('1 Sepolia ETH = 89,706 $ICE','live ETH/ICE price')

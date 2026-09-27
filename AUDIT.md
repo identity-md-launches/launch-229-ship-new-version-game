@@ -1,6 +1,6 @@
 # AUDIT.md
 
-Task record for the "clean top" change (PLAN.md T1–T6, DESIGN.md R1–R8). Evidence paths are project-relative; `test/scratch/` is git-ignored.
+Task records for the "clean top" change (PLAN.md T1–T6, DESIGN.md R1–R8, shipped in 0c0e42b) and background play (PLAN.md T7–T14, DESIGN.md R9–R17). Evidence paths are project-relative; `test/scratch/` is git-ignored.
 
 ## Scope delivered
 
@@ -20,10 +20,10 @@ Task record for the "clean top" change (PLAN.md T1–T6, DESIGN.md R1–R8). Evi
 - `page.getByText('Test Value Only')` is case-insensitive and matched "Sepolia test value only" in the Rules panel, which stays by design.
 - Fix: the assertion uses the case-sensitive regex `getByText(/Test Value Only/)`.
 
-### F3: Pre-existing flaky browser tests (root cause found; test-side fix applied)
+### F3: Pre-existing flaky browser tests (root cause found; test-side fix applied; engine fix in T10)
 - Symptom: runs 2 and 3 failed 4–5 tests that call the shared `open()` helper ("Quote Fridge Swap" stayed disabled for 5 s after Connect Wallet) and once the expired-quote test saw "Swap confirmed" instead of "Quote expired".
 - Control: the unmodified baseline (commit 488f373, run in a temporary worktree) failed 5 of 14 with the same `open()` timeout (`test/scratch/pw-base1.log`). The flake predates this change.
-- Root cause 1 (engine race, still present in `web/src/engine.ts`): `Engine.refresh()` returns immediately when `this.refreshing` is true, and `Engine.connect()` bumps `session` so the in-flight refresh discards its result. Clicking Connect while the initial `verify()` → `refresh()` is still reading the chain therefore leaves `ready:false` until the 12 s interval fires. On this slow host the initial reads often outlast the test's click. A real user can hit the same window: connect within the first seconds and the Wallet Move panel stays locked for up to 12 s. Not fixed here because it is outside the clean-top scope; proposed two-line fix: key the `refreshing` guard by session (`if(this.refreshing===this.session)return; this.refreshing=this.session;` and clear only when the session still matches).
+- Root cause 1 (engine race in `web/src/engine.ts`, fixed in T10: the guard is now keyed by the connect epoch): `Engine.refresh()` returns immediately when `this.refreshing` is true, and `Engine.connect()` bumps `session` so the in-flight refresh discards its result. Clicking Connect while the initial `verify()` → `refresh()` is still reading the chain therefore leaves `ready:false` until the 12 s interval fires. On this slow host the initial reads often outlast the test's click. A real user can hit the same window: connect within the first seconds and the Wallet Move panel stays locked for up to 12 s. Not fixed here because it is outside the clean-top scope; proposed two-line fix: key the `refreshing` guard by session (`if(this.refreshing===this.session)return; this.refreshing=this.session;` and clear only when the session still matches).
 - Root cause 2 (test race): the expired-quote test shifted `Date.now` by +31 s before the quote's `created` timestamp was taken, so on a slow host the quote was created with the shifted clock and did not expire.
 - Fix (tests only, `web/tests/arcade.spec.ts`): `open()` waits for `.poolline` to contain `Block ` (initial verification done) before clicking Connect Wallet; the expired-quote test waits for the Confirm Swap button before shifting the clock.
 
@@ -32,6 +32,11 @@ Task record for the "clean top" change (PLAN.md T1–T6, DESIGN.md R1–R8). Evi
 - T3 style grep narrowed to `\.network[{ ,]` / `\.dot[{ ,.]` so the kept `.network-alert` rule does not match.
 - T5 statusbar wording allows the new test's `toHaveCount(0)` absence assertion.
 - T4 bounding-box criterion is verified inside the new browser test, which sets the viewport to 1440×1100 for the box check and 390×844 for the overflow check.
+
+### F5: Page error while wagmi restores a saved connection (fixed in T13)
+- Symptom: `s?.getProvider is not a function` as an unhandled rejection after a reload or in a second tab; surfaced by the T13 suite-wide `pageerror` check (earlier suites did not collect page errors in those tests).
+- Root cause: during reconnect, `useAccount().connector` is the persisted plain object (`id`, `name`, `type`, `uid`) until wagmi hydrates it, so the provider effect in `web/src/main.tsx` called a missing method. The line predates background play (unchanged since 0c0e42b).
+- Fix: the effect calls `getProvider` only when it is a function and otherwise connects without a provider; the effect reruns with the hydrated connector, and `GameEngine.connect` then picks up the provider.
 
 ## Verification evidence (2026-09-27, from `web/`, log `test/scratch/t6-chain.log`)
 
@@ -54,4 +59,37 @@ Layout facts asserted by the new browser test: no `header`, no `.statusbar`, wal
 ## Open items
 
 - T6 last criterion met: source, `dist/` and docs committed together on Lobby's go-ahead (2026-09-27).
-- Engine race from F3 is reported, not fixed.
+- Engine race from F3 was reported here and fixed in T10.
+
+## Background play (T7–T14)
+
+Design decisions (Lobby, 2026-09-27): session permissions; key re-derived from a signature each visit; ETH top-up plus optional ICE move, ERC-7715 auto-refill where supported; fridge hits swap instantly; old per-step flow removed; stay in DEVELOP (design gate declined, A/B/C not reset). The MetaMask Smart Accounts Kit is not used because it sends analytics by default; ERC-7715 is called through raw EIP-1193 requests.
+
+### Evidence
+
+| Task | Check | Result |
+|---|---|---|
+| T7 | `npm run typecheck` | exit 0 |
+| T7 | `npm test` | 14 passed (3 new: redemption encoding with a 120-byte ICE execution and a 52-byte native one, checksummed DelegationManager, presets and uint caps) |
+| T8 | `npm run typecheck` | exit 0 |
+| T8 | `npm test` | 19 passed (5 new: exact session message; same signature → same key and address, 64-byte / foreign / zero signatures refused; 11 allowlisted calls accepted; 18 off-list calls blocked; Web Lock held once per player, no-op without `navigator.locks`) |
+| T8 | `grep -c "localStorage\|sessionStorage\|console\." web/src/session.ts` | 0 |
+| T9 | `npm run typecheck` | exit 0 |
+| T9 | `npm test` | 24 passed (5 new: support detection incl. missing type / wrong chain / thrown error; exact two-item request with 7-day expiry and optional redeemer/payee rules, granted ICE amount read back from the response; 7 malformed grants and an empty response refused, wallet rejection (4001) propagated, dependencies accepted when the player has code; storage round-trip, expired and malformed grants removed; ETH and ICE pulls pass `checkSessionCall`) |
+| T10 | `npx tsc --noEmit` | engine, session and refill modules clean; the 11 remaining errors are all in `src/main.tsx`, which still calls the removed `prepareSwap` / `prepareTank` / `advance` / `intent` (T11) |
+| T10 | `npm test` | 24 passed |
+| T10 | `grep -c "intent\|prepareSwap\|prepareTank\|advance(" web/src/engine.ts` | 0; `checkSessionCall(` has one call site (`broadcast`); all 22 M10 message texts present verbatim |
+| T10+T11 | `npm run typecheck && npm test && npm run build` | exit 0; 24 unit tests passed; `✓ built in 6.64s`, manifest 19 assets (log `test/scratch/t11-verify.log`). The rebuilt `dist/` is left unstaged for T14 |
+| T11 | `grep -c "Quote Fridge Swap\|Review Tank Fill\|Cancel Review\|Review & Confirm\|intent" web/src/main.tsx` | 0 |
+| T11 | `style.css` | 4 `.review-panel .session-*` rules added; `.review-panel .quote` / `.review-panel ol` count 0 |
+| T11 | `python3 scripts/adapt-game.py` twice | same sha1 both runs (`eefa7a1a…`); `grep -c "intent\|Review your quote" public/game.html` = 0; `Still confirming the last move` = 1; `git status -- prototype` clean |
+| T12 | `npm run typecheck` | exit 0 |
+| T12 | Node smoke: real `GameEngine` against the fixture (`test/scratch/fixture-smoke.mts`, log `fixture-smoke.log`) | 27/27 PASS: game-wallet address equals the Node-side derivation; start + top-up + Move ICE = 3 prompts, then ICE sale, tank fill, throne buy and the B+2 auto-draw add 0 prompts (all `eth_sendRawTransaction` from the game wallet, 3 warm-up approvals with consecutive nonces); grant = 1 prompt, a 1,000-pee fill pulls ICE under the cap, the next one gets the used-up message; withdraw returns all ICE and all but 84,000 wei; no stored value holds the key; 64-byte and rejected signatures refused; without ERC-7715 the short-ICE / short-ETH / no-gas cases give the Move ICE / Top Up messages; a router revert blocks signing; unmocked methods throw -32601 |
+| T13 | `npx playwright test` (run 1, `test/scratch/t13-run1.log`) | 18 passed, 3 failed — all three on the new suite-wide `pageerror` check: `s?.getProvider is not a function` after a reload or in a second tab (F5) |
+| T13 | `npx playwright test` after the F5 fix (runs 2–4, `t13-run2..4.log`) | 21 passed, 0 failed, three runs in a row (35.5 s / 36.9 s / 39.6 s); no `pageerror` in any test |
+| T13 | Suite content | 21 tests, names identical to M13 (5 kept with `Quote Fridge Swap` → `Swap Now` / `Start Background Play` renames, 9 rewritten, 7 new); the expired-quote test is gone. Prompt count unchanged across 3 moves in manual mode and 3 auto-refill swaps; every `Swap Now` click reaches `eth_sendRawTransaction` in < 3 s (asserted per click); no storage value holds the key hex; the same game-wallet address after reload and a new signature; no horizontal overflow at 390 px with a session open |
+| T13 | `npm test` | 24 passed |
+| T14 | `npm run typecheck && npm test && npm run build && npm run check:export && npm run test:browser` (log `test/scratch/t14-chain.log`) | exit 0; 24 unit tests passed; `✓ built in 6.48s`; `PASS: exact handoff, network, pinned ABI hashes, 19 assets, 5370024 export bytes.`; 21 browser tests passed (34.8 s) |
+| T14 | `grep -rl "Quote Fridge Swap\|Cancel Review\|Review your quote" dist/` | no output |
+| T14 | `git status --short` | changes only under `web/`, `dist/`, `docs/frontend/`, AUDIT.md, DESIGN.md, PLAN.md, STATUS.md; `prototype/` clean; the Anvil test keys appear in no file under `dist/` or `web/src/` |
+

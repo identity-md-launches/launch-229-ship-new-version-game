@@ -1,10 +1,17 @@
-import { encodeAbiParameters, keccak256, parseAbi, parseAbiParameters, type Address, type Hex } from 'viem';
+import { encodeAbiParameters, encodeFunctionData, encodePacked, keccak256, parseAbi, parseAbiParameters, type Address, type Hex } from 'viem';
 import type { Deployment } from './config';
 import { POOL, walletAddChain } from './chain.mjs';
 export const poolTuple='(address currency0,address currency1,uint24 fee,int24 tickSpacing,address hooks)';
 export const quoterAbi=parseAbi([`function quoteExactInputSingle((${poolTuple} poolKey,bool zeroForOne,uint128 exactAmount,bytes hookData) params) returns (uint256 amountOut,uint256 gasEstimate)`]);
 export const routerAbi=parseAbi(['function execute(bytes commands,bytes[] inputs,uint256 deadline) payable']);
 export const permitAbi=parseAbi(['function allowance(address user,address token,address spender) view returns (uint160 amount,uint48 expiration,uint48 nonce)','function approve(address token,address spender,uint160 amount,uint48 expiration)']);
+export const delegationManagerAbi=parseAbi(['function redeemDelegations(bytes[] permissionContexts,bytes32[] modes,bytes[] executionCallDatas)']);
+export const MAX_UINT160=(1n<<160n)-1n;export const MAX_UINT48=(1n<<48n)-1n;
+export const SINGLE_DEFAULT_MODE=`0x${'00'.repeat(32)}` as Hex;
+// One ERC-7715 redemption: a single execution (target, value, calldata) under the grant's permission context.
+export function encodeRedeem(context:Hex,target:Address,value:bigint,callData:Hex) {
+ return encodeFunctionData({abi:delegationManagerAbi,functionName:'redeemDelegations',args:[[context],[SINGLE_DEFAULT_MODE],[encodePacked(['address','uint256','bytes'],[target,value,callData])]]});
+}
 export const stateAbi=parseAbi(['function getSlot0(bytes32 poolId) view returns (uint160 sqrtPriceX96,int24 tick,uint24 protocolFee,uint24 lpFee)','function getLiquidity(bytes32 poolId) view returns (uint128 liquidity)']);
 export function poolKey(d:Deployment) {
  const token=d.contracts.find(c=>c.name==='PepeIce')!.address;
